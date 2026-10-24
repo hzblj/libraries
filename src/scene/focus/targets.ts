@@ -42,6 +42,13 @@ const targetsOf = (entry: Entry): FocusTarget[] => {
       return [{area, id: focusIds.gallery, kind: 'gallery', label: 'Personal Gallery'}]
     case 'profile':
       return [
+        {
+          area,
+          href: Config.tagline.href,
+          id: focusIds.contact(Config.tagline.subject),
+          kind: 'external',
+          label: Config.tagline.subject,
+        },
         {area, href: 'https://github.com/hzblj', id: focusIds.contact('GitHub'), kind: 'external', label: 'GitHub'},
         {area, href: 'https://www.npmjs.com/~hzblj', id: focusIds.contact('npm'), kind: 'external', label: 'npm'},
       ]

@@ -14,10 +14,12 @@ export const useProfileLayout = () => {
 
   return useMemo(() => {
     const prefix = measureText(Config.tagline.prefix, TAGLINE)
-    const taglineX = centered(prefix + SPACE + measureText(Config.tagline.subject, SUBJECT))
+    const subjectWidth = measureText(Config.tagline.subject, SUBJECT)
+    const taglineX = centered(prefix + SPACE + subjectWidth)
 
     return {
       nameX: centered(measureText(Config.handle, NAME)),
+      subjectWidth,
       subjectX: taglineX + prefix + SPACE,
       taglineX,
     }

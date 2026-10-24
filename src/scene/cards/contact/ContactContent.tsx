@@ -5,6 +5,7 @@ import type {FC} from 'react'
 import type {Contact} from '@/db'
 
 import {Surface, TextLayer} from '../../entity'
+import {useHotspots} from '../../interaction'
 import {ContactLink} from './ContactLink'
 import {HEIGHT, LINK, WIDTH} from './styles'
 import {useContactLinks} from './useContactLinks'
@@ -14,7 +15,8 @@ type ContactContentProps = {
 }
 
 export const ContactContent: FC<ContactContentProps> = ({contacts}) => {
-  const {links, pointer, underlines} = useContactLinks(contacts)
+  const {hotspots, links, underlines} = useContactLinks(contacts)
+  const pointer = useHotspots(hotspots)
 
   return (
     <>

@@ -3,7 +3,7 @@ import {use, useMemo} from 'react'
 import type {Contact} from '@/db'
 
 import {loadFonts, measureText} from '../../graphics'
-import {openExternal, useHotspots} from '../../interaction'
+import {openExternal} from '../../interaction'
 import {useUnderlines} from '../shared'
 import {DIVIDER, LINK, ROW_TOP, WIDTH} from './styles'
 
@@ -39,5 +39,5 @@ export const useContactLinks = (contacts: Contact[], top = ROW_TOP, width = WIDT
     [links, underlines]
   )
 
-  return {links, pointer: useHotspots(hotspots), underlines}
+  return {hotspots, links, underlines}
 }

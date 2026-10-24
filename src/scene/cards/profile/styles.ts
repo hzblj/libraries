@@ -7,10 +7,11 @@ export const WIDTH = getAreaRect('profile').width
 export const NAME_TOP = 62
 export const TAGLINE_TOP = NAME_TOP + 30
 export const HINTS_TOP = TAGLINE_TOP + 42
+export const TAGLINE_LINE = 20
 
 export const NAME: TextStyle = {gradient: INK_STRONG, lineHeight: 26, shadow: true, size: 20, weight: 500}
-export const TAGLINE: TextStyle = {color: 'rgba(255, 255, 255, 0.5)', lineHeight: 20, size: 15, weight: 500}
-export const SUBJECT: TextStyle = {gradient: INK_STRONG, lineHeight: 20, shadow: true, size: 15, weight: 500}
+export const TAGLINE: TextStyle = {color: 'rgba(255, 255, 255, 0.5)', lineHeight: TAGLINE_LINE, size: 15, weight: 500}
+export const SUBJECT: TextStyle = {gradient: INK_STRONG, lineHeight: TAGLINE_LINE, shadow: true, size: 15, weight: 500}
 
 const HINT: TextStyle = {
   color: 'rgba(255, 255, 255, 0.5)',

@@ -1,14 +1,20 @@
 'use client'
 
-import type {FC} from 'react'
+import {type FC, useMemo} from 'react'
 
-import {Surface} from '../../entity'
+import {Config} from '@/config'
+
+import {FocusRing, Surface} from '../../entity'
+import {useHotspots} from '../../interaction'
+import {focusIds} from '../../state'
 import {ContactLink} from '../contact/ContactLink'
 import {useContactLinks} from '../contact/useContactLinks'
+import {UnderlineLayer} from '../shared'
 import {ProfileIdentity} from './ProfileIdentity'
 import {HINTS_TOP, WIDTH} from './styles'
 import {useProfileEntrance} from './useProfileEntrance'
 import {useProfileLayout} from './useProfileLayout'
+import {useSubjectLink} from './useSubjectLink'
 
 const CONTACTS = [
   {type: 'GitHub', url: 'https://github.com/hzblj'},
@@ -18,7 +24,9 @@ const CONTACTS = [
 export const ProfileContent: FC = () => {
   const layout = useProfileLayout()
   const entrance = useProfileEntrance()
-  const {links, pointer, underlines} = useContactLinks(CONTACTS, HINTS_TOP, WIDTH)
+  const {hotspots, links, underlines} = useContactLinks(CONTACTS, HINTS_TOP, WIDTH)
+  const subject = useSubjectLink(layout.subjectX, layout.subjectWidth)
+  const pointer = useHotspots(useMemo(() => [subject.hotspot, ...hotspots], [hotspots, subject.hotspot]))
 
   return (
     <>
@@ -31,6 +39,8 @@ export const ProfileContent: FC = () => {
         tagline={entrance.tagline}
         subject={entrance.subject}
       />
+      <UnderlineLayer rect={subject.underline} motion={subject.motion} order={2} />
+      <FocusRing id={focusIds.contact(Config.tagline.subject)} rect={subject.link} radius={6} />
       {links.map(({contact, link, underline}, index) => (
         <ContactLink
           key={contact.type}

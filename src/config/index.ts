@@ -30,8 +30,9 @@ export const Config = {
   // anything naming it sends a crawler one hop short of where it meant to point,
   // and a canonical that redirects is a canonical arguing with itself.
   site: 'https://www.libraries.janblazej.dev',
-  // The profile card's second line: the prefix muted, the subject in full white.
-  tagline: {prefix: 'Libraries for', subject: 'Expo'},
+  // The profile card's second line: the prefix muted, the subject in full white
+  // and a link to where it comes from.
+  tagline: {href: 'https://expo.dev', prefix: 'Libraries for', subject: 'Expo'},
   title: 'hzblj · Libraries for Expo and React Native',
   // The whole collection with the grid's 2px padding on every side: five
   // columns and three rows of the template in scene/grid/layout.ts.
