@@ -205,7 +205,10 @@ export const entries: Entries = [
     description:
       'Speech to text for Expo on the platforms’ own speech APIs: SpeechAnalyzer on iOS, with SFSpeechRecognizer before it, and the on-device SpeechRecognizer on Android. Files or the microphone, with every word’s timing for titles that follow the audio.',
     image: '/libraries/expo-speech.png',
-    properties: [{name: 'GitHub', url: 'https://github.com/hzblj/expo-speech', value: 'hzblj/expo-speech'}],
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/expo-speech', value: 'hzblj/expo-speech'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-speech', value: '@hzblj/expo-speech'},
+    ],
     size: 'small',
     slug: 'expo-speech',
     subtitle: 'Speech to text, natively',
