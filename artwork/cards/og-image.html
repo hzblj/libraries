@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="libraries-grid.css" />
     <style>
       /* The site's link preview, the way the portfolio's is made: the grid as the
-         site draws it, closer in, held on the profile card with the cards
-         around it running off every edge. Built from the cards' own stills, so
-         it follows them when they are drawn again. */
+         site draws it, held on the profile card with the cards around it
+         running off every edge, far enough out that each big corner card shows
+         its subject. Built from the cards' own stills, so it follows them when
+         they are drawn again. */
       body {
         background: #000;
       }
@@ -26,7 +27,7 @@
     <script type="module">
       import {buildGrid} from './libraries-grid.js'
 
-      const SCALE = 1.25
+      const SCALE = 0.8
       const SIZE = {height: 630, width: 1200}
 
       const grid = document.querySelector('.grid')
