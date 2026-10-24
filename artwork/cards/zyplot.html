@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* A line chart in Zyplot's violet, the way its iOS renderer draws one: a
+         smoothed trace over a gradient fill, a few hairline rules and the scrub
+         lollipop, a rule and a point with the reading above it. On hover the
+         data changes twice and comes back, each value springing to its new
+         height, while the reading follows a finger to a new point. */
+      .glow {
+        background: radial-gradient(closest-side, rgba(68, 0, 252, 0.2), rgba(68, 0, 252, 0));
+        height: 300px;
+        left: -5px;
+        position: absolute;
+        top: -70px;
+        width: 300px;
+      }
+
+      svg {
+        left: 0;
+        overflow: visible;
+        position: absolute;
+        top: 0;
+      }
+
+      .trace {
+        filter: drop-shadow(0 0 5px rgba(106, 61, 255, 0.55));
+      }
+
+      .bubble {
+        align-items: baseline;
+        background: rgba(38, 38, 38, 0.92);
+        border-radius: 8px;
+        box-shadow:
+          0 0 0 0.5px rgba(255, 255, 255, 0.14),
+          0 8px 18px rgba(0, 0, 0, 0.45);
+        display: flex;
+        gap: 6px;
+        height: 26px;
+        padding: 0 9px;
+        position: absolute;
+        top: 16px;
+        white-space: nowrap;
+      }
+
+      .value {
+        font-size: 13px;
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        letter-spacing: -0.1px;
+        line-height: 26px;
+      }
+
+      .day {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 26px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="glow"></div>
+      <svg width="290" height="218" viewBox="0 0 290 218">
+        <defs>
+          <linearGradient id="fill" gradientUnits="userSpaceOnUse" x1="0" y1="52" x2="0" y2="150">
+            <stop offset="0" stop-color="#5b2bff" stop-opacity="0.42" />
+            <stop offset="1" stop-color="#4400fc" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#6a3dff" />
+            <stop offset="1" stop-color="#a48bff" />
+          </linearGradient>
+          <!-- The fill fades out towards both ends, so the chart has no hard edge against the card. -->
+          <linearGradient id="ends" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity="0" />
+            <stop offset="0.12" stop-color="#fff" />
+            <stop offset="0.88" stop-color="#fff" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0" />
+          </linearGradient>
+          <mask id="fade">
+            <rect width="290" height="218" fill="url(#ends)" />
+          </mask>
+        </defs>
+        <g class="rules" mask="url(#fade)"></g>
+        <g mask="url(#fade)">
+          <path class="area" fill="url(#fill)" />
+          <path class="trace" fill="none" stroke="url(#stroke)" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <line class="rule" stroke="rgba(255, 255, 255, 0.4)" stroke-width="1" />
+        <circle class="halo" r="9" fill="rgba(124, 92, 255, 0.28)" />
+        <circle class="point" r="4.5" fill="#fff" stroke="#6a3dff" stroke-width="2.5" />
+      </svg>
+      <div class="bubble"><span class="value"></span><span class="day"></span></div>
+    </div>
+    <script type="module">
+      import {along, mix, spring} from './anim.js'
+
+      // The plot: wider than the card, so the trace runs off both edges, and
+      // short enough to leave the card's label room underneath.
+      const PLOT = {bottom: 150, left: -12, right: 302, top: 52}
+      const RULES = [52, 85, 118, 150]
+
+      // Three readings of the same twelve months, 0 to 1 of the plot's height.
+      const SERIES = [
+        [0.16, 0.24, 0.22, 0.34, 0.3, 0.42, 0.5, 0.46, 0.6, 0.68, 0.63, 0.8],
+        [0.52, 0.44, 0.47, 0.36, 0.4, 0.52, 0.64, 0.6, 0.48, 0.54, 0.68, 0.62],
+        [0.28, 0.38, 0.54, 0.62, 0.55, 0.66, 0.58, 0.7, 0.8, 0.73, 0.62, 0.7],
+      ]
+
+      // Where the finger rests on each reading, and what the reading says there.
+      const SCRUB = [8, 4, 7]
+      const SCALE = 3400
+      const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+      // Each reading holds for a moment, then springs to the next and settles
+      // well before the step is up, so the loop closes on a still chart.
+      const STEP = 2.2
+      const HOLD = 0.35
+      const STAGGER = 0.018
+      const COUNT = SERIES[0].length
+
+      window.DURATION = STEP * SERIES.length
+      window.FPS = 60
+
+      const card = document.querySelector('.card')
+      const rules = card.querySelector('.rules')
+      const area = card.querySelector('.area')
+      const trace = card.querySelector('.trace')
+      const rule = card.querySelector('.rule')
+      const halo = card.querySelector('.halo')
+      const point = card.querySelector('.point')
+      const bubble = card.querySelector('.bubble')
+      const value = card.querySelector('.value')
+      const day = card.querySelector('.day')
+
+      for (const y of RULES) {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+        Object.entries({stroke: 'rgba(255, 255, 255, 0.08)', x1: 0, x2: 290, y1: y + 0.5, y2: y + 0.5}).forEach(
+          ([name, attribute]) => line.setAttribute(name, attribute)
+        )
+        rules.append(line)
+      }
+
+      const xOf = index => PLOT.left + (index / (COUNT - 1)) * (PLOT.right - PLOT.left)
+      const yOf = level => PLOT.bottom - level * (PLOT.bottom - PLOT.top)
+
+      // Catmull-Rom through the points, as cubic Béziers: the smoothed line
+      // Swift Charts draws with `.catmullRom` interpolation.
+      const smooth = points =>
+        points.reduce((path, [x, y], index) => {
+          if (index === 0) {
+            return `M${x},${y}`
+          }
+
+          const [x0, y0] = points[Math.max(index - 2, 0)]
+          const [x1, y1] = points[index - 1]
+          const [x3, y3] = points[Math.min(index + 1, points.length - 1)]
+
+          return `${path} C${x1 + (x - x0) / 6},${y1 + (y - y0) / 6} ${x - (x3 - x1) / 6},${y - (y3 - y1) / 6} ${x},${y}`
+        }, '')
+
+      // Which reading is showing at `t`, and how far each value has sprung
+      // towards the next one: the step's spring, a beat later for every month
+      // to the right, so a change runs across the chart.
+      const levels = t => {
+        const step = Math.floor(t / STEP) % SERIES.length
+        const from = SERIES[step]
+        const to = SERIES[(step + 1) % SERIES.length]
+        const local = t - step * STEP - HOLD
+
+        return from.map((level, index) => mix(level, to[index], spring(local - index * STAGGER, 0.85, 0.72)))
+      }
+
+      const scrubAt = t => {
+        const step = Math.floor(t / STEP) % SERIES.length
+        const local = t - step * STEP - HOLD
+
+        return mix(SCRUB[step], SCRUB[(step + 1) % SERIES.length], spring(local, 0.8, 0.86))
+      }
+
+      const format = number => Math.round(number).toLocaleString('en-US')
+
+      window.frame = t => {
+        const now = levels(t)
+        const points = now.map((level, index) => [xOf(index), yOf(level)])
+        const line = smooth(points)
+
+        trace.setAttribute('d', line)
+        area.setAttribute('d', `${line} L${xOf(COUNT - 1)},${PLOT.bottom} L${xOf(0)},${PLOT.bottom} Z`)
+
+        const scrub = scrubAt(t)
+        const x = xOf(scrub)
+        const y = yOf(along(now, scrub))
+
+        rule.setAttribute('x1', x)
+        rule.setAttribute('x2', x)
+        rule.setAttribute('y1', 46)
+        rule.setAttribute('y2', PLOT.bottom + 6)
+        halo.setAttribute('cx', x)
+        halo.setAttribute('cy', y)
+        point.setAttribute('cx', x)
+        point.setAttribute('cy', y)
+
+        value.textContent = `$${format(along(now, scrub) * SCALE)}`
+        day.textContent = MONTHS[Math.round(scrub)]
+
+        const width = bubble.offsetWidth
+        bubble.style.left = `${Math.min(Math.max(x - width / 2, 12), 290 - 12 - width)}px`
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

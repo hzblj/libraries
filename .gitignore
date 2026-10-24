@@ -1,0 +1,23 @@
+# dependencies
+/node_modules
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# artwork: frames, trimmed captures and backdrops, all redrawn by `yarn artwork`
+/artwork/build
+
+# misc
+.DS_Store
+.playwright-mcp
+*.pem
+.vercel
+
+# local env files
+.env*

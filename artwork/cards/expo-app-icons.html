@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* An icon picker running on its own: kara's app icons (apps/example/assets)
+         in the variants the library ships slide right one place at a time, and
+         each one that reaches the ring grows into it, lifted, as the new icon. */
+      /* Every icon is drawn at the chosen size and only moved and scaled, so the
+         motion stays sub-pixel smooth rather than snapping to whole pixels. */
+      .icon {
+        background-position: center;
+        background-size: cover;
+        height: 72px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform-origin: 50% 50%;
+        width: 72px;
+      }
+
+      .icon.ios {
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+      }
+
+      .icon.android {
+        background-size: 150%;
+        border-radius: 50%;
+      }
+
+      .shadow {
+        background: radial-gradient(closest-side, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+        height: 54px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform-origin: 50% 50%;
+        width: 108px;
+      }
+
+      .ring {
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small"></div>
+    <script type="module">
+      import {along, mix, squircleMask, squirclePoints, stepper, wrap} from './anim.js'
+
+      // The picker's centre, kept clear of the card's label in the bottom-left.
+      const CENTER = {x: 145, y: 92}
+      const STEP = 1.2
+      const ICONS = [
+        {kind: 'android', style: "background-color: #ffdbcc; background-image: url('../build/icons/themed.png')"},
+        {kind: 'ios', style: "background-image: url('/apps-example/ios-dark.png')"},
+        {kind: 'ios', style: "background-image: url('/apps-example/ios-light.png')"},
+        {kind: 'ios', style: "background-image: url('/apps-example/ios-tinted.png')"},
+        {kind: 'android', style: "background-color: #ff5700; background-image: url('/apps-example/adaptive-icon.png')"},
+      ]
+
+      // By distance from the ring: 0 is the chosen icon. Halfway past the last
+      // place an icon has faded out, which is where it wraps round to the far side.
+      const SIZE = [72, 52, 40, 34]
+      const OFFSET = [0, 76, 136, 180]
+      const OPACITY = [1, 0.8, 0.5]
+      const LIFT = [-5, 0, 0, 0]
+      const RING = 88
+      const EDGE = ICONS.length / 2
+
+      const card = document.querySelector('.card')
+      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      ring.setAttribute('class', 'ring')
+      ring.setAttribute('viewBox', `-2 -2 ${RING + 4} ${RING + 4}`)
+      ring.innerHTML = `<polygon fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="2.2" />`
+      const outline = ring.querySelector('polygon')
+
+      const icons = ICONS.map(({kind, style}) => {
+        const shadow = document.createElement('div')
+        shadow.className = 'shadow'
+        const icon = document.createElement('div')
+        icon.className = `icon ${kind}`
+        icon.setAttribute('style', style)
+
+        if (kind === 'ios') {
+          icon.style.maskImage = squircleMask()
+          icon.style.webkitMaskImage = squircleMask()
+        }
+
+        card.append(shadow, icon)
+
+        return {icon, shadow}
+      })
+
+      card.append(ring)
+
+      window.DURATION = STEP * ICONS.length
+      window.FPS = 60
+
+      // The ring holds its place and takes the shape of what is in it: the
+      // squircle iOS masks to, or Android's circle (a superellipse of 2).
+      const SQUIRCLE = 5
+      const CIRCLE = 2
+
+      Object.assign(ring.style, {
+        height: `${RING + 4}px`,
+        left: `${CENTER.x - RING / 2 - 2}px`,
+        top: `${CENTER.y + LIFT[0] - RING / 2 - 2}px`,
+        width: `${RING + 4}px`,
+        zIndex: '20',
+      })
+
+      window.frame = t => {
+        const shift = stepper(t, STEP, 0.75)
+        let round = 0
+
+        icons.forEach(({icon, shadow}, index) => {
+          // Index 2 starts in the ring; moving right raises everyone's slot.
+          const slot = wrap(index - 2 + shift, ICONS.length)
+          const distance = Math.abs(slot)
+          const scale = along(SIZE, distance) / SIZE[0]
+          const x = CENTER.x + Math.sign(slot) * along(OFFSET, distance)
+          const y = CENTER.y + along(LIFT, distance)
+          const opacity = along(OPACITY, distance) * Math.min(Math.max((EDGE - distance) / 0.5, 0), 1)
+
+          icon.style.opacity = String(opacity)
+          icon.style.zIndex = String(10 - Math.round(distance * 2))
+          icon.style.transform = `translate(${x - SIZE[0] / 2}px, ${y - SIZE[0] / 2}px) scale(${scale})`
+
+          if (ICONS[index].kind === 'android') {
+            round += Math.max(0, 1 - distance)
+          }
+
+          shadow.style.opacity = String(opacity * mix(1, 0.6, Math.min(distance, 1)))
+          shadow.style.transform = `translate(${x - 54}px, ${CENTER.y + (SIZE[0] * scale) / 2 - 22}px) scale(${scale})`
+        })
+
+        outline.setAttribute('points', squirclePoints(RING, mix(SQUIRCLE, CIRCLE, Math.min(round, 1))))
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* A wall of FlagKit flags (artwork/flags, the library's own artwork)
+         turned off the axis, fading into the card, with one held up in front.
+         On hover the wall drifts along its rows, slowly and without end: each
+         row repeats a short run of flags, and one loop moves it by one run. */
+      .wall {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -58%) rotate(-14deg);
+      }
+
+      .row {
+        display: flex;
+        gap: 7px;
+      }
+
+      .row img {
+        border-radius: 3px;
+        box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+        display: block;
+        flex: none;
+        height: 21.4px;
+        width: 30px;
+      }
+
+      /* Dark at the edges and darkest along the bottom, where the card's
+         label sits. */
+      .fade {
+        background:
+          linear-gradient(0deg, #181818 0%, rgba(24, 24, 24, 0.9) 24%, rgba(24, 24, 24, 0) 52%),
+          radial-gradient(56% 64% at 50% 42%, rgba(24, 24, 24, 0.35) 0%, rgba(24, 24, 24, 0.84) 58%, #181818 96%);
+        inset: 0;
+        position: absolute;
+      }
+
+      .hero {
+        border-radius: 7px;
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.16),
+          0 18px 36px rgba(0, 0, 0, 0.6),
+          0 4px 10px rgba(0, 0, 0, 0.4);
+        height: 60px;
+        left: 50%;
+        position: absolute;
+        top: 42%;
+        transform: translate(-50%, -50%);
+        width: 84px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="wall"></div>
+      <div class="fade"></div>
+      <img class="hero" src="../flags/CZ.svg" />
+    </div>
+    <script>
+      const CODES = `JP CH FR SE US GB DE IT BR CA KR NO DK FI ES PT NL BE AT IE GR TR IL IN CN AU NZ MX AR CL CO PE ZA NG KE EG MA SA AE QA
+        UA PL HU RO BG HR SI SK EE LV LT IS CY MT LU MC SM VA AD LI AL MK RS ME BA XK MD BY GE AM AZ KZ UZ KG TJ TM MN NP BT BD
+        LK MV TH VN LA KH MM MY SG ID PH BN TW HK JO LB SY IQ IR KW BH OM YE PK AF GH CI SN CM ET TZ UG RW BW NA ZM ZW MZ MG MU
+        SC CV JM CU DO HT BS BB TT PA CR NI HN SV GT BZ VE EC BO PY UY GY SR FJ WS TO PG SB VU KI TV NR PW FM MH`
+        .split(/\s+/)
+        .filter(Boolean)
+
+      const ROWS = 12
+      const RUN = 6
+      const RUNS = 5
+      const PITCH = 37
+      const wall = document.querySelector('.wall')
+
+      const rows = Array.from({length: ROWS}, (_, row) => {
+        const element = document.createElement('div')
+        element.className = 'row'
+
+        for (let column = 0; column < RUN * RUNS; column++) {
+          const img = document.createElement('img')
+          img.src = `../flags/${CODES[((row * RUN + (column % RUN)) * 37) % CODES.length]}.svg`
+          element.append(img)
+        }
+
+        wall.append(element)
+        return element
+      })
+
+      window.DURATION = 20
+
+      window.frame = t => {
+        const drift = -(t / window.DURATION) * RUN * PITCH
+
+        rows.forEach((row, index) => {
+          // Every other row sits half a flag over, the way the wall was laid.
+          row.style.transform = `translateX(${drift + (index % 2 ? PITCH / 2 : 0)}px)`
+        })
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

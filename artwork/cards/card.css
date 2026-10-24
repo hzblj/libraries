@@ -1,0 +1,46 @@
+@font-face {
+  font-family: Inter;
+  font-weight: 100 900;
+  src: url("/public/fonts/InterVariable.woff2") format("woff2");
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: #000;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* The ground every card shares, sampled from the haptics card: light at the
+   left edge, a little lighter at the top than the bottom. */
+.card {
+  background: linear-gradient(98deg, #202020 0%, #111111 100%);
+  color: #fff;
+  font-family: Inter, system-ui, sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sized here, not by the window: headless Chrome lays a page out at least
+   500px wide whatever window it is asked for. */
+.card.small {
+  height: 218px;
+  width: 290px;
+}
+
+.card.large {
+  height: 452px;
+  width: 596px;
+}
+
+.layer {
+  inset: 0;
+  position: absolute;
+}

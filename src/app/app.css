@@ -1,0 +1,303 @@
+@import "tailwindcss";
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid rgb(255 255 255 / 0.9);
+    outline-offset: 4px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.2) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 0.2);
+  }
+}
+
+@theme {
+  --card-radius: 16px;
+  --card-blur: 136px;
+  --card-border-width: 1px;
+  --card-border-angle: 160deg;
+
+  --card-bg: linear-gradient(
+    97.6deg,
+    rgba(255, 255, 255, 0.11) 0%,
+    rgba(255, 255, 255, 0.06) 29.43%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+
+  --card-border-gradient: linear-gradient(
+    var(--card-border-angle),
+    rgba(255, 255, 255, 0.45) 8.56%,
+    rgba(255, 255, 255, 0.0001) 37.96%,
+    rgba(255, 255, 255, 0.0001) 50.19%,
+    rgba(255, 255, 255, 0.15) 80.06%
+  );
+}
+
+@utility card {
+  position: relative;
+  border-radius: var(--card-radius);
+  background: var(--card-bg);
+  background-blend-mode: luminosity;
+  -webkit-backdrop-filter: blur(var(--card-blur));
+  backdrop-filter: blur(var(--card-blur));
+}
+
+/* Frosted glass for the floating controls — the corner dock and the expand and
+   collapse pills. The four tokens are what `useAdaptiveGlass` rewrites once it
+   has read what the control is sitting over; the values here are the dark tone
+   it starts from, and the only tone shown to anyone who has asked for reduced
+   transparency. Keep them in step with `TONES.dark` in `use-adaptive-glass.ts`.
+
+   Long enough a crossfade that a flip reads as the glass turning over rather
+   than a repaint, and slow enough to forgive a late one. */
+@utility glass {
+  --glass-tint: rgba(255, 255, 255, 0.1);
+  --glass-ink: rgba(255, 255, 255, 1);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-hover: rgba(255, 255, 255, 0.18);
+
+  color: var(--glass-ink);
+  background-color: var(--glass-tint);
+  border: 1px solid var(--glass-border);
+  transition:
+    background-color 320ms ease-out,
+    border-color 320ms ease-out,
+    color 320ms ease-out;
+}
+
+/* The hover wash, for the pill itself where the pill is the control and for the
+   buttons inside it where it is not. A rule of its own rather than a
+   `hover:bg-[…]` utility so it always outranks the `glass` background it has to
+   paint over, whichever order the two land in. */
+@utility glass-hover {
+  &:hover {
+    background-color: var(--glass-hover);
+  }
+}
+
+/* Printed-on-paper grain for photography. Sits as an `absolute inset-0` sibling
+   over the image; the host needs its own stacking context (transform, clip-path
+   or `isolate`) so the blend stays inside the frame. */
+@utility texture-paper {
+  --texture-blend: soft-light;
+  --texture-opacity: 0.3;
+
+  background-image: url("/jpg/texture-paper.jpg");
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: var(--texture-blend);
+  opacity: var(--texture-opacity);
+  pointer-events: none;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--color-black);
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-black);
+}
+
+html,
+body {
+  overflow: hidden;
+  touch-action: none;
+  -webkit-overflow-scrolling: auto;
+  overscroll-behavior: none;
+  box-sizing: border-box;
+}
+
+:root {
+  display: block;
+  unicode-bidi: isolate;
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-white);
+  background-color: var(--color-black);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--card-border-width);
+  background: var(--card-border-gradient);
+  pointer-events: none;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+html[data-view-transition="forward"]::view-transition-old(root) {
+  animation: page-context-out 400ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+html[data-view-transition="back"]::view-transition-new(root) {
+  animation: page-context-in 400ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes page-context-out {
+  to {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes page-context-in {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   /ico — 3D business card: pointer-driven lighting + organic motion
+--------------------------------------------------------------------------- */
+
+.ico-card {
+  --glare: 0;
+  transform: var(--tilt, none);
+  transform-style: preserve-3d;
+}
+
+/* Scrollable standalone pages need touch panning back (html/body disable it). */
+html:has([data-page-scroll]),
+body:has([data-page-scroll]) {
+  touch-action: pan-y;
+}
+
+/* A page running GSAP's smoother needs more than that: the smoother drives the
+   document scroll, and html/body are held shut and viewport-height for the
+   camera on `/`, which would leave it nothing to move. Handed back by attribute
+   rather than per page, so it lands before hydration too. */
+html:has([data-smooth-scroll]),
+body:has([data-smooth-scroll]) {
+  height: auto;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+/* The entrance is a GSAP `fromTo`, so its hidden start only lands once the
+   effect runs — after hydration. Until then the server-rendered markup paints
+   at full opacity and the card and the text under it flash before dropping out
+   to be faded in. Shipping that start state as CSS means it applies on the
+   first paint instead.
+
+   Behind `scripting: enabled` so it can only ever hide what GSAP is there to
+   bring back: with scripting off the rule is dropped, and a browser too old to
+   know the feature drops it too and simply behaves as it did before. GSAP's
+   inline styles outrank it from the first frame of the timeline onwards. */
+@media (scripting: enabled) {
+  [data-ico-intro],
+  [data-ico-reveal] {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Ambient glow bleeding out from under the card — graphite, not chromatic.
+   Three ramps rather than three shapes under a blur: the card tilts and scales
+   under the pointer, and a filtered layer has to be re-rasterised every frame
+   it does, which is what made arriving on this page stutter on a phone. The
+   stops carry the softness the blur used to, and the element is sized for the
+   spread the blur used to give it. */
+.ico-halo {
+  /* Every ellipse has to die out inside the box — a blur had no edge to run
+     into, a gradient does, and one that still carries colour where the element
+     stops draws the element as a rectangle. Radius never exceeds the distance
+     from its own centre to the nearest side. */
+  background:
+    radial-gradient(36% 32% at 38% 34%, rgba(158, 176, 200, 0.22) 0%, rgba(158, 176, 200, 0.08) 46%, transparent 100%),
+    radial-gradient(32% 32% at 66% 42%, rgba(126, 136, 154, 0.18) 0%, rgba(126, 136, 154, 0.06) 48%, transparent 100%),
+    radial-gradient(36% 28% at 52% 70%, rgba(96, 106, 120, 0.15) 0%, rgba(96, 106, 120, 0.05) 48%, transparent 100%);
+  opacity: calc(0.5 + var(--glare) * 0.5);
+  transition: opacity 0.7s ease-out;
+}
+
+/* Film grain so the gradients never band. */
+.scene-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: soft-light;
+  opacity: 0.09;
+}
+
+/* Holographic foil lifted off the plate: a pale iridescence that slides with
+   the card's tilt, a faint glow of its own and the shadow it drops on the
+   metal below. Kept pastel so the black stays black. */
+.ico-holo-text {
+  background-image:
+    linear-gradient(
+      100deg,
+      transparent 38%,
+      rgba(255, 255, 255, 0.9) 47%,
+      rgba(255, 255, 255, 0.9) 50%,
+      transparent 59%
+    ),
+    linear-gradient(
+      110deg,
+      #e9edf6 0%,
+      #e9edf6 12%,
+      #a9c1ff 22%,
+      #93e4ef 31%,
+      #cdb6ff 40%,
+      #f3c3de 49%,
+      #e9edf6 58%,
+      #e9edf6 68%,
+      #a9c1ff 79%,
+      #cdb6ff 89%,
+      #e9edf6 100%
+    );
+  background-size:
+    260% 100%,
+    300% 100%;
+  background-position:
+    calc(50% - var(--hx, 0) * 90%) 0,
+    calc(50% + var(--hx, 0) * 42%) calc(50% + var(--hy, 0) * 20%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 12px rgba(168, 196, 255, 0.24)) drop-shadow(0 12px 10px rgba(0, 0, 0, 0.75));
+}

@@ -1,0 +1,238 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* The portfolio's grid in miniature, its own template and its own shots
+         at a fifth of their size, with a link to it held up in front. On hover
+         the grid is dragged about the way it is on janblazej.dev, each drag
+         settling on a spring, and comes round to where it started. */
+      .plane {
+        left: 0;
+        position: absolute;
+        top: 0;
+      }
+
+      .cell {
+        background-color: #151515;
+        background-position: center;
+        background-size: cover;
+        box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.16);
+        overflow: hidden;
+        position: absolute;
+      }
+
+      .bar {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 1px;
+        height: 2px;
+        position: absolute;
+      }
+
+      .paper .bar {
+        background: rgba(0, 0, 0, 0.28);
+      }
+
+      .avatar {
+        border-radius: 50%;
+        position: absolute;
+      }
+
+      .icon {
+        position: absolute;
+      }
+
+      /* Dark at the edges and darkest along the bottom, where the card's
+         label sits. */
+      .fade {
+        background:
+          linear-gradient(0deg, #161616 0%, rgba(22, 22, 22, 0.92) 20%, rgba(22, 22, 22, 0) 50%),
+          radial-gradient(64% 74% at 50% 38%, rgba(22, 22, 22, 0) 0%, rgba(22, 22, 22, 0.5) 60%, #161616 100%);
+        inset: 0;
+        position: absolute;
+      }
+
+      .link {
+        align-items: center;
+        backdrop-filter: blur(12px) saturate(1.6);
+        background: rgba(24, 24, 24, 0.66);
+        border-radius: 22px;
+        box-shadow:
+          inset 0 0 0 0.5px rgba(255, 255, 255, 0.22),
+          0 14px 30px rgba(0, 0, 0, 0.55),
+          0 3px 8px rgba(0, 0, 0, 0.35);
+        display: flex;
+        gap: 9px;
+        height: 44px;
+        left: 50%;
+        padding: 0 16px 0 7px;
+        position: absolute;
+        top: 70px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .link img {
+        border-radius: 50%;
+        box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.2);
+        display: block;
+        height: 30px;
+        width: 30px;
+      }
+
+      .link span {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: -0.1px;
+      }
+
+      .link svg {
+        display: block;
+        margin-left: 1px;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="plane"></div>
+      <div class="fade"></div>
+      <div class="link">
+        <img src="/public/png/profile@3x.png" />
+        <span>janblazej.dev</span>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 8 8 2M3.2 2H8v4.8" />
+        </svg>
+      </div>
+    </div>
+    <script type="module">
+      import {mix, spring} from './anim.js'
+
+      // The portfolio's template (src/scene/grid/layout.ts in its repository)
+      // and its measures, a fifth of the size.
+      // biome-ignore format: one row per line, so the template reads as the grid
+      const TEMPLATE = [
+        's1 s2 l1 l1 s3 s4 s5 s6',
+        'gallery gallery l1 l1 contact contact s7 s8',
+        'gallery gallery s9 s10 s11 s12 cv s13',
+        's14 s15 s16 profile profile s17 cv s18',
+        'map map s19 s20 s21 s22 cv s23',
+        's24 l2 l2 technologies technologies s25 l3 l3',
+        's26 l2 l2 s27 s28 s29 l3 l3',
+      ]
+
+      const SCALE = 0.21
+      const COLUMN = 290 * SCALE
+      const ROW = 218 * SCALE
+      const GAP = 16 * SCALE
+      const RADIUS = 16 * SCALE
+      const PERIOD = {x: TEMPLATE[0].split(' ').length * (COLUMN + GAP), y: TEMPLATE.length * (ROW + GAP)}
+
+      // Each area's cells, measured the way the portfolio measures them.
+      const areas = new Map()
+
+      TEMPLATE.forEach((row, top) => {
+        row.split(' ').forEach((name, left) => {
+          const area = areas.get(name) ?? {bottom: top, left, right: left, top}
+          areas.set(name, {
+            bottom: Math.max(area.bottom, top),
+            left: Math.min(area.left, left),
+            right: Math.max(area.right, left),
+            top: Math.min(area.top, top),
+          })
+        })
+      })
+
+      const bars = (widths, {x, y, pitch}) =>
+        widths.map((width, index) => `<div class="bar" style="left:${x}px;top:${y + index * pitch}px;width:${width}px"></div>`).join('')
+
+      // What fills each area: a shot's own picture, or a sketch of the card the
+      // portfolio draws there.
+      const fill = (name, cell) => {
+        const shot = name.match(/^([sl])(\d+)$/)
+
+        if (shot) {
+          const size = shot[1] === 's' ? 'small' : 'large'
+          cell.style.backgroundImage = `url('../build/portfolio/shot-${size}-${shot[2]}.png')`
+          return
+        }
+
+        switch (name) {
+          case 'gallery':
+            cell.style.backgroundImage = "url('../build/portfolio/gallery.png')"
+            return
+          case 'map':
+            cell.style.backgroundImage = "url('/public/svg/map.svg')"
+            return
+          case 'cv':
+            cell.classList.add('paper')
+            cell.style.backgroundImage = "url('/public/jpg/texture-paper.jpg')"
+            cell.innerHTML = bars([22, 34, 30, 36, 18, 32, 28, 34, 24, 30, 36, 20, 32, 26], {pitch: 8, x: 7, y: 10})
+            return
+          case 'profile':
+            cell.innerHTML = `<img class="avatar" src="/public/png/profile@3x.png" style="left:22px;top:13px;width:20px;height:20px" />${bars([34, 56], {pitch: 6, x: 49, y: 17})}`
+            return
+          case 'contact':
+            cell.innerHTML = bars([40, 52, 36], {pitch: 7, x: 10, y: 14})
+            return
+          case 'technologies':
+            cell.innerHTML = ['react', 'expo', 'next-js', 'react-native']
+              .map((icon, index) => `<img class="icon" src="/public/svg/${icon}.svg" style="left:${12 + index * 27}px;top:15px;height:16px" />`)
+              .join('')
+            return
+        }
+      }
+
+      // Three copies across and two down, enough to cover the card wherever the drags leave it.
+      const plane = document.querySelector('.plane')
+
+      for (let copyY = 0; copyY < 2; copyY++) {
+        for (let copyX = 0; copyX < 3; copyX++) {
+          for (const [name, {left, right, top, bottom}] of areas) {
+            const cell = document.createElement('div')
+            cell.className = 'cell'
+            Object.assign(cell.style, {
+              borderRadius: `${RADIUS}px`,
+              height: `${(bottom - top + 1) * (ROW + GAP) - GAP}px`,
+              left: `${copyX * PERIOD.x + left * (COLUMN + GAP)}px`,
+              top: `${copyY * PERIOD.y + top * (ROW + GAP)}px`,
+              width: `${(right - left + 1) * (COLUMN + GAP) - GAP}px`,
+            })
+            fill(name, cell)
+            plane.append(cell)
+          }
+        }
+      }
+
+      // Where the grid rests, and the drags it takes: together they go one
+      // whole grid to the left and back to the same height, so the loop closes.
+      const START = {x: -112, y: -58}
+      const DRAGS = [
+        [-150, -34],
+        [-112, 50],
+        [-140, -30],
+        [-PERIOD.x + 402, 14],
+      ]
+      const STEP = 2
+
+      window.DURATION = STEP * DRAGS.length
+      window.FPS = 60
+
+      window.frame = t => {
+        let x = START.x
+        let y = START.y
+
+        DRAGS.forEach(([dx, dy], index) => {
+          const amount = spring(t - index * STEP - 0.3, 1.1, 0.9)
+          x += mix(0, dx, amount)
+          y += mix(0, dy, amount)
+        })
+
+        plane.style.transform = `translate(${x}px, ${y}px)`
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>
