@@ -28,9 +28,9 @@
 
 /* The paper the scene lays over every card, multiplied in. */
 .tile::after {
-  background: url('/public/jpg/texture-paper.jpg') center / cover;
+  background: url("/public/jpg/texture-paper.jpg") center / cover;
   border-radius: 15px;
-  content: '';
+  content: "";
   inset: 1px;
   mix-blend-mode: multiply;
   opacity: 0.18;
