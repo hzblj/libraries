@@ -1,0 +1,503 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* The Kara card's layout with PayPal in it: PayPal's mark on the left in
+         its own colours for dark grounds, and a checkout rising out of the
+         bottom edge. A tap on PayPal's button (the SDK's white one) brings up
+         the approval sheet, the payment goes through and the sheet goes away.
+         The logos are the SDK's own (artwork/paypal); everything else is drawn
+         until the expo-paypal example has captures of its own. */
+      .glow {
+        background: radial-gradient(closest-side, rgba(0, 156, 222, 0.11), rgba(0, 156, 222, 0));
+        height: 280px;
+        left: 4px;
+        position: absolute;
+        top: 84px;
+        width: 280px;
+      }
+
+      .mark {
+        height: 104px;
+        left: 92px;
+        position: absolute;
+        top: 172px;
+        width: 104px;
+      }
+
+      .phone {
+        background: #000;
+        border-radius: 54px 54px 0 0;
+        box-shadow:
+          0 0 0 7px #1a1a1a,
+          0 0 0 8px rgba(255, 255, 255, 0.13),
+          0 30px 80px rgba(0, 0, 0, 0.7);
+        color: #fff;
+        font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+        height: 420px;
+        left: 266px;
+        overflow: hidden;
+        position: absolute;
+        top: 48px;
+        width: 302px;
+      }
+
+      .screen {
+        inset: 0;
+        padding: 64px 16px 0;
+        position: absolute;
+        transform-origin: 50% 0;
+      }
+
+      .status {
+        align-items: center;
+        display: flex;
+        font-size: 15px;
+        font-weight: 600;
+        justify-content: space-between;
+        left: 38px;
+        letter-spacing: -0.2px;
+        position: absolute;
+        right: 28px;
+        top: 20px;
+        z-index: 3;
+      }
+
+      .status svg {
+        display: block;
+      }
+
+      .glyphs {
+        align-items: center;
+        display: flex;
+        gap: 5px;
+      }
+
+      .island {
+        background: #111;
+        border-radius: 18px;
+        height: 30px;
+        left: 50%;
+        position: absolute;
+        top: 12px;
+        transform: translateX(-50%);
+        width: 96px;
+        z-index: 3;
+      }
+
+      .title {
+        font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        margin: 0 4px 14px;
+      }
+
+      .group {
+        background: #1c1c1e;
+        border-radius: 16px;
+        margin-bottom: 12px;
+      }
+
+      .product {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+      }
+
+      .thumb {
+        align-items: center;
+        background: linear-gradient(135deg, #3a3a3c, #2a2a2c);
+        border-radius: 12px;
+        display: flex;
+        flex: none;
+        height: 56px;
+        justify-content: center;
+        width: 56px;
+      }
+
+      .thumb i {
+        background: rgba(255, 255, 255, 0.85);
+        height: 26px;
+        -webkit-mask: url('/apps-example/icons/shopping-bag.svg') center / contain no-repeat;
+        mask: url('/apps-example/icons/shopping-bag.svg') center / contain no-repeat;
+        width: 26px;
+      }
+
+      .name {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+      }
+
+      .muted {
+        color: rgba(235, 235, 245, 0.6);
+        font-size: 13px;
+        letter-spacing: -0.1px;
+        margin-top: 2px;
+      }
+
+      .price {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+        margin-left: auto;
+      }
+
+      .row {
+        align-items: center;
+        display: flex;
+        font-size: 15px;
+        height: 44px;
+        justify-content: space-between;
+        letter-spacing: -0.2px;
+        padding: 0 14px;
+      }
+
+      .row + .row {
+        box-shadow: inset 0 0.5px 0 rgba(84, 84, 88, 0.6);
+      }
+
+      .row .value {
+        color: rgba(235, 235, 245, 0.6);
+      }
+
+      .row.total {
+        font-weight: 600;
+      }
+
+      .row.total .value {
+        color: #fff;
+      }
+
+      .pill {
+        align-items: center;
+        border-radius: 24px;
+        display: flex;
+        height: 48px;
+        justify-content: center;
+        position: relative;
+      }
+
+      .pill .face {
+        align-items: center;
+        display: flex;
+        inset: 0;
+        justify-content: center;
+        position: absolute;
+      }
+
+      .paypal {
+        background: #fff;
+        margin-top: 4px;
+      }
+
+      .dim {
+        background: #000;
+        inset: 0;
+        opacity: 0;
+        position: absolute;
+        z-index: 1;
+      }
+
+      .sheet {
+        background: #1c1c1e;
+        border-radius: 22px 22px 0 0;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+        height: 300px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 2;
+      }
+
+      .grabber {
+        background: rgba(235, 235, 245, 0.3);
+        border-radius: 3px;
+        height: 5px;
+        left: 50%;
+        position: absolute;
+        top: 7px;
+        transform: translateX(-50%);
+        width: 36px;
+      }
+
+      .approve,
+      .complete {
+        inset: 0;
+        padding: 26px 20px 0;
+        position: absolute;
+      }
+
+      .label {
+        color: rgba(235, 235, 245, 0.6);
+        font-size: 13px;
+        letter-spacing: -0.1px;
+        margin: 18px 0 8px;
+      }
+
+      .account {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        height: 44px;
+      }
+
+      .badge {
+        align-items: center;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        flex: none;
+        height: 32px;
+        justify-content: center;
+        width: 32px;
+      }
+
+      .account .balance {
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: -0.2px;
+      }
+
+      .account .value {
+        color: rgba(235, 235, 245, 0.6);
+        font-size: 15px;
+        margin-left: auto;
+      }
+
+      .sheet .total {
+        align-items: center;
+        border-top: 0.5px solid rgba(84, 84, 88, 0.6);
+        display: flex;
+        font-size: 15px;
+        font-weight: 600;
+        height: 44px;
+        justify-content: space-between;
+        letter-spacing: -0.2px;
+        margin-top: 8px;
+      }
+
+      .pay {
+        background: #fff;
+        color: #000;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+        margin-top: 10px;
+      }
+
+      .spinner {
+        border: 2.5px solid rgba(0, 0, 0, 0.85);
+        border-radius: 50%;
+        border-right-color: transparent;
+        height: 20px;
+        width: 20px;
+      }
+
+      .complete {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        padding-top: 40px;
+      }
+
+      .tick {
+        align-items: center;
+        background: #30d158;
+        border-radius: 50%;
+        display: flex;
+        height: 58px;
+        justify-content: center;
+        width: 58px;
+      }
+
+      .complete .heading {
+        font-size: 19px;
+        font-weight: 600;
+        letter-spacing: -0.4px;
+        margin-top: 16px;
+      }
+
+      /* Grey with a light ring, so it shows on the white buttons and the dark
+         screen alike, as the simulator draws touches. */
+      .touch {
+        background: rgba(120, 120, 128, 0.45);
+        border-radius: 50%;
+        box-shadow:
+          0 0 0 1.5px rgba(255, 255, 255, 0.75),
+          0 4px 12px rgba(0, 0, 0, 0.35);
+        height: 34px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 34px;
+        z-index: 4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card large">
+      <div class="glow"></div>
+      <img class="mark" src="../paypal/logo-paypal-blue.svg" />
+      <div class="phone">
+        <div class="island"></div>
+        <div class="status">
+          <span>9:41</span>
+          <span class="glyphs">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="#fff">
+              <rect x="0" y="8" width="3" height="4" rx="1" />
+              <rect x="5" y="5.5" width="3" height="6.5" rx="1" />
+              <rect x="10" y="3" width="3" height="9" rx="1" />
+              <rect x="15" y="0" width="3" height="12" rx="1" />
+            </svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff">
+              <path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.3A10.4 10.4 0 0 0 8 .4C5.2.4 2.7 1.5.8 3.3L2 4.6a8.6 8.6 0 0 1 6-2.4Z" />
+              <path d="M8 5.6c1.4 0 2.6.5 3.6 1.4l1.2-1.3A7 7 0 0 0 8 3.8 7 7 0 0 0 3.2 5.7l1.2 1.3c1-.9 2.2-1.4 3.6-1.4Z" />
+              <path d="M8 9.1c.6 0 1.1.2 1.5.6L8 11.4 6.5 9.7c.4-.4.9-.6 1.5-.6Z" />
+            </svg>
+            <svg width="27" height="13" viewBox="0 0 27 13">
+              <rect x="0.5" y="0.5" width="23" height="12" rx="3.8" fill="none" stroke="rgba(255,255,255,0.4)" />
+              <rect x="2" y="2" width="20" height="9" rx="2.5" fill="#fff" />
+              <path d="M25 4.5v4c.8-.3 1.4-1.1 1.4-2s-.6-1.7-1.4-2Z" fill="rgba(255,255,255,0.4)" />
+            </svg>
+          </span>
+        </div>
+        <div class="screen">
+          <div class="title">Checkout</div>
+          <div class="group product">
+            <div class="thumb"><i></i></div>
+            <div>
+              <div class="name">Trail Runner</div>
+              <div class="muted">Size 42 · Ember</div>
+            </div>
+            <div class="price">$129.00</div>
+          </div>
+          <div class="group">
+            <div class="row"><span>Shipping</span><span class="value">Free</span></div>
+            <div class="row total"><span>Total</span><span class="value">$129.00</span></div>
+          </div>
+          <div class="pill paypal"><img src="../paypal/wordmark-paypal-color.svg" style="height: 21px" /></div>
+        </div>
+        <div class="dim"></div>
+        <div class="sheet">
+          <div class="grabber"></div>
+          <div class="approve">
+            <img src="../paypal/wordmark-paypal-monochrome.svg" style="display: block; height: 19px" />
+            <div class="label">Pay with</div>
+            <div class="account">
+              <div class="badge"><img src="../paypal/logo-paypal-color.svg" style="height: 18px" /></div>
+              <span class="balance">PayPal balance</span>
+              <span class="value">$412.80</span>
+            </div>
+            <div class="total"><span>Total</span><span>$129.00</span></div>
+            <div class="pill pay">
+              <div class="face text">Pay $129.00</div>
+              <div class="face busy"><div class="spinner"></div></div>
+            </div>
+          </div>
+          <div class="complete">
+            <div class="tick">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path class="check" d="M7 14.5 12 19.5 21.5 9" pathLength="1" stroke-dasharray="1" />
+              </svg>
+            </div>
+            <div class="heading">Payment complete</div>
+            <div class="muted">Paid with PayPal</div>
+          </div>
+        </div>
+      </div>
+      <div class="touch"></div>
+    </div>
+    <script type="module">
+      import {mix, spring} from './anim.js'
+
+      const PHONE = {height: 420, left: 266, top: 48, width: 302}
+      // Where the sheet rests, from the phone's top, and where it hides below.
+      const SHEET = {hidden: PHONE.height + 20, shown: 152}
+
+      // The story, in seconds: the PayPal button is tapped, the sheet comes up,
+      // Pay is tapped, the payment runs and completes, the sheet goes.
+      const TAP_PAYPAL = 0.6
+      const SHEET_UP = 0.95
+      const TAP_PAY = 2.05
+      const PAID = 3.25
+      const SHEET_DOWN = 4.75
+
+      const $ = selector => document.querySelector(selector)
+      const screen = $('.screen')
+      const dim = $('.dim')
+      const sheet = $('.sheet')
+      const glow = $('.glow')
+      const touch = $('.touch')
+      const paypal = $('.paypal')
+      const pay = $('.pay')
+      const approve = $('.approve')
+      const complete = $('.complete')
+      const tick = $('.tick')
+      const check = $('.check')
+      const text = $('.pay .text')
+      const busy = $('.pay .busy')
+      const spinner = $('.spinner')
+
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+      const ramp = (t, start, length) => clamp((t - start) / length)
+
+      // A press: down quickly, back up on a spring.
+      const press = (t, at) => ramp(t, at, 0.08) - spring(t - at - 0.14, 0.35)
+
+      // The finger: in a beat before the tap, down on it, gone just after.
+      const finger = (t, at) => clamp(ramp(t, at - 0.25, 0.15) - ramp(t, at + 0.2, 0.2))
+
+      const centre = element => {
+        const box = element.getBoundingClientRect()
+        return {x: box.x + box.width / 2, y: box.y + box.height / 2}
+      }
+
+      window.DURATION = 6.8
+      window.FPS = 60
+
+      window.frame = t => {
+        const up = spring(t - SHEET_UP, 0.55) - spring(t - SHEET_DOWN, 0.5, 0.95)
+        const sheetTop = mix(SHEET.hidden, SHEET.shown, up)
+
+        // The page behind steps back the way iOS shows a sheet over it.
+        screen.style.transform = `scale(${mix(1, 0.94, up)})`
+        screen.style.borderRadius = `${mix(0, 22, up)}px`
+        dim.style.opacity = String(0.5 * clamp(up))
+        sheet.style.transform = `translateY(${sheetTop}px)`
+
+        paypal.style.transform = `scale(${mix(1, 0.97, press(t, TAP_PAYPAL))})`
+        pay.style.transform = `scale(${mix(1, 0.97, press(t, TAP_PAY))})`
+
+        const running = ramp(t, TAP_PAY + 0.2, 0.15)
+        text.style.opacity = String(1 - running)
+        busy.style.opacity = String(running)
+        spinner.style.transform = `rotate(${t * 600}deg)`
+
+        const done = spring(t - PAID, 0.5)
+        approve.style.opacity = String(clamp(1 - ramp(t, PAID - 0.05, 0.15)))
+        complete.style.opacity = String(ramp(t, PAID, 0.15))
+        tick.style.transform = `scale(${mix(0.4, 1, done)})`
+        check.style.strokeDashoffset = String(1 - ramp(t, PAID + 0.12, 0.3))
+        glow.style.opacity = String(1 + 0.3 * clamp(done) * (1 - ramp(t, SHEET_DOWN, 0.6)))
+
+        // One finger for both taps, wherever the button it is after sits now.
+        const onPay = t > (TAP_PAYPAL + TAP_PAY) / 2
+        const at = onPay ? TAP_PAY : TAP_PAYPAL
+        const target = centre(onPay ? pay : paypal)
+        const shown = finger(t, at)
+        const down = press(t, at)
+
+        touch.style.opacity = String(shown * mix(0.6, 0.95, clamp(down)))
+        touch.style.transform = `translate(${target.x + 40 - 17}px, ${target.y - 17 + (1 - shown) * 12}px) scale(${mix(1.2, 0.85, clamp(down))})`
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

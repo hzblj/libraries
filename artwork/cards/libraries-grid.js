@@ -4,20 +4,26 @@
 
 // biome-ignore format: one row per line, so the template reads as the grid
 const TEMPLATE = [
-  'l1 l1 s1 s2 s6',
-  'l1 l1 profile l2 l2',
-  's5 s3 s4 l2 l2',
+  'l1 l1 s1 l3 l3',
+  'l1 l1 s2 l3 l3',
+  's3 s4 profile s5 s6',
+  'l4 l4 s7 l2 l2',
+  'l4 l4 s8 l2 l2',
 ]
 
 const CARDS = {
   l1: {image: 'kara-ui', subtitle: 'Design system for Expo', title: 'Kara'},
   l2: {image: 'expo-zoom-transition', subtitle: 'Expo Router transitions', title: 'Zoom Transition'},
-  s1: {image: 'expo-app-icons', subtitle: 'Switch icons at runtime', title: 'App Icons'},
-  s2: {image: 'react-native-expo-monorepo', subtitle: 'Turborepo starter for Expo', title: 'Expo Monorepo'},
-  s3: {image: 'expo-flags-kit', subtitle: '255 country flags', title: 'Flags Kit'},
-  s4: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
-  s5: {image: 'zyplot', subtitle: 'Native charts everywhere', title: 'Zyplot'},
+  l3: {image: 'skills', subtitle: 'Agent skills for building apps', title: 'Skills'},
+  l4: {image: 'expo-paypal', subtitle: 'PayPal on the native SDK', title: 'PayPal'},
+  s1: {image: 'expo-native-icons', subtitle: 'Your SVGs as native icons', title: 'Native Icons'},
+  s2: {image: 'expo-app-icons', subtitle: 'Switch icons at runtime', title: 'App Icons'},
+  s3: {image: 'react-native-expo-monorepo', subtitle: 'Turborepo starter for Expo', title: 'Expo Monorepo'},
+  s4: {image: 'zyplot', subtitle: 'Native charts everywhere', title: 'Zyplot'},
+  s5: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
   s6: {image: 'portfolio', subtitle: 'Apps, work and CV', title: 'Portfolio'},
+  s7: {image: 'expo-speech', subtitle: 'Speech to text, natively', title: 'Speech'},
+  s8: {image: 'expo-flags-kit', subtitle: '255 country flags', title: 'Flags Kit'},
 }
 
 const COLUMN = 290

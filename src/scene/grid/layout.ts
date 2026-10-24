@@ -2,16 +2,18 @@ import {Config} from '@/config'
 
 import {mod, type Rect} from './geometry'
 
-// A pinwheel around the profile: the two big cards hold opposite corners, the
-// small ones pair up along the other edges, and the two corners that leaves
-// take Zyplot and the way out to the portfolio. `.` is a hole. Every card is
-// one cell or two by two, so all of them keep the 4:3 of the modal's media and
-// open into it without a crop.
+// A pinwheel round the profile, which sits dead centre: a big card in each
+// corner and two small ones on every arm between them, so the collection
+// opens out evenly on every side. `.` is a hole. Every card is one cell or two
+// by two, so all of them keep the 4:3 of the modal's media and open into it
+// without a crop.
 // biome-ignore format: one row per line, so the template reads as the grid
 const TEMPLATE = [
-  'l1 l1 s1 s2 s6',
-  'l1 l1 profile l2 l2',
-  's5 s3 s4 l2 l2',
+  'l1 l1 s1 l3 l3',
+  'l1 l1 s2 l3 l3',
+  's3 s4 profile s5 s6',
+  'l4 l4 s7 l2 l2',
+  'l4 l4 s8 l2 l2',
 ]
 
 const HOLE = '.'

@@ -13,7 +13,7 @@ The grid pans freely, by drag, scroll or touch, as the portfolio does, and stops
 
 The grid is a pinwheel around the profile (`src/scene/grid/layout.ts`): every card is one cell or two by two, so each keeps the 4:3 of the modal's media. A `link` entry (the Portfolio card) looks like the others but opens its URL instead of a dialog.
 
-Card artwork in `public/libraries` is drawn by `artwork/render.mjs` from the pages in `artwork/cards`, photographed by headless Chrome at 2x. The Kara card uses the Kara website's iOS component shots, the App Icons card the example app's icons, and the Zoom Transition clip is composited with ffmpeg from the website's iOS and Android recordings, all read from the kara-ui repository checked out beside this one (`../kara-ui`). The Portfolio card draws the portfolio's grid from its own shots, read the same way from `../portfolio`. Only drawing the artwork again needs them, since what it draws is committed. It needs Google Chrome and ffmpeg:
+Card artwork in `public/libraries` is drawn by `artwork/render.mjs` from the pages in `artwork/cards`, photographed by headless Chrome at 2x. The Kara card uses the Kara website's iOS component shots, the App Icons card the example app's icons, the Native Icons card its icon SVGs, and the Zoom Transition clip is composited with ffmpeg from the website's iOS and Android recordings, all read from the kara-ui repository checked out beside this one (`../kara-ui`). The Portfolio card draws the portfolio's grid from its own shots, read the same way from `../portfolio`. Only drawing the artwork again needs them, since what it draws is committed. It needs Google Chrome and ffmpeg:
 
 ```sh
 yarn artwork          # every card
@@ -26,4 +26,4 @@ SEO lives in `app/layout.tsx` (metadata, Open Graph, Twitter), `app/robots.ts`, 
 
 Google Analytics (GA4, `G-VKC9021KN1`, in `src/lib/analytics.ts`) loads on production deployments only: not in `next dev` and not on Vercel's previews. `NEXT_PUBLIC_GA_MEASUREMENT_ID` overrides the ID.
 
-Flag artwork is copied from expo-flags-kit (FlagKit); see artwork/flags/LICENSE. Inter is shared with the existing Kara website.
+Flag artwork is copied from expo-flags-kit (FlagKit); see artwork/flags/LICENSE. The PayPal card's logos are the vector drawables from PayPal's Android SDK (`payment-buttons`, Apache 2.0, see artwork/paypal/LICENSE), converted to SVG; they are PayPal's trademarks. The PayPal and Speech cards are drawn until the expo-paypal and expo-speech examples have captures of their own. Inter is shared with the existing Kara website.

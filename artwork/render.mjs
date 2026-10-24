@@ -5,7 +5,8 @@
 // card plays on hover, with the clip's first frame as the still. The zoom card's
 // clip is composited instead, from the Kara website's iOS and Android recordings.
 // The sources live in the repositories beside this one: Kara's component shots,
-// recordings and app icons in ../kara-ui, the portfolio's shots in ../portfolio.
+// recordings, app icons and icon SVGs in ../kara-ui, the portfolio's shots in
+// ../portfolio.
 // Only drawing the artwork again needs them; what it draws is committed.
 //
 //   node artwork/render.mjs            every card
@@ -65,13 +66,17 @@ const EXPORTS = {
 const CARDS = {
   'expo-app-icons': 'small',
   'expo-flags-kit': 'small',
+  'expo-native-icons': 'small',
+  'expo-paypal': 'large',
   'expo-rich-haptics': 'small',
+  'expo-speech': 'small',
   'expo-zoom-transition': 'large',
   'kara-ui': 'large',
   'libraries-in-portfolio': 'portfolio',
   'og-image': 'og',
   portfolio: 'small',
   'react-native-expo-monorepo': 'small',
+  skills: 'large',
   zyplot: 'small',
 }
 
@@ -89,7 +94,7 @@ const TYPES = {
 }
 
 // What the pages may load: this app's public files and artwork, and kara's own
-// app icons from the example.
+// app icons and icon SVGs from the example.
 const ROOTS = {
   '/apps-example/': join(KARA, 'apps/example/assets/'),
   '/artwork/': join(APP, 'artwork/'),

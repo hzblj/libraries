@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* Kara's own icon folder (apps/example/assets/icons), each SVG drawn the
+         way the platforms draw a template image: the shape as a mask, the tint
+         as its colour. A selection hops from icon to icon, and the one it lands
+         on takes a tint of its own, with its file's name above the grid. */
+      .icon {
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        height: 24px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform-origin: 50% 50%;
+        width: 24px;
+      }
+
+      /* The tint, spilling softly round the icon that wears it. */
+      .glow {
+        border-radius: 50%;
+        height: 84px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 84px;
+      }
+
+      .selection {
+        background: rgba(255, 255, 255, 0.075);
+        border-radius: 11px;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+        height: 38px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 38px;
+      }
+
+      .tooltip {
+        background: rgba(38, 38, 38, 0.92);
+        border-radius: 8px;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+          0 6px 16px rgba(0, 0, 0, 0.45);
+        height: 24px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        z-index: 2;
+      }
+
+      .name {
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 11px;
+        left: 0;
+        letter-spacing: -0.1px;
+        line-height: 24px;
+        position: absolute;
+        top: 0;
+        white-space: nowrap;
+        z-index: 3;
+      }
+
+      .name .extension {
+        color: rgba(255, 255, 255, 0.45);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="glow"></div>
+      <div class="selection"></div>
+      <div class="tooltip"></div>
+    </div>
+    <script type="module">
+      import {mix, spring} from './anim.js'
+
+      // biome-ignore format: one row per line, so the names read as the grid
+      const GRID = [
+        ['home', 'search', 'heart', 'bolt', 'star', 'notification'],
+        ['calendar', 'lock', 'share', 'palette', 'shopping-bag', 'settings'],
+      ]
+
+      // Where the selection stops, as [row, column], and the tint it gives each
+      // icon: Kara's orange first, then a few of the system colours.
+      const STOPS = [
+        {at: [0, 3], tint: '#ff5700'},
+        {at: [1, 3], tint: '#bf5af2'},
+        {at: [0, 2], tint: '#ff375f'},
+        {at: [1, 2], tint: '#0a84ff'},
+        {at: [0, 4], tint: '#ffd60a'},
+      ]
+
+      const PITCH = 42
+      // Centred in the space above the card's label, the name's lane included.
+      const ROWS = [78, 122]
+      const COLUMN = 145 - ((GRID[0].length - 1) / 2) * PITCH
+      const ICON = 24
+      const REST = 0.42
+      const STEP = 1.2
+      const PADDING = 9
+
+      const card = document.querySelector('.card')
+      const glow = document.querySelector('.glow')
+      const selection = document.querySelector('.selection')
+      const tooltip = document.querySelector('.tooltip')
+
+      const centre = ([row, column]) => ({x: COLUMN + column * PITCH, y: ROWS[row]})
+
+      const icons = GRID.flatMap((names, row) =>
+        names.map((name, column) => {
+          const icon = document.createElement('div')
+          icon.className = 'icon'
+          icon.style.maskImage = `url('/apps-example/icons/${name}.svg')`
+          icon.style.webkitMaskImage = icon.style.maskImage
+          const {x, y} = centre([row, column])
+          icon.style.transform = `translate(${x - ICON / 2}px, ${y - ICON / 2}px)`
+          card.append(icon)
+
+          return {column, icon, row, x, y}
+        })
+      )
+
+      const names = STOPS.map(({at: [row, column]}) => {
+        const name = document.createElement('div')
+        name.className = 'name'
+        name.innerHTML = `${GRID[row][column]}<span class="extension">.svg</span>`
+        card.append(name)
+
+        return name
+      })
+
+      const widths = names.map(name => name.getBoundingClientRect().width + PADDING * 2)
+
+      // Mixes two hex colours channel by channel.
+      const blend = (from, to, amount) => {
+        const channels = hex => [1, 3, 5].map(index => Number.parseInt(hex.slice(index, index + 2), 16))
+        const [a, b] = [channels(from), channels(to)]
+
+        return `rgb(${a.map((value, index) => Math.round(mix(value, b[index], amount))).join(', ')})`
+      }
+
+      const DURATION = STEP * STOPS.length
+      // When the selection, springing over from the stop before, lands on
+      // each one, and the little lift its icon gives as it does.
+      const LANDS = 0.85
+      const POP = 0.4
+
+      const lift = (stop, t) => {
+        const since = (((t - ((stop - 1) * STEP + LANDS)) % DURATION) + DURATION) % DURATION
+
+        return since < POP ? 0.12 * Math.sin((since / POP) * Math.PI) : 0
+      }
+
+      const stopAt = (x, y) => STOPS.findIndex(({at}) => centre(at).x === x && centre(at).y === y)
+
+      window.DURATION = DURATION
+      window.FPS = 60
+
+      window.frame = t => {
+        const step = Math.floor(t / STEP) % STOPS.length
+        const next = (step + 1) % STOPS.length
+        // Holds on an icon, then springs to the next one.
+        const travel = spring(t - step * STEP - 0.6, 0.6)
+        const from = centre(STOPS[step].at)
+        const to = centre(STOPS[next].at)
+        const x = mix(from.x, to.x, travel)
+        const y = mix(from.y, to.y, travel)
+
+        selection.style.transform = `translate(${x - 19}px, ${y - 19}px)`
+        glow.style.background = `radial-gradient(closest-side, ${blend(STOPS[step].tint, STOPS[next].tint, Math.min(Math.max(travel, 0), 1))}, transparent)`
+        glow.style.opacity = '0.3'
+        glow.style.transform = `translate(${x - 42}px, ${y - 42}px)`
+
+        icons.forEach(({icon, x: iconX, y: iconY}) => {
+          // The icon being left keeps its tint as it fades, the one ahead takes the next.
+          const near = Math.max(0, 1 - Math.hypot(iconX - x, iconY - y) / PITCH)
+          const tint = iconX === from.x && iconY === from.y ? STOPS[step].tint : STOPS[next].tint
+
+          icon.style.backgroundColor = near > 0 ? blend('#ffffff', tint, near) : '#ffffff'
+          icon.style.opacity = String(mix(REST, 1, near))
+          const stop = stopAt(iconX, iconY)
+          const pop = stop < 0 ? 0 : lift(stop, t)
+          icon.style.transform = `translate(${iconX - ICON / 2}px, ${iconY - ICON / 2}px) scale(${mix(1, 1.18, near) + pop})`
+        })
+
+        // The name rides in its own lane above the grid, under nothing and over
+        // nothing, following the selection across.
+        const width = mix(widths[step], widths[next], travel)
+        const top = ROWS[0] - 19 - 7 - 24
+
+        tooltip.style.width = `${width}px`
+        tooltip.style.transform = `translate(${x - width / 2}px, ${top}px)`
+
+        names.forEach((name, index) => {
+          const shown = index === step ? 1 - travel : index === next ? travel : 0
+          const own = widths[index] - PADDING * 2
+          name.style.opacity = String(Math.min(Math.max((shown - 0.5) * 2.5 + 0.5, 0), 1))
+          name.style.transform = `translate(${x - own / 2}px, ${top}px)`
+        })
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

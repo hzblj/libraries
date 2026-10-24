@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* A transcript following its recording word by word, karaoke titles the
+         way Lapz shows team radio: spoken words lit, the one being said held in
+         a pill, and each word's start as a tick on the player's track below.
+         Drawn until the expo-speech example has captures of its own. */
+      .transcript {
+        font-size: 15px;
+        font-weight: 500;
+        left: 18px;
+        letter-spacing: -0.2px;
+        line-height: 24px;
+        position: absolute;
+        right: 22px;
+        top: 20px;
+      }
+
+      .word {
+        color: rgba(255, 255, 255, 0.28);
+        position: relative;
+        z-index: 1;
+      }
+
+      .pill {
+        background: rgba(255, 255, 255, 0.13);
+        border-radius: 7px;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        left: 0;
+        position: absolute;
+        top: 0;
+      }
+
+      .player {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        left: 18px;
+        position: absolute;
+        right: 18px;
+        top: 122px;
+      }
+
+      .track {
+        background: rgba(255, 255, 255, 0.14);
+        border-radius: 1px;
+        flex: 1;
+        height: 2px;
+        position: relative;
+      }
+
+      .played {
+        background: #fff;
+        border-radius: 1px;
+        height: 2px;
+        left: 0;
+        position: absolute;
+        top: 0;
+      }
+
+      .tick {
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 0.5px;
+        height: 6px;
+        position: absolute;
+        top: -2px;
+        width: 1px;
+      }
+
+      .time {
+        color: rgba(255, 255, 255, 0.5);
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 10.5px;
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="transcript"><div class="pill"></div></div>
+      <div class="player">
+        <svg width="10" height="12" viewBox="0 0 10 12"><path d="M1 1.2v9.6c0 .5.5.8 1 .5l7.4-4.8c.4-.3.4-.8 0-1.1L2 .7c-.5-.3-1 0-1 .5Z" fill="#fff" /></svg>
+        <div class="track"><div class="played"></div></div>
+        <div class="time">0:00</div>
+      </div>
+    </div>
+    <script type="module">
+      import {mix} from './anim.js'
+
+      const TEXT = 'Box this lap, box this lap. Gap behind is two seconds, you will come out clear.'
+
+      // Each word's time, as speech has it: longer words take longer, and a
+      // comma or a full stop leaves a breath after it.
+      let clock = 0.2
+      const WORDS = TEXT.split(' ').map(text => {
+        const start = clock
+        clock += 0.16 + 0.03 * text.length
+        const end = clock
+        clock += /[.,]$/.test(text) ? 0.28 : 0.04
+
+        return {end, start, text}
+      })
+
+      // The recording, then a moment for the lit transcript to fade back before
+      // it plays again. The clip starts partway in, so its first frame (the
+      // card's still) shows the titles mid-sentence.
+      const SPOKEN = clock + 0.4
+      const RESET = 0.5
+      const PERIOD = SPOKEN + RESET
+      const OFFSET = WORDS[6].start + 0.05
+
+      const transcript = document.querySelector('.transcript')
+      const pill = document.querySelector('.pill')
+      const track = document.querySelector('.track')
+      const played = document.querySelector('.played')
+      const time = document.querySelector('.time')
+
+      const spans = WORDS.map(({text}, index) => {
+        const span = document.createElement('span')
+        span.className = 'word'
+        span.textContent = text
+        transcript.append(span, index < WORDS.length - 1 ? ' ' : '')
+
+        return span
+      })
+
+      // Measured in Inter, not in whatever stood in for it while it loaded.
+      await document.fonts.ready
+
+      const origin = transcript.getBoundingClientRect()
+      const rects = spans.map(span => {
+        const {x, y, width, height} = span.getBoundingClientRect()
+
+        return {height, width, x: x - origin.x, y: y - origin.y}
+      })
+
+      for (const {start} of WORDS) {
+        const tick = document.createElement('div')
+        tick.className = 'tick'
+        tick.style.left = `${(start / SPOKEN) * 100}%`
+        track.append(tick)
+      }
+
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+      const PAD = {x: 4, y: 1}
+
+      window.DURATION = PERIOD
+      window.FPS = 60
+
+      window.frame = t => {
+        const at = (t + OFFSET) % PERIOD
+        // Past the end of the recording everything fades back to unspoken.
+        const fade = 1 - clamp((at - SPOKEN) / RESET)
+        const now = Math.min(at, SPOKEN)
+
+        const current = WORDS.findLastIndex(({start}) => start <= now)
+
+        spans.forEach((span, index) => {
+          const lit = clamp((now - WORDS[index].start) / 0.08) * fade
+          span.style.color = `rgba(255, 255, 255, ${mix(0.28, 1, lit).toFixed(3)})`
+        })
+
+        // The pill slides from word to word along a line and fades across a
+        // line break, reaching the next word as it starts.
+        if (current >= 0) {
+          const next = Math.min(current + 1, WORDS.length - 1)
+          const from = rects[current]
+          const to = rects[next]
+          const travel = next === current ? 0 : clamp((now - (WORDS[next].start - 0.1)) / 0.1)
+          const sameLine = Math.abs(from.y - to.y) < 1
+          const rect = sameLine
+            ? {
+                height: from.height,
+                width: mix(from.width, to.width, travel),
+                x: mix(from.x, to.x, travel),
+                y: from.y,
+              }
+            : travel < 0.5
+              ? from
+              : to
+          const blink = sameLine ? 1 : Math.abs(travel - 0.5) * 2
+          // In with the first word, out a moment after the last.
+          const tail = next > current ? 1 : clamp((WORDS[current].end + 0.2 - now) / 0.15)
+          const shown = clamp((now - WORDS[0].start) / 0.1) * tail
+
+          Object.assign(pill.style, {
+            height: `${rect.height + PAD.y * 2}px`,
+            opacity: String(shown * blink * fade),
+            transform: `translate(${rect.x - PAD.x}px, ${rect.y - PAD.y}px)`,
+            width: `${rect.width + PAD.x * 2}px`,
+          })
+        } else {
+          pill.style.opacity = '0'
+        }
+
+        const progress = (now / SPOKEN) * fade
+        played.style.width = `${progress * 100}%`
+        time.textContent = `0:0${Math.floor(now * fade)}`
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

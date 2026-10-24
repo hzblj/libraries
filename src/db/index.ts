@@ -14,7 +14,7 @@ const growFrom = (origin: string, x: number, y: number, delay: number): Animatio
 export const entries: Entries = [
   profile,
   {
-    animation: growFrom('bottom right', 40, 40, 0.15),
+    animation: growFrom('bottom right', 40, 40, 0.2),
     area: 'l1',
     description:
       'A native-first design system for Expo. Real SwiftUI and Jetpack Compose components, with one token-typed styling surface.',
@@ -33,8 +33,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/kara-ui.mp4', webm: '/libraries/kara-ui.webm'},
   },
   {
-    animation: growFrom('bottom', 0, 40, 0.2),
-    area: 's1',
+    animation: growFrom('bottom', 0, 40, 0.15),
+    area: 's2',
     description: 'Alternate app icons for Expo on iOS and Android. Generate at prebuild, switch at runtime.',
     image: '/libraries/expo-app-icons.png',
     properties: [
@@ -50,8 +50,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-app-icons.mp4', webm: '/libraries/expo-app-icons.webm'},
   },
   {
-    animation: growFrom('bottom left', -40, 40, 0.25),
-    area: 's2',
+    animation: growFrom('right', 40, 0, 0.3),
+    area: 's3',
     description:
       'A starter for Expo apps that are meant to grow: a Turborepo monorepo with shared UI, theming, state and feature packages, all in TypeScript.',
     image: '/libraries/react-native-expo-monorepo.png',
@@ -71,7 +71,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/react-native-expo-monorepo.mp4', webm: '/libraries/react-native-expo-monorepo.webm'},
   },
   {
-    animation: growFrom('top left', -40, -40, 0.15),
+    animation: growFrom('top left', -40, -40, 0.2),
     area: 'l2',
     description:
       'Native zoom transitions for Expo Router. UIKit zoom on iOS and Material container transforms on Android, with interactive dismissal.',
@@ -93,8 +93,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-zoom-transition.mp4', webm: '/libraries/expo-zoom-transition.webm'},
   },
   {
-    animation: growFrom('top right', 40, -40, 0.25),
-    area: 's3',
+    animation: growFrom('top', 0, -40, 0.3),
+    area: 's8',
     description:
       '255 native vector flags for iOS, Android and web. Sharp at every size, with typed country codes and localized names.',
     image: '/libraries/expo-flags-kit.png',
@@ -111,8 +111,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-flags-kit.mp4', webm: '/libraries/expo-flags-kit.webm'},
   },
   {
-    animation: growFrom('top', 0, -40, 0.2),
-    area: 's4',
+    animation: growFrom('left', -40, 0, 0.15),
+    area: 's5',
     description:
       'Platform-native feedback for Expo. Semantic events and custom patterns, powered by Core Haptics and Android haptic primitives.',
     image: '/libraries/expo-rich-haptics.png',
@@ -133,8 +133,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-rich-haptics.mp4', webm: '/libraries/expo-rich-haptics.webm'},
   },
   {
-    animation: growFrom('top right', 40, -40, 0.3),
-    area: 's5',
+    animation: growFrom('right', 40, 0, 0.15),
+    area: 's4',
     description:
       'One chart API for React and Expo, native on every platform: Swift Charts on iOS, Jetpack Compose on Android, ECharts and uPlot on the web.',
     image: '/libraries/zyplot.png',
@@ -152,7 +152,75 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/zyplot.mp4', webm: '/libraries/zyplot.webm'},
   },
   {
-    animation: growFrom('bottom left', -40, 40, 0.3),
+    animation: growFrom('bottom', 0, 40, 0.3),
+    area: 's1',
+    description:
+      'Your own SVG icons as native assets for Expo. iOS asset catalog images and Android vector drawables at prebuild, typed names, and a native view that tints them.',
+    image: '/libraries/expo-native-icons.png',
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/expo-native-icons', value: 'hzblj/expo-native-icons'},
+      {
+        name: 'npm',
+        url: 'https://www.npmjs.com/package/@hzblj/expo-native-icons',
+        value: '@hzblj/expo-native-icons',
+      },
+      REQUIRES,
+    ],
+    size: 'small',
+    slug: 'expo-native-icons',
+    subtitle: 'Your SVGs as native icons',
+    title: 'Native Icons',
+    variant: 'shot',
+    videos: {mp4: '/libraries/expo-native-icons.mp4', webm: '/libraries/expo-native-icons.webm'},
+  },
+  {
+    animation: growFrom('top right', 40, -40, 0.2),
+    area: 'l4',
+    description:
+      'PayPal Checkout with App Switch, Pay Later and PayPal Credit, vaulting, and card payments with 3D Secure, behind one promise-based API. PayPal’s own buttons come along as native views.',
+    image: '/libraries/expo-paypal.png',
+    properties: [{name: 'GitHub', url: 'https://github.com/hzblj/expo-paypal', value: 'hzblj/expo-paypal'}, REQUIRES],
+    size: 'large',
+    slug: 'expo-paypal',
+    subtitle: 'PayPal on the native SDK',
+    title: 'PayPal',
+    variant: 'shot',
+    videos: {mp4: '/libraries/expo-paypal.mp4', webm: '/libraries/expo-paypal.webm'},
+  },
+  {
+    animation: growFrom('bottom left', -40, 40, 0.2),
+    area: 'l3',
+    description:
+      'Agent skills for React and React Native engineers: animations that feel native, components that stay reusable and clean code, as small SKILL.md files for Claude Code, Codex, Cursor and other agents.',
+    image: '/libraries/skills.png',
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/skills', value: 'hzblj/skills'},
+      {name: 'skills.sh', url: 'https://skills.sh/hzblj/skills', value: 'skills.sh/hzblj/skills'},
+      {name: 'Works with', value: 'Claude Code · Codex · Cursor'},
+    ],
+    size: 'large',
+    slug: 'skills',
+    subtitle: 'Agent skills for building apps',
+    title: 'Skills',
+    variant: 'shot',
+    videos: {mp4: '/libraries/skills.mp4', webm: '/libraries/skills.webm'},
+  },
+  {
+    animation: growFrom('top', 0, -40, 0.15),
+    area: 's7',
+    description:
+      'Speech to text for Expo on the platforms’ own speech APIs: SpeechAnalyzer on iOS, with SFSpeechRecognizer before it, and the on-device SpeechRecognizer on Android. Files or the microphone, with every word’s timing for titles that follow the audio.',
+    image: '/libraries/expo-speech.png',
+    properties: [{name: 'GitHub', url: 'https://github.com/hzblj/expo-speech', value: 'hzblj/expo-speech'}, REQUIRES],
+    size: 'small',
+    slug: 'expo-speech',
+    subtitle: 'Speech to text, natively',
+    title: 'Speech',
+    variant: 'shot',
+    videos: {mp4: '/libraries/expo-speech.mp4', webm: '/libraries/expo-speech.webm'},
+  },
+  {
+    animation: growFrom('left', -40, 0, 0.3),
     area: 's6',
     image: '/libraries/portfolio.png',
     size: 'small',

@@ -1,0 +1,387 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* The skills as an atom, React's own three orbits, with an agent at its
+         nucleus. Prompts from the skills' README are typed above it, one after
+         another, and the skills each one reaches for light up on their orbits
+         and stream into the nucleus. */
+      .halo {
+        background: radial-gradient(closest-side, rgba(90, 200, 250, 0.16), rgba(90, 200, 250, 0));
+        height: 360px;
+        left: 118px;
+        position: absolute;
+        top: 54px;
+        width: 360px;
+      }
+
+      svg.orbits {
+        inset: 0;
+        position: absolute;
+      }
+
+      .nucleus {
+        height: 34px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 34px;
+        z-index: 5;
+      }
+
+      .core {
+        background: radial-gradient(circle at 38% 34%, #ffffff 0%, #c9f0ff 22%, #5ac8fa 58%, #0a6c9c 100%);
+        border-radius: 50%;
+        box-shadow:
+          0 0 18px rgba(90, 200, 250, 0.7),
+          0 0 48px rgba(90, 200, 250, 0.35);
+        inset: 0;
+        position: absolute;
+      }
+
+      .ring {
+        border: 1.5px solid rgba(90, 200, 250, 0.8);
+        border-radius: 50%;
+        inset: 0;
+        position: absolute;
+      }
+
+      .node {
+        background: #fff;
+        border-radius: 50%;
+        height: 10px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 10px;
+      }
+
+      .tag {
+        align-items: center;
+        backdrop-filter: blur(10px);
+        background: rgba(28, 28, 30, 0.78);
+        border-radius: 9px;
+        box-shadow:
+          inset 0 0 0 1px rgba(90, 200, 250, 0.32),
+          0 8px 20px rgba(0, 0, 0, 0.45);
+        display: flex;
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 11.5px;
+        gap: 7px;
+        height: 26px;
+        left: 0;
+        letter-spacing: -0.1px;
+        padding: 0 10px 0 8px;
+        position: absolute;
+        top: 0;
+        white-space: nowrap;
+        z-index: 8;
+      }
+
+      .prompt {
+        align-items: center;
+        backdrop-filter: blur(14px) saturate(1.4);
+        background: rgba(36, 36, 38, 0.72);
+        border-radius: 14px;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+          0 12px 30px rgba(0, 0, 0, 0.45);
+        display: flex;
+        font-size: 14px;
+        font-weight: 450;
+        gap: 10px;
+        height: 40px;
+        left: 128px;
+        letter-spacing: -0.15px;
+        padding: 0 16px 0 14px;
+        position: absolute;
+        top: 18px;
+        white-space: nowrap;
+        width: 340px;
+        z-index: 9;
+      }
+
+      .caret {
+        color: #5ac8fa;
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-weight: 600;
+      }
+
+      .line {
+        align-items: center;
+        display: flex;
+      }
+
+      .cursor {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 1px;
+        height: 16px;
+        margin-left: 1.5px;
+        width: 1.5px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="card large">
+      <div class="halo"></div>
+      <svg class="orbits" width="596" height="452" viewBox="0 0 596 452">
+        <defs>
+          <linearGradient id="depth" gradientUnits="userSpaceOnUse" x1="0" y1="-57" x2="0" y2="57">
+            <stop offset="0" stop-color="#fff" stop-opacity="0.05" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0.24" />
+          </linearGradient>
+        </defs>
+        <g class="ellipses"></g>
+        <g class="beams"></g>
+      </svg>
+      <div class="nucleus"><div class="ring"></div><div class="core"></div></div>
+      <div class="prompt">
+        <span class="caret">›</span><span class="line"><span class="typed"></span><span class="cursor"></span></span>
+      </div>
+    </div>
+    <script type="module">
+      import {mix, spring} from './anim.js'
+
+      const SVG = 'http://www.w3.org/2000/svg'
+      const C = {x: 298, y: 234}
+      const RX = 160
+      const RY = 57
+      // React's three orbits, the middle one drifting the other way.
+      const ORBITS = [
+        {direction: 1, start: 10, tilt: 0},
+        {direction: -1, start: 32, tilt: 60},
+        {direction: 1, start: 4, tilt: -60},
+      ]
+      const PER_ORBIT = 8
+      const SPACING = 360 / PER_ORBIT
+
+      // From the README's "How I use them": each prompt with the skills it
+      // pulls in, and where on which orbit each one lights (in degrees round
+      // it, 90 being nearest the viewer). One above on either side and one
+      // below, so the tags never meet, stay on the card and clear its label.
+      const PROMPTS = [
+        {
+          skills: [
+            ['lists', 1, 135],
+            ['native-feel', 2, 45],
+            ['reanimated-core', 0, 105],
+          ],
+          text: 'This feed is janky. Make it 60fps.',
+        },
+        {
+          skills: [
+            ['ui-surfaces', 1, 120],
+            ['ui-typography', 2, 60],
+            ['component-architecture', 0, 80],
+          ],
+          text: 'Implement this design from Figma.',
+        },
+        {
+          skills: [
+            ['gsap-text', 1, 140],
+            ['gsap-timelines', 2, 40],
+            ['gsap-scroll-trigger', 0, 100],
+          ],
+          text: 'Headline reveals on scroll, image pins.',
+        },
+        {
+          skills: [
+            ['functions', 1, 125],
+            ['error-handling', 2, 55],
+            ['meaningful-names', 0, 78],
+          ],
+          text: 'Review my changes before the PR.',
+        },
+      ]
+
+      // Each prompt holds, lit, from the start of its step; then it is sent,
+      // the next one is typed and its skills light one after another. The last
+      // step types the first prompt again, so the loop closes on frame one.
+      const STEP = 3
+      const HOLD = 1
+      const SEND = 0.2
+      const TYPE = 0.75
+      const STAGGER = 0.15
+      const DURATION = STEP * PROMPTS.length
+      // Every orbit drifts one place over the loop, so it ends where it began.
+      const DRIFT = SPACING / DURATION
+
+      const card = document.querySelector('.card')
+      const ellipses = document.querySelector('.ellipses')
+      const beams = document.querySelector('.beams')
+      const nucleus = document.querySelector('.nucleus')
+      const ring = document.querySelector('.ring')
+      const typed = document.querySelector('.typed')
+      const cursor = document.querySelector('.cursor')
+
+      const radians = degrees => (degrees * Math.PI) / 180
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+      const wrapIndex = index => ((index % PER_ORBIT) + PER_ORBIT) % PER_ORBIT
+
+      for (const {tilt} of ORBITS) {
+        const ellipse = document.createElementNS(SVG, 'ellipse')
+        ellipse.setAttribute('rx', RX)
+        ellipse.setAttribute('ry', RY)
+        ellipse.setAttribute('fill', 'none')
+        ellipse.setAttribute('stroke', 'url(#depth)')
+        ellipse.setAttribute('stroke-width', '1.2')
+        ellipse.setAttribute('transform', `translate(${C.x} ${C.y}) rotate(${tilt})`)
+        ellipses.append(ellipse)
+      }
+
+      // Where a node at `angle` on orbit `o` is, and how near the viewer (-1 to 1).
+      const place = (o, angle) => {
+        const local = {x: RX * Math.cos(radians(angle)), y: RY * Math.sin(radians(angle))}
+        const tilt = radians(ORBITS[o].tilt)
+
+        return {
+          depth: Math.sin(radians(angle)),
+          x: C.x + local.x * Math.cos(tilt) - local.y * Math.sin(tilt),
+          y: C.y + local.x * Math.sin(tilt) + local.y * Math.cos(tilt),
+        }
+      }
+
+      const angleOf = (o, index, t) => ORBITS[o].start + index * SPACING + ORBITS[o].direction * DRIFT * t
+
+      const nodes = ORBITS.flatMap((_, o) =>
+        Array.from({length: PER_ORBIT}, (_, index) => {
+          const node = document.createElement('div')
+          node.className = 'node'
+          card.append(node)
+
+          return {index, node, o}
+        })
+      )
+
+      // Each skill lights the node passing its spot while its prompt holds.
+      const lit = PROMPTS.map(({skills}, step) =>
+        skills.map(([name, o, angle]) => {
+          const tag = document.createElement('div')
+          tag.className = 'tag'
+          tag.innerHTML = `<svg width="10" height="12" viewBox="0 0 10 12" fill="none" stroke="#5ac8fa" stroke-width="1.1" stroke-linejoin="round"><path d="M1.5 1h4.5l2.5 2.5V11h-7Z" /><path d="M6 1v2.5h2.5" /></svg>${name}`
+          card.append(tag)
+
+          const beam = document.createElementNS(SVG, 'line')
+          beam.setAttribute('stroke', '#5ac8fa')
+          beam.setAttribute('stroke-width', '1.4')
+          beam.setAttribute('stroke-linecap', 'round')
+          const sparks = Array.from({length: 3}, () => {
+            const spark = document.createElementNS(SVG, 'circle')
+            spark.setAttribute('r', '1.8')
+            spark.setAttribute('fill', '#c9f0ff')
+            return spark
+          })
+          beams.append(beam, ...sparks)
+
+          return {
+            beam,
+            index: wrapIndex(Math.round((angle - angleOf(o, 0, step * STEP)) / SPACING)),
+            o,
+            sparks,
+            tag,
+          }
+        })
+      )
+
+      // Time as prompt `step` sees it: the first prompt lights at the end of
+      // the loop and holds into its start, so for it the end counts as before 0.
+      const timeFor = (step, t) => (step === 0 && t > DURATION / 2 ? t - DURATION : t)
+
+      // How lit a skill is: in on a spring once its prompt is typed, out as the
+      // next prompt is sent.
+      const litness = (step, order, u) => {
+        const typedAt = step * STEP - STEP + HOLD + SEND + TYPE + 0.05 + order * STAGGER
+        const sentAt = step * STEP + HOLD
+
+        return clamp(spring(u - typedAt, 0.5)) * (1 - clamp((u - sentAt) / SEND))
+      }
+
+      window.DURATION = DURATION
+      window.FPS = 60
+
+      window.frame = t => {
+        const step = Math.floor(t / STEP) % PROMPTS.length
+        const local = t - Math.floor(t / STEP) * STEP
+        const blink = since => (Math.floor(since / 0.5) % 2 === 0 ? '1' : '0')
+
+        // The prompt field: held, cleared as it is sent, the next one typed.
+        if (local < HOLD) {
+          typed.textContent = PROMPTS[step].text
+          cursor.style.opacity = blink(local)
+        } else if (local < HOLD + SEND) {
+          typed.textContent = ''
+          cursor.style.opacity = '1'
+        } else {
+          const {text} = PROMPTS[(step + 1) % PROMPTS.length]
+          const typing = clamp((local - HOLD - SEND) / TYPE)
+          typed.textContent = text.slice(0, Math.round(typing * text.length))
+          cursor.style.opacity = typing < 1 ? '1' : blink(local - HOLD - SEND - TYPE)
+        }
+
+        // The nucleus answers each prompt sent with a ring running out of it.
+        const pulse = local > HOLD ? clamp((local - HOLD) / 0.9) : 1
+        ring.style.opacity = String((1 - pulse) * 0.9)
+        ring.style.transform = `scale(${mix(1, 3.4, Math.sqrt(pulse))})`
+
+        let energy = 0
+        const lights = new Map()
+
+        lit.forEach((skills, prompt) => {
+          skills.forEach(({beam, index, o, sparks, tag}, order) => {
+            const u = timeFor(prompt, t)
+            const amount = litness(prompt, order, u)
+            // Lighting before the loop starts, every orbit is still a place
+            // short of where it begins: the node there is the one behind.
+            const which = wrapIndex(u < 0 ? index - ORBITS[o].direction : index)
+            const at = place(o, angleOf(o, which, t))
+            energy += amount
+
+            if (amount > 0) {
+              lights.set(`${o}:${which}`, amount)
+            }
+
+            beam.setAttribute('x1', at.x)
+            beam.setAttribute('y1', at.y)
+            beam.setAttribute('x2', C.x)
+            beam.setAttribute('y2', C.y)
+            beam.setAttribute('stroke-opacity', String(0.5 * amount))
+
+            sparks.forEach((spark, k) => {
+              const phase = (t * 1.25 + k / sparks.length) % 1
+              spark.setAttribute('cx', mix(at.x, C.x, phase))
+              spark.setAttribute('cy', mix(at.y, C.y, phase))
+              spark.setAttribute('fill-opacity', String(amount * Math.sin(phase * Math.PI)))
+            })
+
+            // The tag sits off the node, on the side away from the nucleus.
+            const left = at.x < C.x
+            const width = tag.offsetWidth
+            const x = Math.min(Math.max(left ? at.x - 14 - width : at.x + 14, 12), 584 - width)
+            tag.style.opacity = String(amount)
+            tag.style.transformOrigin = left ? '100% 50%' : '0 50%'
+            tag.style.transform = `translate(${x}px, ${at.y - 13 + (1 - amount) * 6}px) scale(${mix(0.9, 1, amount)})`
+          })
+        })
+
+        nodes.forEach(({index, node, o}) => {
+          const at = place(o, angleOf(o, index, t))
+          const glow = lights.get(`${o}:${index}`) ?? 0
+          const near = (at.depth + 1) / 2
+
+          node.style.zIndex = at.depth > 0 ? '6' : '4'
+          node.style.background = `rgb(${Math.round(mix(255, 90, glow))}, ${Math.round(mix(255, 200, glow))}, 250)`
+          node.style.boxShadow = `0 0 ${12 * glow}px rgba(90, 200, 250, ${0.9 * glow})`
+          node.style.opacity = String(Math.max(mix(0.22, 0.75, near), glow))
+          node.style.transform = `translate(${at.x - 5}px, ${at.y - 5}px) scale(${mix(0.28, 0.42, near) + glow * 0.35})`
+        })
+
+        nucleus.style.transform = `translate(${C.x - 17}px, ${C.y - 17}px) scale(${mix(0.9, 1.08, clamp(energy / 3))})`
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

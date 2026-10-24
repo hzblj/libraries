@@ -15,7 +15,7 @@ export const Config = {
   },
   // What the site says about itself to search engines and link previews.
   description:
-    'Open-source libraries for Expo and React Native by Jan Blazej: Kara, a native-first design system, Zyplot charts, native zoom transitions, alternate app icons, rich haptics, country flags and a monorepo starter.',
+    'Open-source libraries for Expo and React Native by Jan Blazej: Kara, a native-first design system, Zyplot charts, native zoom transitions, native SVG icons, alternate app icons, rich haptics, country flags, PayPal payments, speech to text, a monorepo starter and agent skills for building apps.',
   fullName: 'Jan Blazej',
   // What the profile card in the middle of the grid says.
   handle: 'hzblj',
@@ -35,9 +35,9 @@ export const Config = {
   tagline: {href: 'https://expo.dev', prefix: 'Libraries for', subject: 'Expo'},
   title: 'hzblj · Libraries for Expo and React Native',
   // The whole collection with the grid's 2px padding on every side: five
-  // columns and three rows of the template in scene/grid/layout.ts.
+  // columns and five rows of the template in scene/grid/layout.ts.
   viewport: {
-    height: 690,
+    height: 1158,
     width: 1518,
   },
 } as const
