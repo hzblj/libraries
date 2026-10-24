@@ -40,6 +40,25 @@ body {
   width: 596px;
 }
 
+/* A soft light behind a card's subject, in the colour `--glow` (an rgb
+   triplet) at `--strength` in the middle. The falloff is eased and blurred
+   so it fades out with no edge: a plain radial gradient running straight to
+   transparent ends in a ring you can see. Pages place and size it. */
+.glow {
+  background: radial-gradient(
+    circle closest-side,
+    rgb(var(--glow) / var(--strength)) 0%,
+    rgb(var(--glow) / calc(var(--strength) * 0.62)) 30%,
+    rgb(var(--glow) / calc(var(--strength) * 0.28)) 58%,
+    rgb(var(--glow) / calc(var(--strength) * 0.08)) 82%,
+    rgb(var(--glow) / 0) 100%
+  );
+  border-radius: 50%;
+  filter: blur(24px);
+  pointer-events: none;
+  position: absolute;
+}
+
 .layer {
   inset: 0;
   position: absolute;

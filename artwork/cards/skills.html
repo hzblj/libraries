@@ -8,13 +8,13 @@
          nucleus. Prompts from the skills' README are typed above it, one after
          another, and the skills each one reaches for light up on their orbits
          and stream into the nucleus. */
-      .halo {
-        background: radial-gradient(closest-side, rgba(90, 200, 250, 0.16), rgba(90, 200, 250, 0));
-        height: 360px;
-        left: 118px;
-        position: absolute;
-        top: 54px;
-        width: 360px;
+      .glow {
+        --glow: 90 200 250;
+        --strength: 0.12;
+        height: 380px;
+        left: 108px;
+        top: 44px;
+        width: 380px;
       }
 
       svg.orbits {
@@ -126,7 +126,7 @@
   </head>
   <body>
     <div class="card large">
-      <div class="halo"></div>
+      <div class="glow"></div>
       <svg class="orbits" width="596" height="452" viewBox="0 0 596 452">
         <defs>
           <linearGradient id="depth" gradientUnits="userSpaceOnUse" x1="0" y1="-57" x2="0" y2="57">

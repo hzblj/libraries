@@ -25,10 +25,10 @@
 
       /* The tint, spilling softly round the icon that wears it. */
       .glow {
-        border-radius: 50%;
+        --strength: 0.34;
+        filter: blur(8px);
         height: 84px;
         left: 0;
-        position: absolute;
         top: 0;
         width: 84px;
       }
@@ -140,12 +140,12 @@
 
       const widths = names.map(name => name.getBoundingClientRect().width + PADDING * 2)
 
-      // Mixes two hex colours channel by channel.
+      // Mixes two hex colours channel by channel, into [r, g, b].
       const blend = (from, to, amount) => {
         const channels = hex => [1, 3, 5].map(index => Number.parseInt(hex.slice(index, index + 2), 16))
         const [a, b] = [channels(from), channels(to)]
 
-        return `rgb(${a.map((value, index) => Math.round(mix(value, b[index], amount))).join(', ')})`
+        return a.map((value, index) => Math.round(mix(value, b[index], amount)))
       }
 
       const DURATION = STEP * STOPS.length
@@ -176,8 +176,7 @@
         const y = mix(from.y, to.y, travel)
 
         selection.style.transform = `translate(${x - 19}px, ${y - 19}px)`
-        glow.style.background = `radial-gradient(closest-side, ${blend(STOPS[step].tint, STOPS[next].tint, Math.min(Math.max(travel, 0), 1))}, transparent)`
-        glow.style.opacity = '0.3'
+        glow.style.setProperty('--glow', blend(STOPS[step].tint, STOPS[next].tint, Math.min(Math.max(travel, 0), 1)).join(' '))
         glow.style.transform = `translate(${x - 42}px, ${y - 42}px)`
 
         icons.forEach(({icon, x: iconX, y: iconY}) => {
@@ -185,7 +184,7 @@
           const near = Math.max(0, 1 - Math.hypot(iconX - x, iconY - y) / PITCH)
           const tint = iconX === from.x && iconY === from.y ? STOPS[step].tint : STOPS[next].tint
 
-          icon.style.backgroundColor = near > 0 ? blend('#ffffff', tint, near) : '#ffffff'
+          icon.style.backgroundColor = `rgb(${blend('#ffffff', tint, near).join(', ')})`
           icon.style.opacity = String(mix(REST, 1, near))
           const stop = stopAt(iconX, iconY)
           const pop = stop < 0 ? 0 : lift(stop, t)

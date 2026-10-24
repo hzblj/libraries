@@ -8,15 +8,15 @@
          its own colours for dark grounds, and a checkout rising out of the
          bottom edge. A tap on PayPal's button (the SDK's white one) brings up
          the approval sheet, the payment goes through and the sheet goes away.
-         The logos are the SDK's own (artwork/paypal); everything else is drawn
-         until the expo-paypal example has captures of its own. */
+         The logos are the SDK's own (artwork/paypal); the rest is drawn in the
+         site's own style, by choice rather than from the example's captures. */
       .glow {
-        background: radial-gradient(closest-side, rgba(0, 156, 222, 0.11), rgba(0, 156, 222, 0));
-        height: 280px;
-        left: 4px;
-        position: absolute;
-        top: 84px;
-        width: 280px;
+        --glow: 0 156 222;
+        --strength: 0.15;
+        height: 400px;
+        left: -56px;
+        top: 24px;
+        width: 400px;
       }
 
       .mark {
@@ -484,7 +484,7 @@
         complete.style.opacity = String(ramp(t, PAID, 0.15))
         tick.style.transform = `scale(${mix(0.4, 1, done)})`
         check.style.strokeDashoffset = String(1 - ramp(t, PAID + 0.12, 0.3))
-        glow.style.opacity = String(1 + 0.3 * clamp(done) * (1 - ramp(t, SHEET_DOWN, 0.6)))
+        glow.style.opacity = String(0.85 + 0.15 * clamp(done) * (1 - ramp(t, SHEET_DOWN, 0.6)))
 
         // One finger for both taps, wherever the button it is after sits now.
         const onPay = t > (TAP_PAYPAL + TAP_PAY) / 2
