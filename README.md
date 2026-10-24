@@ -26,4 +26,4 @@ SEO lives in `app/layout.tsx` (metadata, Open Graph, Twitter), `app/robots.ts`, 
 
 Google Analytics (GA4, `G-VKC9021KN1`, in `src/lib/analytics.ts`) loads on production deployments only: not in `next dev` and not on Vercel's previews. `NEXT_PUBLIC_GA_MEASUREMENT_ID` overrides the ID.
 
-Flag artwork is copied from expo-flags-kit (FlagKit); see artwork/flags/LICENSE. The PayPal card's logos are the vector drawables from PayPal's Android SDK (`payment-buttons`, Apache 2.0, see artwork/paypal/LICENSE), converted to SVG; they are PayPal's trademarks. The PayPal and Speech cards are drawn until the expo-paypal and expo-speech examples have captures of their own. Inter is shared with the existing Kara website.
+Flag artwork is copied from expo-flags-kit (FlagKit); see artwork/flags/LICENSE. The PayPal logos are the vector drawables from PayPal's Android SDK (`payment-buttons`, Apache 2.0, see artwork/paypal/LICENSE), converted to SVG; they are PayPal's trademarks. Inter is shared with the existing Kara website.
