@@ -24,6 +24,6 @@ In development Next keeps its optimized copies of the images in `.next/dev/cache
 
 SEO lives in `app/layout.tsx` (metadata, Open Graph, Twitter), `app/robots.ts`, `app/sitemap.ts` and `src/components/libraries-seo.tsx` (JSON-LD and a text version for crawlers that do not run the scene). Every absolute URL comes from `Config.site`. The link preview, `public/png/og-image.png`, is drawn by `artwork/cards/og-image.html` from the cards' stills.
 
-Google Analytics loads only in production and only once `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set in the environment (Vercel project settings), the same way as the portfolio.
+Google Analytics (GA4, `G-VKC9021KN1`, in `src/lib/analytics.ts`) loads on production deployments only: not in `next dev` and not on Vercel's previews. `NEXT_PUBLIC_GA_MEASUREMENT_ID` overrides the ID.
 
 Flag artwork is copied from expo-flags-kit (FlagKit); see artwork/flags/LICENSE. Inter is shared with the existing Kara website.

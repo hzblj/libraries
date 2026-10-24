@@ -1,10 +1,13 @@
 import {sendGAEvent} from '@next/third-parties/google'
 
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX'
+// The site's GA4 property. A measurement ID is public, it is in every page's
+// source, so it lives here; the environment can still point a build elsewhere.
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-VKC9021KN1'
 
-export const isAnalyticsEnabled = (): boolean => {
-  return process.env.NODE_ENV !== 'development' && Boolean(GA_MEASUREMENT_ID) && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX'
-}
+// Production deployments only: not `next dev`, and not Vercel's previews, which
+// are production builds too but would count every review as a visit.
+export const isAnalyticsEnabled = (): boolean =>
+  process.env.NODE_ENV === 'production' && (process.env.NEXT_PUBLIC_VERCEL_ENV ?? 'production') === 'production'
 
 export interface WebVitalsMetric {
   id: string
