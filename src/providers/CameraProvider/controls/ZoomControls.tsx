@@ -26,7 +26,7 @@ export const ZoomControls = () => {
 
   // Out with an opening modal, back with its close. The pill stays mounted while
   // it is gone so it can fade on the shared control curve instead of blinking
-  // out of the dock — the gestures below come off either way.
+  // out of the dock — the gestures below stop moving the camera either way.
   const fade = useControlFade(!isModalOpen)
   const glass = useAdaptiveGlass()
   const ref = useMemo(() => callAll(fade, glass), [fade, glass])
@@ -40,11 +40,9 @@ export const ZoomControls = () => {
     setMounted(true)
   }, [])
 
+  // A pinch never reaches the browser, which would zoom the whole page: over the
+  // grid it zooms the camera, over an open modal it does nothing at all.
   useEffect(() => {
-    if (isModalOpen) {
-      return
-    }
-
     const controller = new AbortController()
     const {signal} = controller
 
@@ -54,6 +52,10 @@ export const ZoomControls = () => {
       }
 
       e.preventDefault()
+
+      if (isModalOpen) {
+        return
+      }
 
       // Discrete mouse notch → fixed step; trackpad pinch → proportional.
       const magnitude = Math.abs(e.deltaY)
@@ -81,7 +83,9 @@ export const ZoomControls = () => {
       const factor = gestureScale.current ? next / gestureScale.current : 1
       gestureScale.current = next
 
-      zoomBy(factor, pointer.current)
+      if (!isModalOpen) {
+        zoomBy(factor, pointer.current)
+      }
     }
 
     const onGestureEnd = (e: Event) => {

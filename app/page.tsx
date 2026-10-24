@@ -1,5 +1,6 @@
 import {Suspense} from 'react'
 
+import {ControlsDock} from '@/components'
 import {LibrariesJsonLd, LibrariesNoScript} from '@/components/libraries-seo'
 import {IntroProvider, SoundProvider} from '@/providers'
 import {NavigationProvider} from '@/providers/NavigationProvider'
@@ -20,6 +21,7 @@ export default function Home() {
               <div id="main" className="relative block h-full w-full bg-black">
                 <Scene />
               </div>
+              <ControlsDock />
             </IntroProvider>
           </SoundProvider>
         </NavigationProvider>

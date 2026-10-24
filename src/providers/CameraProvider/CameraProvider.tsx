@@ -6,11 +6,12 @@ import {ScrollSmoother} from 'gsap/ScrollSmoother'
 import {SplitText} from 'gsap/SplitText'
 import {Fragment, type ReactNode, useMemo} from 'react'
 
+import {SoundControls} from '@/components/sound-controls'
 import {useHasHover} from '@/hooks'
 
 import {CameraSession} from './components'
 import {Context, createCameraState, useCameraState} from './context'
-import {DragControls, ScrollControls, ToucheControls} from './controls'
+import {DragControls, KeyboardControls, ScrollControls, ToucheControls, ZoomControls} from './controls'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollSmoother, CustomEase, SplitText)
@@ -29,10 +30,12 @@ const Controls = () => {
   return (
     <Fragment>
       {hasHover && !isModalOpen && <ScrollControls />}
-      {/* The three with a pill in the dock stay mounted through an open modal and
+      {hasHover && !isModalOpen && <KeyboardControls />}
+      {/* The two with a pill in the dock stay mounted through an open modal and
           fade themselves out instead, so they leave on the same curve the modal
           arrives on rather than blinking out from under it. */}
-
+      <SoundControls />
+      {hasHover && <ZoomControls />}
       {!hasHover && !isModalOpen && <ToucheControls friction={0.9} speed={1.2} />}
       {hasHover && !isModalOpen && <DragControls />}
     </Fragment>
