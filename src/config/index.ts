@@ -17,10 +17,15 @@ export const Config = {
   // under the ~160 characters a search result shows before cutting it off; the
   // keywords in app/layout.tsx and the structured data name every library.
   description:
-    'Open-source Expo and React Native libraries by Jan Blazej: the Kara design system, Zyplot charts, PayPal, speech to text, native icons, haptics and more.',
+    'Open-source Expo and React Native libraries by Jan Blazej: the Kara design system, Zyplot charts, PayPal, translation, waveforms, speech to text and more.',
   fullName: 'Jan Blazej',
-  // What the profile card in the middle of the grid says.
+  // What the profile card in the middle of the grid says: the handle, the
+  // tagline under it, and the places to find the libraries.
   handle: 'hzblj',
+  links: [
+    {icon: '/svg/github.svg', name: 'GitHub', url: 'https://github.com/hzblj'},
+    {icon: '/svg/npm.svg', name: 'npm', url: 'https://www.npmjs.com/~hzblj'},
+  ],
   location: {
     city: 'Prague, Czechia',
     mapUrl: 'https://maps.app.goo.gl/7TbuX47ttiZbRms27',
@@ -36,10 +41,10 @@ export const Config = {
   // and a link to where it comes from.
   tagline: {href: 'https://expo.dev', prefix: 'Libraries for', subject: 'Expo'},
   title: 'hzblj · Libraries for Expo and React Native',
-  // One tile of the endless grid: the five columns and five rows of the
+  // One tile of the endless grid: the eight columns and five rows of the
   // template in scene/grid/layout.ts, each a card and its gap.
   viewport: {
     height: 1170,
-    width: 1530,
+    width: 2448,
   },
 } as const

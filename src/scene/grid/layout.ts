@@ -2,18 +2,19 @@ import {Config} from '@/config'
 
 import {mod, type Rect} from './geometry'
 
-// A pinwheel round the profile, which sits dead centre: a big card in each
-// corner and two small ones on every arm between them, so the collection
-// opens out evenly on every side. `.` is a hole. Every card is one cell or two
-// by two, so all of them keep the 4:3 of the modal's media and open into it
-// without a crop.
+// The profile in the middle, two columns by one row as on the portfolio, and
+// the collection round it: big cards above and below it, small ones on either
+// side, and the examples running down the left edge. `.` is a hole. Every
+// library is one cell or two by two, so all of them keep the 4:3 of the
+// modal's media and open into it without a crop; the profile and the examples
+// list open nothing, so they take whatever shape suits them.
 // biome-ignore format: one row per line, so the template reads as the grid
 const TEMPLATE = [
-  'l1 l1 s1 l3 l3',
-  'l1 l1 s2 l3 l3',
-  's3 s4 profile s5 s6',
-  'l4 l4 s7 l2 l2',
-  'l4 l4 s8 l2 l2',
+  'examples l1 l1 s1 l2 l2 l3 l3',
+  'examples l1 l1 s2 l2 l2 l3 l3',
+  'examples s3 s4 profile profile s5 s6 s7',
+  'l4 l4 l5 l5 l6 l6 l7 l7',
+  'l4 l4 l5 l5 l6 l6 l7 l7',
 ]
 
 const HOLE = '.'

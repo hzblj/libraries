@@ -49,8 +49,9 @@ const targetsOf = (entry: Entry): FocusTarget[] => {
           kind: 'external',
           label: Config.tagline.subject,
         },
-        {area, href: 'https://github.com/hzblj', id: focusIds.contact('GitHub'), kind: 'external', label: 'GitHub'},
-        {area, href: 'https://www.npmjs.com/~hzblj', id: focusIds.contact('npm'), kind: 'external', label: 'npm'},
+        ...Config.links.map(
+          ({name, url}): FocusTarget => ({area, href: url, id: focusIds.contact(name), kind: 'external', label: name})
+        ),
       ]
     case 'contact':
       return entry.contacts.map(({type, url}) => ({
@@ -67,6 +68,14 @@ const targetsOf = (entry: Entry): FocusTarget[] => {
         id: focusIds.technology(title),
         kind: 'external',
         label: title,
+      }))
+    case 'examples':
+      return entry.examples.map(({title, url}) => ({
+        area,
+        href: url,
+        id: focusIds.example(title),
+        kind: 'external',
+        label: `${title} example app`,
       }))
     case 'map':
       return [{area, href: Config.location.mapUrl, id: focusIds.map, kind: 'external', label: Config.location.city}]

@@ -5,7 +5,7 @@ import {Config} from '@/config'
 // every card is only ever drawn in two copies per axis.
 //
 // On mobile pinch may shrink down to MOBILE_MIN_ZOOM, but never past fitZoom:
-// the 1530x1170 tile is small next to the portfolio's, so a phone held upright
+// the 2448x1170 tile is small next to the portfolio's, so a phone held upright
 // fits its whole height well before that.
 export const MIN_ZOOM = 1
 export const MOBILE_MIN_ZOOM = 0.5

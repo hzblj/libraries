@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* One sentence in three languages and the English it comes out as, the
+         two stacked like the example's icon: German, Japanese, then Czech,
+         which Apple's framework lacks, so ML Kit takes it. The English streams
+         in word by word as the engine hands it over, then the example's pills
+         say what translated it and how fast. Drawn in the example's manner
+         (kara's grouped cards and pills) rather than from its captures, which
+         show Wikipedia's articles. */
+      .glow {
+        --glow: 92 100 255;
+        --strength: 0.26;
+        height: 440px;
+        left: 90px;
+        top: -20px;
+        width: 440px;
+      }
+
+      .panel {
+        border-radius: 22px;
+        font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+        padding: 18px 20px;
+        position: absolute;
+        width: 400px;
+      }
+
+      .source {
+        background: #1c1c1e;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+          0 24px 60px rgba(0, 0, 0, 0.5);
+        height: 112px;
+        left: 36px;
+        top: 58px;
+      }
+
+      .target {
+        background: #232327;
+        box-shadow:
+          inset 0 0 0 1px rgba(130, 138, 255, 0.3),
+          0 30px 80px rgba(0, 0, 0, 0.6);
+        height: 112px;
+        left: 160px;
+        top: 190px;
+      }
+
+      .chip {
+        align-items: center;
+        color: rgba(235, 235, 245, 0.6);
+        display: flex;
+        font-size: 13px;
+        font-weight: 600;
+        gap: 8px;
+        height: 20px;
+        left: 20px;
+        letter-spacing: -0.1px;
+        position: absolute;
+        top: 18px;
+      }
+
+      .flag {
+        border-radius: 50%;
+        flex: none;
+        height: 20px;
+        overflow: hidden;
+        position: relative;
+        width: 20px;
+      }
+
+      .flag img {
+        height: 100%;
+        left: 50%;
+        position: absolute;
+        top: 0;
+        transform: translateX(-50%);
+      }
+
+      .flag::after {
+        border-radius: 50%;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+        content: '';
+        inset: 0;
+        position: absolute;
+      }
+
+      .text {
+        font-size: 21px;
+        font-weight: 600;
+        left: 20px;
+        letter-spacing: -0.4px;
+        line-height: 27px;
+        position: absolute;
+        right: 20px;
+        top: 52px;
+      }
+
+      .source .text {
+        color: rgba(235, 235, 245, 0.62);
+      }
+
+      .target .text {
+        color: #fff;
+      }
+
+      .word {
+        display: inline-block;
+        white-space: pre;
+      }
+
+      .skeleton {
+        left: 20px;
+        position: absolute;
+        right: 20px;
+        top: 58px;
+      }
+
+      .skeleton i {
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.07));
+        background-size: 200% 100%;
+        border-radius: 7px;
+        display: block;
+        height: 15px;
+        margin-bottom: 12px;
+      }
+
+      .swap {
+        align-items: center;
+        background: linear-gradient(180deg, #6f78ff, #4a4fe0);
+        border-radius: 50%;
+        box-shadow:
+          0 0 0 5px #181818,
+          0 8px 24px rgba(74, 79, 224, 0.45);
+        display: flex;
+        height: 40px;
+        justify-content: center;
+        left: 280px;
+        position: absolute;
+        top: 160px;
+        width: 40px;
+      }
+
+      .meta {
+        display: flex;
+        gap: 6px;
+        left: 180px;
+        position: absolute;
+        top: 318px;
+      }
+
+      .pill {
+        background: rgba(120, 120, 128, 0.24);
+        border-radius: 999px;
+        color: rgba(235, 235, 245, 0.62);
+        font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: -0.1px;
+        padding: 3px 9px;
+      }
+
+      .pill.accent {
+        background: rgba(94, 100, 255, 0.24);
+        color: #a4a9ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card large">
+      <div class="glow"></div>
+      <div class="panel source">
+        <div class="layer" data-side="a">
+          <div class="chip"><span class="flag"><img /></span><span class="name"></span></div>
+          <div class="text"></div>
+        </div>
+        <div class="layer" data-side="b">
+          <div class="chip"><span class="flag"><img /></span><span class="name"></span></div>
+          <div class="text"></div>
+        </div>
+      </div>
+      <div class="panel target">
+        <div class="chip">
+          <span class="flag"><img src="/artwork/flags/GB.svg" /></span><span>English</span>
+        </div>
+        <div class="skeleton"><i style="width: 86%"></i></div>
+        <div class="text"></div>
+      </div>
+      <div class="swap">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2.5v11M3.5 9 8 13.5 12.5 9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <div class="meta">
+        <span class="pill accent engine"></span><span class="pill time"></span><span class="pill">On device</span>
+      </div>
+    </div>
+    <script type="module">
+      import {mix} from './anim.js'
+
+      const LANGUAGES = [
+        {engine: 'Apple', flag: 'DE', name: 'German', text: 'Der Zug nach Prag fährt um acht.', time: '42 ms'},
+        {engine: 'Apple', flag: 'JP', name: 'Japanese', text: 'プラハ行きの電車は8時に出ます。', time: '57 ms'},
+        {engine: 'ML Kit', flag: 'CZ', name: 'Czech', text: 'Vlak do Prahy odjíždí v osm.', time: '31 ms'},
+      ]
+      const ENGLISH = 'The train to Prague leaves at eight.'
+
+      // Each language holds the card for PHASE seconds. The clip starts with
+      // the German already through, so its first frame (the card's still)
+      // shows a translation done.
+      const PHASE = 2.7
+      const PERIOD = PHASE * LANGUAGES.length
+      const OFFSET = 2.1
+
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+      const out = value => 1 - (1 - clamp(value)) ** 3
+      const span = (at, from, length) => clamp((at - from) / length)
+
+      const sides = [...document.querySelectorAll('.source .layer')]
+      const fill = (side, language) => {
+        side.querySelector('img').src = `/artwork/flags/${language.flag}.svg`
+        side.querySelector('.name').textContent = language.name
+        side.querySelector('.text').textContent = language.text
+      }
+
+      const target = document.querySelector('.target .text')
+      const skeleton = document.querySelector('.skeleton')
+      const words = ENGLISH.split(' ').map((text, index, all) => {
+        const word = document.createElement('span')
+        word.className = 'word'
+        word.textContent = index < all.length - 1 ? `${text} ` : text
+        target.append(word)
+
+        return word
+      })
+
+      const engine = document.querySelector('.engine')
+      const time = document.querySelector('.time')
+      const meta = document.querySelector('.meta')
+
+      // A word arrives blurred and a little low, and settles.
+      const STREAM = 0.5
+      const STAGGER = 0.075
+      const ARRIVE = 0.34
+      const DONE = STREAM + STAGGER * (words.length - 1) + ARRIVE
+
+      await document.fonts.ready
+
+      window.DURATION = PERIOD
+      window.FPS = 60
+
+      window.frame = t => {
+        const at = (t + OFFSET) % PERIOD
+        const index = Math.floor(at / PHASE)
+        const local = at - index * PHASE
+        const current = LANGUAGES[index]
+        const previous = LANGUAGES[(index + LANGUAGES.length - 1) % LANGUAGES.length]
+
+        // The source crossfades from the last language to this one.
+        fill(sides[0], previous)
+        fill(sides[1], current)
+        const swap = out(span(local, 0, 0.45))
+        Object.assign(sides[0].style, {
+          filter: `blur(${(swap * 6).toFixed(2)}px)`,
+          opacity: String(1 - swap),
+          transform: `translateY(${(-6 * swap).toFixed(2)}px)`,
+        })
+        Object.assign(sides[1].style, {
+          filter: `blur(${((1 - swap) * 6).toFixed(2)}px)`,
+          opacity: String(swap),
+          transform: `translateY(${(6 * (1 - swap)).toFixed(2)}px)`,
+        })
+
+        // The English goes, a skeleton holds its place, and it streams back.
+        const gone = out(span(local, 0, 0.22))
+        skeleton.style.opacity = String(span(local, 0.12, 0.12) * (1 - span(local, STREAM, 0.25)))
+        skeleton.querySelectorAll('i').forEach(bar => {
+          bar.style.backgroundPosition = `${(100 - span(local, 0.1, 0.7) * 200).toFixed(1)}% 0`
+        })
+
+        words.forEach((word, position) => {
+          const arrive = out(span(local, STREAM + STAGGER * position, ARRIVE))
+          const shown = local < STREAM ? 1 - gone : arrive
+          Object.assign(word.style, {
+            filter: `blur(${((1 - shown) * 5).toFixed(2)}px)`,
+            opacity: shown.toFixed(3),
+            transform: `translateY(${((1 - shown) * 5).toFixed(2)}px)`,
+          })
+        })
+
+        // The pills follow the translation: what was, then what is.
+        const metaOut = out(span(local, 0, 0.2))
+        const metaIn = out(span(local, DONE - 0.1, 0.3))
+        const label = local < DONE - 0.1 ? previous : current
+        engine.textContent = label.engine
+        time.textContent = label.time
+        const shown = local < DONE - 0.1 ? 1 - metaOut : metaIn
+        Object.assign(meta.style, {
+          opacity: shown.toFixed(3),
+          transform: `translateY(${mix(4, 0, shown).toFixed(2)}px)`,
+        })
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

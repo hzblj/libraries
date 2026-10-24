@@ -6,16 +6,104 @@
     <style>
       /* A line chart in Zyplot's violet, the way its iOS renderer draws one: a
          smoothed trace over a gradient fill, a few hairline rules and the scrub
-         lollipop, a rule and a point with the reading above it. On hover the
-         data changes twice and comes back, each value springing to its new
-         height, while the reading follows a finger to a new point. */
+         lollipop, a rule and a point with the reading above it, under the
+         total and a period picker. On hover the period changes twice and comes
+         back, each value springing to its new height and the total counting
+         along, while the reading follows a finger to a new point. */
       .glow {
         --glow: 68 0 252;
-        --strength: 0.16;
-        height: 320px;
-        left: -15px;
-        top: -80px;
-        width: 320px;
+        --strength: 0.18;
+        height: 520px;
+        left: -40px;
+        top: -170px;
+        width: 520px;
+      }
+
+      .head {
+        left: 32px;
+        position: absolute;
+        top: 34px;
+      }
+
+      .caption {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .total {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        margin-top: 4px;
+      }
+
+      .amount {
+        font-size: 36px;
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        letter-spacing: -0.8px;
+        line-height: 44px;
+      }
+
+      .delta {
+        background: rgba(106, 61, 255, 0.2);
+        border-radius: 8px;
+        color: #b9a6ff;
+        font-size: 13px;
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        line-height: 24px;
+        padding: 0 8px;
+      }
+
+      .periods {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.08);
+        display: flex;
+        height: 32px;
+        padding: 3px;
+        position: absolute;
+        right: 32px;
+        top: 44px;
+      }
+
+      .periods span {
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 26px;
+        position: relative;
+        text-align: center;
+        width: 44px;
+        z-index: 1;
+      }
+
+      .thumb {
+        background: rgba(106, 61, 255, 0.42);
+        border-radius: 7px;
+        box-shadow: 0 2px 10px rgba(68, 0, 252, 0.35);
+        height: 26px;
+        left: 3px;
+        position: absolute;
+        top: 3px;
+        width: 44px;
+      }
+
+      .months {
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 11px;
+        font-weight: 500;
+        left: 0;
+        position: absolute;
+        top: 350px;
+        width: 596px;
+      }
+
+      .months span {
+        position: absolute;
+        transform: translateX(-50%);
       }
 
       svg {
@@ -41,7 +129,7 @@
         height: 26px;
         padding: 0 9px;
         position: absolute;
-        top: 16px;
+        top: 108px;
         white-space: nowrap;
       }
 
@@ -62,11 +150,16 @@
     </style>
   </head>
   <body>
-    <div class="card small">
+    <div class="card large">
       <div class="glow"></div>
-      <svg width="290" height="218" viewBox="0 0 290 218">
+      <div class="head">
+        <div class="caption">Revenue</div>
+        <div class="total"><span class="amount"></span><span class="delta"></span></div>
+      </div>
+      <div class="periods"><div class="thumb"></div><span>1M</span><span>6M</span><span>1Y</span></div>
+      <svg width="596" height="452" viewBox="0 0 596 452">
         <defs>
-          <linearGradient id="fill" gradientUnits="userSpaceOnUse" x1="0" y1="52" x2="0" y2="150">
+          <linearGradient id="fill" gradientUnits="userSpaceOnUse" x1="0" y1="150" x2="0" y2="340">
             <stop offset="0" stop-color="#5b2bff" stop-opacity="0.42" />
             <stop offset="1" stop-color="#4400fc" stop-opacity="0" />
           </linearGradient>
@@ -82,18 +175,19 @@
             <stop offset="1" stop-color="#fff" stop-opacity="0" />
           </linearGradient>
           <mask id="fade">
-            <rect width="290" height="218" fill="url(#ends)" />
+            <rect width="596" height="452" fill="url(#ends)" />
           </mask>
         </defs>
         <g class="rules" mask="url(#fade)"></g>
         <g mask="url(#fade)">
           <path class="area" fill="url(#fill)" />
-          <path class="trace" fill="none" stroke="url(#stroke)" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
+          <path class="trace" fill="none" stroke="url(#stroke)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
         </g>
         <line class="rule" stroke="rgba(255, 255, 255, 0.4)" stroke-width="1" />
-        <circle class="halo" r="9" fill="rgba(124, 92, 255, 0.28)" />
-        <circle class="point" r="4.5" fill="#fff" stroke="#6a3dff" stroke-width="2.5" />
+        <circle class="halo" r="12" fill="rgba(124, 92, 255, 0.28)" />
+        <circle class="point" r="6" fill="#fff" stroke="#6a3dff" stroke-width="3" />
       </svg>
+      <div class="months"></div>
       <div class="bubble"><span class="value"></span><span class="day"></span></div>
     </div>
     <script type="module">
@@ -101,8 +195,9 @@
 
       // The plot: wider than the card, so the trace runs off both edges, and
       // short enough to leave the card's label room underneath.
-      const PLOT = {bottom: 150, left: -12, right: 302, top: 52}
-      const RULES = [52, 85, 118, 150]
+      const WIDTH = 596
+      const PLOT = {bottom: 340, left: -16, right: 612, top: 150}
+      const RULES = [150, 213, 276, 340]
 
       // Three readings of the same twelve months, 0 to 1 of the plot's height.
       const SERIES = [
@@ -111,8 +206,11 @@
         [0.28, 0.38, 0.54, 0.62, 0.55, 0.66, 0.58, 0.7, 0.8, 0.73, 0.62, 0.7],
       ]
 
-      // Where the finger rests on each reading, and what the reading says there.
+      // Where the finger rests on each reading, what the reading says there,
+      // and the period the picker shows for it.
       const SCRUB = [8, 4, 7]
+      const PERIOD = [2, 1, 0]
+      const GROWTH = [12.4, 4.1, 8.7]
       const SCALE = 3400
       const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -136,10 +234,14 @@
       const bubble = card.querySelector('.bubble')
       const value = card.querySelector('.value')
       const day = card.querySelector('.day')
+      const amount = card.querySelector('.amount')
+      const delta = card.querySelector('.delta')
+      const thumb = card.querySelector('.thumb')
+      const months = card.querySelector('.months')
 
       for (const y of RULES) {
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-        Object.entries({stroke: 'rgba(255, 255, 255, 0.08)', x1: 0, x2: 290, y1: y + 0.5, y2: y + 0.5}).forEach(
+        Object.entries({stroke: 'rgba(255, 255, 255, 0.08)', x1: 0, x2: WIDTH, y1: y + 0.5, y2: y + 0.5}).forEach(
           ([name, attribute]) => line.setAttribute(name, attribute)
         )
         rules.append(line)
@@ -147,6 +249,13 @@
 
       const xOf = index => PLOT.left + (index / (COUNT - 1)) * (PLOT.right - PLOT.left)
       const yOf = level => PLOT.bottom - level * (PLOT.bottom - PLOT.top)
+
+      for (const index of [1, 4, 7, 10]) {
+        const label = document.createElement('span')
+        label.textContent = MONTHS[index]
+        label.style.left = `${xOf(index)}px`
+        months.append(label)
+      }
 
       // Catmull-Rom through the points, as cubic Béziers: the smoothed line
       // Swift Charts draws with `.catmullRom` interpolation.
@@ -182,6 +291,22 @@
         return mix(SCRUB[step], SCRUB[(step + 1) % SERIES.length], spring(local, 0.8, 0.86))
       }
 
+      // The picker's thumb slides to the next period as the data starts to change.
+      const periodAt = t => {
+        const step = Math.floor(t / STEP) % SERIES.length
+        const local = t - step * STEP - HOLD
+
+        return mix(PERIOD[step], PERIOD[(step + 1) % SERIES.length], spring(local + 0.1, 0.55, 0.8))
+      }
+
+      // The growth beside the total, counting along with the data.
+      const growthAt = t => {
+        const step = Math.floor(t / STEP) % SERIES.length
+        const local = t - step * STEP - HOLD
+
+        return mix(GROWTH[step], GROWTH[(step + 1) % SERIES.length], spring(local, 0.85, 0.72))
+      }
+
       const format = number => Math.round(number).toLocaleString('en-US')
 
       window.frame = t => {
@@ -198,7 +323,7 @@
 
         rule.setAttribute('x1', x)
         rule.setAttribute('x2', x)
-        rule.setAttribute('y1', 46)
+        rule.setAttribute('y1', 138)
         rule.setAttribute('y2', PLOT.bottom + 6)
         halo.setAttribute('cx', x)
         halo.setAttribute('cy', y)
@@ -209,7 +334,12 @@
         day.textContent = MONTHS[Math.round(scrub)]
 
         const width = bubble.offsetWidth
-        bubble.style.left = `${Math.min(Math.max(x - width / 2, 12), 290 - 12 - width)}px`
+        bubble.style.left = `${Math.min(Math.max(x - width / 2, 12), WIDTH - 12 - width)}px`
+
+        const last = now[COUNT - 1]
+        amount.textContent = `$${format(last * SCALE)}`
+        delta.textContent = `+${growthAt(t).toFixed(1)}%`
+        thumb.style.transform = `translateX(${(periodAt(t) * 44).toFixed(2)}px)`
       }
 
       window.frame(0)

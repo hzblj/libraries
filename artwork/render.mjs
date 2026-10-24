@@ -22,6 +22,8 @@ import {tmpdir} from 'node:os'
 import {dirname, extname, join, normalize, resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
+import {squirclePoints} from './cards/anim.js'
+
 const require = createRequire(import.meta.url)
 const sharp = require('sharp')
 
@@ -30,6 +32,7 @@ const APP = resolve(HERE, '..')
 const KARA = resolve(APP, '../kara-ui')
 const MEDIA = join(KARA, 'apps/website/public/media')
 const PORTFOLIO = resolve(APP, '../portfolio/public')
+const SIBLINGS = resolve(APP, '..')
 const BUILD = join(HERE, 'build')
 const OUT = join(APP, 'public/libraries')
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
@@ -70,6 +73,8 @@ const CARDS = {
   'expo-paypal': 'large',
   'expo-rich-haptics': 'small',
   'expo-speech': 'small',
+  'expo-translation': 'large',
+  'expo-waveform': 'large',
   'expo-zoom-transition': 'large',
   'kara-ui': 'large',
   'libraries-in-portfolio': 'portfolio',
@@ -77,11 +82,31 @@ const CARDS = {
   portfolio: 'small',
   'react-native-expo-monorepo': 'small',
   skills: 'large',
-  zyplot: 'small',
+  zyplot: 'large',
 }
 
 // Real kara components, as the website's shots photographed them, cut to their own bounds.
 const CAPTURES = ['button', 'chip', 'list', 'segmented-control', 'slider', 'stepper', 'switch']
+
+// The examples card's icons: each example app's own icon where it has one, in
+// its repository beside this one, and for those without, one drawn here in the
+// same manner (artwork/examples): a white glyph on a ground of one colour, top
+// lighter. App Icons shows the glass icon its example switches to.
+const EXAMPLE_ICONS = {
+  'expo-app-icons': join(SIBLINGS, 'expo-app-icons/apps/example/assets/app-icons/glass/dark.png'),
+  'expo-flags-kit': join(HERE, 'examples/expo-flags-kit.svg'),
+  'expo-native-icons': join(HERE, 'examples/expo-native-icons.svg'),
+  'expo-paypal': join(SIBLINGS, 'expo-paypal/apps/example/assets/icon.png'),
+  'expo-rich-haptics': join(HERE, 'examples/expo-rich-haptics.svg'),
+  'expo-speech': join(SIBLINGS, 'expo-speech/apps/example/assets/icon.png'),
+  'expo-translation': join(SIBLINGS, 'expo-translation/apps/example/assets/icon.png'),
+  'expo-waveform': join(SIBLINGS, 'expo-waveform/apps/example/assets/icon.png'),
+  'expo-zoom-transition': join(HERE, 'examples/expo-zoom-transition.svg'),
+  'kara-ui': join(KARA, 'apps/example/assets/ios-dark.png'),
+  zyplot: join(SIBLINGS, 'zyplot/apps/example/assets/icon.png'),
+}
+
+const EXAMPLE_ICON = 256
 
 const TYPES = {
   '.css': 'text/css',
@@ -189,6 +214,36 @@ const preparePortfolio = async () => {
     .resize({width: 480})
     .png()
     .toFile(join(out, 'gallery.png'))
+}
+
+// Cut to the squircle iOS draws icons in, with a faint light rim so the dark
+// ones (Kara's, the glass one) keep their edge on the card's dark ground.
+const drawExampleIcons = async () => {
+  const out = join(APP, 'public/examples')
+  const size = EXAMPLE_ICON
+  const points = squirclePoints(size)
+  const mask = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><polygon points="${points}"/></svg>`
+  )
+  const rim = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><polygon points="${points}" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="4"/></svg>`
+  )
+  mkdirSync(out, {recursive: true})
+
+  for (const [name, source] of Object.entries(EXAMPLE_ICONS)) {
+    const icon = await sharp(source, {density: 72})
+      .resize(size, size)
+      .composite([{blend: 'dest-in', input: mask}])
+      .png()
+      .toBuffer()
+
+    await sharp(icon)
+      .composite([{blend: 'atop', input: rim}])
+      .png()
+      .toFile(join(out, `${name}.png`))
+  }
+
+  console.log(`examples -> public/examples (${Object.keys(EXAMPLE_ICONS).length} icons)`)
 }
 
 // One headless Chrome for every page, with its own profile: without one it hands
@@ -443,6 +498,11 @@ const composeZoomClip = async (still, {width, height}) => {
 }
 
 const only = process.argv[2]
+
+if (!only || 'examples'.includes(only)) {
+  await drawExampleIcons()
+}
+
 const server = await serve()
 const browser = await launch()
 const base = `http://localhost:${server.address().port}/artwork/cards`

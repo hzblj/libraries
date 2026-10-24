@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- A phone between two pairs of arcs, buzzing, on amber. -->
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffb23e" />
+      <stop offset="1" stop-color="#f06a00" />
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#ground)" />
+  <rect x="392" y="262" width="240" height="500" rx="60" fill="#fff" />
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-width="44">
+    <path d="M318 412c-28 32-28 168 0 200" />
+    <path d="M706 412c28 32 28 168 0 200" />
+    <path d="M228 352c-56 64-56 256 0 320" opacity="0.55" />
+    <path d="M796 352c56 64 56 256 0 320" opacity="0.55" />
+  </g>
+</svg>

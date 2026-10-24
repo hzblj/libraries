@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 14 224 104">
+  <!-- "hzblj": the favicon's h (artwork/favicon.svg) in Kara's orange, leading,
+       and the rest drawn the same way, one stroke width with round ends on the
+       same baseline, a size smaller, in the site's white ink. -->
+  <defs>
+    <linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="0" y1="30" x2="0" y2="116">
+      <stop offset="0" stop-color="#fff" />
+      <stop offset="1" stop-color="#fff" stop-opacity="0.66" />
+    </linearGradient>
+  </defs>
+  <path fill="none" stroke="#ff5700" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" d="M32 24V84M32 84V60A18 18 0 0 1 68 60V84" />
+  <g transform="translate(92 84) scale(0.82) translate(-98 -84)">
+    <g fill="none" stroke="url(#ink)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M98 42H130L98 84H130" />
+      <path d="M158 24V84M158 60A18 18 0 0 1 194 60V66A18 18 0 0 1 158 66" />
+      <path d="M224 24V84" />
+      <path d="M254 42V98A14 14 0 0 1 240 112" />
+    </g>
+    <circle cx="254" cy="23" r="9" fill="url(#ink)" />
+  </g>
+</svg>

@@ -1,4 +1,13 @@
-export type EntryVariant = 'shot' | 'link' | 'contact' | 'map' | 'cv' | 'profile' | 'gallery' | 'technologies'
+export type EntryVariant =
+  | 'shot'
+  | 'link'
+  | 'contact'
+  | 'map'
+  | 'cv'
+  | 'profile'
+  | 'gallery'
+  | 'technologies'
+  | 'examples'
 
 export type ShotSize = 's' | 'l'
 export type ShotArea = `${ShotSize}${number}`
@@ -61,6 +70,26 @@ export type EntryLink = Pick<
   variant: Extract<EntryVariant, 'link'>
 }
 
+/** One library's example app in the examples card: its icon, what it shows, and where its source lives. */
+export type EntryExample = {
+  title: string
+  /** What the example shows, in a few words under its title. */
+  description: string
+  icon: string
+  url: string
+}
+
+/** A tall card listing every library's example app, each row a link to its source rather than a dialog. */
+export type EntryExamples = {
+  area: 'examples'
+  title: string
+  subtitle: string
+  examples: EntryExample[]
+  variant: Extract<EntryVariant, 'examples'>
+  slug: string
+  animation?: AnimationConfig
+}
+
 export type Contact = {
   type: string
   url: string
@@ -119,6 +148,7 @@ export type Entry =
   | EntryProfile
   | EntryGallery
   | EntryTechnologies
+  | EntryExamples
 
 export type Entries = Entry[]
 

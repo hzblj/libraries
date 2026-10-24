@@ -6,6 +6,7 @@ import type {Entries} from '@/db'
 
 import {ContactCard} from './contact'
 import {CVCard} from './cv'
+import {ExamplesCard} from './examples'
 import {GalleryCard} from './gallery'
 import {MapCard} from './map'
 import {ProfileCard} from './profile'
@@ -23,6 +24,8 @@ export const Cards: FC<CardsProps> = ({entries}) => {
         return <ContactCard key={entry.area} entry={entry} />
       case 'cv':
         return <CVCard key={entry.area} entry={entry} />
+      case 'examples':
+        return <ExamplesCard key={entry.area} entry={entry} />
       case 'gallery':
         return <GalleryCard key={entry.area} entry={entry} />
       case 'map':

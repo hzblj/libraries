@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- A flag on its pole, waving, on teal. -->
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2ccbe0" />
+      <stop offset="1" stop-color="#0b86a8" />
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#ground)" />
+  <rect x="282" y="236" width="48" height="560" rx="24" fill="#fff" />
+  <path
+    fill="#fff"
+    d="M330 288c96-48 184-40 262-8s150 40 224 4c12-6 26 3 26 16v276c0 8-5 16-12 19-82 40-162 32-240 0s-160-40-260 8Z"
+  />
+</svg>
