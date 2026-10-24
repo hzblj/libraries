@@ -150,6 +150,12 @@
       // What fills each area: a shot's own picture, or a sketch of the card the
       // portfolio draws there.
       const fill = (name, cell) => {
+        // Where the portfolio keeps its card leading here.
+        if (name === 's28') {
+          cell.style.backgroundImage = "url('../build/portfolio/libraries.png')"
+          return
+        }
+
         const shot = name.match(/^([sl])(\d+)$/)
 
         if (shot) {

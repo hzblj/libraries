@@ -14,7 +14,7 @@
 // Needs Google Chrome and ffmpeg.
 
 import {execFileSync, spawn} from 'node:child_process'
-import {mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync} from 'node:fs'
+import {copyFileSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync} from 'node:fs'
 import {createServer} from 'node:http'
 import {createRequire} from 'node:module'
 import {tmpdir} from 'node:os'
@@ -39,12 +39,26 @@ const SIZES = {
   large: {height: 452, width: 596},
   // The link preview: 1200×630 is what every platform asks for, at 1x.
   og: {height: 630, scale: 1, width: 1200},
+  // A small card on janblazej.dev: its shots are 4:3 and sharp well past the
+  // card, so this one is laid out at 320×240 and drawn at 4x.
+  portfolio: {height: 240, scale: 4, width: 320},
   small: {height: 218, width: 290},
 }
 
 // Pages whose picture belongs somewhere other than public/libraries.
 const OUTPUTS = {
   'og-image': join(APP, 'public/png/og-image.png'),
+}
+
+// Cards drawn for the portfolio rather than for this site, written into its
+// repository beside this one the way its shots are kept: a JPEG still, an mp4
+// and a webm.
+const EXPORTS = {
+  'libraries-in-portfolio': {
+    jpg: join(PORTFOLIO, 'jpg/libraries.jpg'),
+    mp4: join(PORTFOLIO, 'mp4/libraries.mp4'),
+    webm: join(PORTFOLIO, 'webm/libraries.webm'),
+  },
 }
 
 // The pages and the size of the card each one paints.
@@ -54,6 +68,7 @@ const CARDS = {
   'expo-rich-haptics': 'small',
   'expo-zoom-transition': 'large',
   'kara-ui': 'large',
+  'libraries-in-portfolio': 'portfolio',
   'og-image': 'og',
   portfolio: 'small',
   'react-native-expo-monorepo': 'small',
@@ -158,6 +173,12 @@ const preparePortfolio = async () => {
       join(out, file.replace('.mp4', '.png'))
     )
   }
+
+  // Its Libraries card, drawn by this renderer (libraries-in-portfolio).
+  await sharp(join(PORTFOLIO, 'jpg', 'libraries.jpg'))
+    .resize({width: 480})
+    .png()
+    .toFile(join(out, 'libraries.png'))
 
   await sharp(join(PORTFOLIO, 'png', 'gallery-1.png'))
     .resize({width: 480})
@@ -306,7 +327,15 @@ const animate = async (browser, name, duration) => {
     await shoot(browser, join(frames, `${String(index).padStart(4, '0')}.png`))
   }
 
-  encode(['-framerate', String(fps), '-i', join(frames, '%04d.png'), '-pix_fmt', 'yuv420p'], join(OUT, name))
+  const exported = EXPORTS[name]
+  const base = join(exported ? BUILD : OUT, name)
+  encode(['-framerate', String(fps), '-i', join(frames, '%04d.png'), '-pix_fmt', 'yuv420p'], base)
+
+  if (exported) {
+    copyFileSync(`${base}.mp4`, exported.mp4)
+    copyFileSync(`${base}.webm`, exported.webm)
+    await sharp(`${base}.png`).jpeg({mozjpeg: true, quality: 90}).toFile(exported.jpg)
+  }
 }
 
 const probeWidth = file =>
@@ -433,7 +462,7 @@ try {
     // A sketch beside a card, `expo-rich-haptics.b.html`, takes the card's size and lands in build/.
     const size = SIZES[CARDS[name.split('.')[0]] ?? 'small']
     const isCard = name in CARDS
-    const still = OUTPUTS[name] ?? join(isCard ? OUT : BUILD, `${name}.png`)
+    const still = EXPORTS[name]?.jpg ?? OUTPUTS[name] ?? join(isCard ? OUT : BUILD, `${name}.png`)
 
     await open(browser, `${base}/${name}.html`, size)
     const duration = await browser.evaluate('window.DURATION ?? 0')

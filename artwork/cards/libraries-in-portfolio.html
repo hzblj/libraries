@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <link rel="stylesheet" href="libraries-grid.css" />
+    <style>
+      /* The Libraries card on janblazej.dev, the twin of this site's Portfolio
+         card: this site's grid in miniature, its own stills and labels, with a
+         link to it held up in front. On hover the grid is dragged about the way
+         it is here, each drag settling on a spring, and comes back to where it
+         started. Laid out at 320×240, the portfolio's 4:3. */
+      .card.portfolio {
+        height: 240px;
+        width: 320px;
+      }
+
+      /* Dark at the edges and darkest along the bottom, where the portfolio
+         lays the card's title on hover. */
+      .fade {
+        background:
+          linear-gradient(0deg, #161616 0%, rgba(22, 22, 22, 0.86) 16%, rgba(22, 22, 22, 0) 44%),
+          radial-gradient(70% 78% at 50% 40%, rgba(22, 22, 22, 0) 0%, rgba(22, 22, 22, 0.45) 62%, #161616 100%);
+        inset: 0;
+        position: absolute;
+      }
+
+      .link {
+        align-items: center;
+        backdrop-filter: blur(12px) saturate(1.6);
+        background: rgba(24, 24, 24, 0.66);
+        border-radius: 22px;
+        box-shadow:
+          inset 0 0 0 0.5px rgba(255, 255, 255, 0.22),
+          0 14px 30px rgba(0, 0, 0, 0.55),
+          0 3px 8px rgba(0, 0, 0, 0.35);
+        display: flex;
+        gap: 9px;
+        height: 44px;
+        left: 50%;
+        padding: 0 16px 0 7px;
+        position: absolute;
+        top: 78px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .link img {
+        border-radius: 50%;
+        box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.2);
+        display: block;
+        height: 30px;
+        width: 30px;
+      }
+
+      .link span {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: -0.1px;
+      }
+
+      .link svg {
+        display: block;
+        margin-left: 1px;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card portfolio">
+      <div class="grid"></div>
+      <div class="fade"></div>
+      <div class="link">
+        <img src="/public/png/profile@3x.png" />
+        <span>libraries.janblazej.dev</span>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 8 8 2M3.2 2H8v4.8" />
+        </svg>
+      </div>
+    </div>
+    <script type="module">
+      import {mix, spring} from './anim.js'
+      import {buildGrid} from './libraries-grid.js'
+
+      const SIZE = {height: 240, width: 320}
+      const SCALE = 0.24
+
+      const grid = document.querySelector('.grid')
+      const {width, height} = buildGrid(grid)
+
+      // Centred, and the drags it takes from there: they add up to nothing, so
+      // the loop closes, and none goes further than the grid is wider than the card.
+      const START = {x: (SIZE.width - width * SCALE) / 2, y: (SIZE.height - height * SCALE) / 2 - 8}
+      const DRAGS = [
+        [-20, -8],
+        [12, 14],
+        [24, -9],
+        [-16, 3],
+      ]
+      const STEP = 2
+
+      window.DURATION = STEP * DRAGS.length
+      window.FPS = 60
+
+      window.frame = t => {
+        let x = START.x
+        let y = START.y
+
+        DRAGS.forEach(([dx, dy], index) => {
+          const amount = spring(t - index * STEP - 0.3, 1.1, 0.9)
+          x += mix(0, dx, amount)
+          y += mix(0, dy, amount)
+        })
+
+        grid.style.transform = `translate(${x}px, ${y}px) scale(${SCALE})`
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

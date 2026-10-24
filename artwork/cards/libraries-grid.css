@@ -1,0 +1,104 @@
+/* This site's grid as it draws it, at its own size: the cards' stills in their
+   frames with their labels, and the profile card. Pages scale the container
+   built by libraries-grid.js to whatever they need. */
+.grid {
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+.tile {
+  background: linear-gradient(98deg, #202020 0%, #111111 100%);
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  position: absolute;
+}
+
+.tile img {
+  border-radius: 15px;
+  height: calc(100% - 2px);
+  left: 1px;
+  object-fit: cover;
+  position: absolute;
+  top: 1px;
+  width: calc(100% - 2px);
+}
+
+/* The paper the scene lays over every card, multiplied in. */
+.tile::after {
+  background: url('/public/jpg/texture-paper.jpg') center / cover;
+  border-radius: 15px;
+  content: '';
+  inset: 1px;
+  mix-blend-mode: multiply;
+  opacity: 0.18;
+  position: absolute;
+}
+
+.ink {
+  background: linear-gradient(180deg, #ffffff, rgba(255, 255, 255, 0.48));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.label {
+  bottom: 18px;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 500;
+  left: 18px;
+  position: absolute;
+  z-index: 1;
+}
+
+.label .title {
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.label .subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  line-height: 16px;
+  margin-top: 1px;
+}
+
+.profile {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 500;
+}
+
+.profile .handle {
+  font-size: 20px;
+  line-height: 26px;
+  margin-top: 61px;
+}
+
+.profile .tagline {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  line-height: 20px;
+  margin-top: 4px;
+}
+
+.profile .links {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+  gap: 12px;
+  line-height: 21px;
+  margin-top: 22px;
+}
+
+.profile .dot {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 2px;
+  height: 4px;
+  width: 4px;
+}
