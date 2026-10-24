@@ -2,7 +2,7 @@
 
 import {type FC, useMemo} from 'react'
 
-import {Layer} from '../../entity'
+import {Layer, type Motion} from '../../entity'
 import {useCanvasTexture} from '../../graphics'
 import {ROW_TOP} from './styles'
 
@@ -29,11 +29,12 @@ const drawDot = (ctx: CanvasRenderingContext2D) => {
 type ContactDotProps = {
   x: number
   top?: number
+  motion?: Motion
 }
 
-export const ContactDot: FC<ContactDotProps> = ({x, top = ROW_TOP}) => {
+export const ContactDot: FC<ContactDotProps> = ({x, top = ROW_TOP, motion}) => {
   const map = useCanvasTexture('contact-dot', SIZE, drawDot)
   const rect = useMemo(() => ({...SIZE, x, y: top + 8.5}), [x, top])
 
-  return <Layer rect={rect} map={map} fit="fill" order={1} />
+  return <Layer rect={rect} map={map} fit="fill" motion={motion} order={1} />
 }

@@ -24,7 +24,7 @@ export const ContactLink: FC<ContactLinkProps> = ({label, link, underline, under
       <TextLayer text={label} style={LINK} x={link.x} top={link.y} order={1} motion={entrance} />
       <UnderlineLayer rect={underline} motion={underlineMotion} order={2} />
       <FocusRing id={focusIds.contact(label)} rect={link} radius={6} />
-      {hasDivider && <ContactDot x={link.x + link.width + 12} top={link.y} />}
+      {hasDivider && <ContactDot x={link.x + link.width + 12} top={link.y} motion={entrance} />}
     </>
   )
 }
