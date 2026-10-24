@@ -13,9 +13,11 @@ export const Config = {
     // What they shrink to on the way out, matching the modal card itself.
     scale: 0.95,
   },
-  // What the site says about itself to search engines and link previews.
+  // What the site says about itself to search engines and link previews. Kept
+  // under the ~160 characters a search result shows before cutting it off; the
+  // keywords in app/layout.tsx and the structured data name every library.
   description:
-    'Open-source libraries for Expo and React Native by Jan Blazej: Kara, a native-first design system, Zyplot charts, native zoom transitions, native SVG icons, alternate app icons, rich haptics, country flags, PayPal payments, speech to text, a monorepo starter and agent skills for building apps.',
+    'Open-source Expo and React Native libraries by Jan Blazej: the Kara design system, Zyplot charts, PayPal, speech to text, native icons, haptics and more.',
   fullName: 'Jan Blazej',
   // What the profile card in the middle of the grid says.
   handle: 'hzblj',
