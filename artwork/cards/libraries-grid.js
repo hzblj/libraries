@@ -56,10 +56,24 @@ const ROW = 218
 const GAP = 16
 const PADDING = 2
 
+// The site's hint row (src/scene/cards/profile/styles.ts), still: the keycaps as
+// the loop has them with W pressed.
+const KEYCAPS = [
+  {pressed: true, x: 9.5, y: 4},
+  {x: 3, y: 10.5},
+  {x: 9.5, y: 10.5},
+  {x: 16, y: 10.5},
+]
+  .map(({pressed, x, y}) => `<img class="keycap${pressed ? ' pressed' : ''}" src="/public/svg/key-cap.svg" style="left: ${x}px; top: ${y + 4}px" />`)
+  .join('')
+
+const HINTS = `<span class="arrows"><img src="/public/svg/arrows.svg" /></span><span>Drag</span><span class="muted">or use</span><span class="keyboard">${KEYCAPS}</span><span>WSAD keys</span><span class="muted">to explore</span>`
+
 const PROFILE = `<div class="profile">
   <img class="wordmark" src="/public/svg/wordmark.svg" />
   <div class="tagline">Libraries for <span class="ink">Expo</span></div>
   <div class="links">${['github', 'npm'].map(name => `<span class="pill"><img src="/public/svg/${name}.svg" /><span class="ink">${name === 'github' ? 'GitHub' : name}</span>${ARROW}</span>`).join('')}</div>
+  <div class="hints">${HINTS}</div>
 </div>`
 
 /** Fills `container` with the grid at its own size; returns that size and the profile card's centre. */

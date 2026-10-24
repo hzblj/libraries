@@ -122,6 +122,69 @@
   width: 9px;
 }
 
+.profile .hints {
+  align-items: center;
+  bottom: 30px;
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  font-size: 12px;
+  font-weight: 400;
+  height: 24px;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.profile .hints > * {
+  margin-right: 6px;
+}
+
+.profile .hints > :last-child {
+  margin-right: 0;
+}
+
+.profile .hints .muted {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.profile .hints .arrows,
+.profile .hints .keyboard {
+  height: 24px;
+  position: relative;
+}
+
+.profile .hints .arrows {
+  width: 16px;
+}
+
+.profile .hints .arrows img {
+  border-radius: 0;
+  height: 24px;
+  left: -4px;
+  position: absolute;
+  top: 2px;
+  width: 24px;
+}
+
+.profile .hints .keyboard {
+  margin-right: 4px;
+  width: 25px;
+}
+
+.profile .hints .keycap {
+  border-radius: 0;
+  height: 6px;
+  opacity: 0.2;
+  position: absolute;
+  width: 6px;
+}
+
+.profile .hints .keycap.pressed {
+  opacity: 0.8;
+  transform: scale(0.8);
+}
+
 .examples {
   font-family: Inter, system-ui, sans-serif;
   font-weight: 500;
