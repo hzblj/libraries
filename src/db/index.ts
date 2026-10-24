@@ -1,8 +1,6 @@
 import profile from './entries/profile'
 import type {AnimationConfig, Entries} from './types'
 
-const REQUIRES = {name: 'Requires', value: 'Expo SDK 57+ · Development build'}
-
 // Every card grows out of the corner that faces the profile, so the collection
 // opens outwards from the middle.
 const growFrom = (origin: string, x: number, y: number, delay: number): AnimationConfig => ({
@@ -40,7 +38,6 @@ export const entries: Entries = [
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-app-icons', value: 'hzblj/expo-app-icons'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-app-icons', value: '@hzblj/expo-app-icons'},
-      REQUIRES,
     ],
     size: 'small',
     slug: 'expo-app-icons',
@@ -61,7 +58,6 @@ export const entries: Entries = [
         url: 'https://github.com/hzblj/react-native-expo-monorepo',
         value: 'hzblj/react-native-expo-monorepo',
       },
-      {name: 'Stack', value: 'Expo · TypeScript · Turborepo'},
     ],
     size: 'small',
     slug: 'react-native-expo-monorepo',
@@ -83,7 +79,6 @@ export const entries: Entries = [
         url: 'https://www.npmjs.com/package/@hzblj/expo-zoom-transition',
         value: '@hzblj/expo-zoom-transition',
       },
-      REQUIRES,
     ],
     size: 'large',
     slug: 'expo-zoom-transition',
@@ -101,7 +96,6 @@ export const entries: Entries = [
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-flags-kit', value: 'hzblj/expo-flags-kit'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-flags-kit', value: '@hzblj/expo-flags-kit'},
-      REQUIRES,
     ],
     size: 'small',
     slug: 'expo-flags-kit',
@@ -123,7 +117,6 @@ export const entries: Entries = [
         url: 'https://www.npmjs.com/package/@hzblj/expo-rich-haptics',
         value: '@hzblj/expo-rich-haptics',
       },
-      REQUIRES,
     ],
     size: 'small',
     slug: 'expo-rich-haptics',
@@ -164,7 +157,6 @@ export const entries: Entries = [
         url: 'https://www.npmjs.com/package/@hzblj/expo-native-icons',
         value: '@hzblj/expo-native-icons',
       },
-      REQUIRES,
     ],
     size: 'small',
     slug: 'expo-native-icons',
@@ -179,7 +171,10 @@ export const entries: Entries = [
     description:
       'PayPal Checkout with App Switch, Pay Later and PayPal Credit, vaulting, and card payments with 3D Secure, behind one promise-based API. PayPal’s own buttons come along as native views.',
     image: '/libraries/expo-paypal.png',
-    properties: [{name: 'GitHub', url: 'https://github.com/hzblj/expo-paypal', value: 'hzblj/expo-paypal'}, REQUIRES],
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/expo-paypal', value: 'hzblj/expo-paypal'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-paypal', value: '@hzblj/expo-paypal'},
+    ],
     size: 'large',
     slug: 'expo-paypal',
     subtitle: 'PayPal on the native SDK',
@@ -196,7 +191,6 @@ export const entries: Entries = [
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/skills', value: 'hzblj/skills'},
       {name: 'skills.sh', url: 'https://skills.sh/hzblj/skills', value: 'skills.sh/hzblj/skills'},
-      {name: 'Works with', value: 'Claude Code · Codex · Cursor'},
     ],
     size: 'large',
     slug: 'skills',
@@ -211,7 +205,7 @@ export const entries: Entries = [
     description:
       'Speech to text for Expo on the platforms’ own speech APIs: SpeechAnalyzer on iOS, with SFSpeechRecognizer before it, and the on-device SpeechRecognizer on Android. Files or the microphone, with every word’s timing for titles that follow the audio.',
     image: '/libraries/expo-speech.png',
-    properties: [{name: 'GitHub', url: 'https://github.com/hzblj/expo-speech', value: 'hzblj/expo-speech'}, REQUIRES],
+    properties: [{name: 'GitHub', url: 'https://github.com/hzblj/expo-speech', value: 'hzblj/expo-speech'}],
     size: 'small',
     slug: 'expo-speech',
     subtitle: 'Speech to text, natively',
