@@ -1,9 +1,10 @@
+import gsap from 'gsap'
 import {useCallback} from 'react'
 
 import type {EntryLink, EntryShot} from '@/db'
 import {trackProjectView} from '@/lib/analytics'
 
-import {useEntity} from '../../entity'
+import {useEntity, useMotion} from '../../entity'
 import {openExternal, setCursor} from '../../interaction'
 import {openCard} from '../../state'
 import {useHoverVideo} from './useHoverVideo'
@@ -13,6 +14,7 @@ type PointerLike = {pointerType: string}
 export const useShotInteraction = (entry: EntryShot | EntryLink) => {
   const {slot, worldRect} = useEntity()
   const video = useHoverVideo(entry.videos)
+  const badge = useMotion({opacity: 1, scale: 1})
 
   const onPointerEnter = useCallback(
     (_: unknown, event: PointerLike) => {
@@ -21,9 +23,10 @@ export const useShotInteraction = (entry: EntryShot | EntryLink) => {
       }
 
       setCursor(true)
+      gsap.to(badge, {duration: 0.35, ease: 'power2.out', opacity: 0, scale: 0.9})
       video.play()
     },
-    [video]
+    [badge, video]
   )
 
   const onPointerLeave = useCallback(
@@ -33,9 +36,10 @@ export const useShotInteraction = (entry: EntryShot | EntryLink) => {
       }
 
       setCursor(false)
+      gsap.to(badge, {delay: 0.05, duration: 0.35, ease: 'power2.out', opacity: 1, scale: 1})
       video.stop()
     },
-    [video]
+    [badge, video]
   )
 
   const onClick = useCallback(() => {
@@ -52,5 +56,5 @@ export const useShotInteraction = (entry: EntryShot | EntryLink) => {
     )
   }, [entry, slot, video, worldRect])
 
-  return {handlers: {onClick, onPointerEnter, onPointerLeave}, video: video.source}
+  return {badge, handlers: {onClick, onPointerEnter, onPointerLeave}, video: video.source}
 }
