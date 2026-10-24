@@ -5,13 +5,13 @@ import type {Group, Mesh} from 'three'
 import type {Entry} from '@/db'
 import {view, viewBounds} from '../camera'
 import {createCacheMaterial} from '../graphics'
-import {getAreaRect} from '../grid'
+import {firstCopy, getAreaRect, mod, PERIOD} from '../grid'
 import {isSourceSlot} from '../state'
 import {bakedQuadSize, createBakedSlot, markSceneChanged, registerBakedSlot} from './bake'
 import type {EntityValue} from './EntityContext'
 import {parseOrigin, useEntrance} from './useEntrance'
 
-export const SLOTS = [0] as const
+export const SLOTS = [0, 1, 2, 3] as const
 
 const REST = 150
 
@@ -58,7 +58,9 @@ export const useSlots = (entry: Entry) => {
   }, [baked])
 
   useFrame(({gl, size}) => {
-    const {right, bottom} = viewBounds()
+    const {left, top, right, bottom} = viewBounds()
+    const firstX = firstCopy(rect.x, rect.width, PERIOD.x, left)
+    const firstY = firstCopy(rect.y, rect.height, PERIOD.y, top)
     const shiftX = enter.x + (rect.width / 2) * (1 - enter.scale) * originX
     const shiftY = enter.y + (rect.height / 2) * (1 - enter.scale) * originY
     const dpr = gl.getPixelRatio()
@@ -82,8 +84,8 @@ export const useSlots = (entry: Entry) => {
         continue
       }
 
-      const x = rect.x
-      const y = rect.y
+      const x = rect.x + (firstX + mod((slot & 1) - firstX, 2)) * PERIOD.x
+      const y = rect.y + (firstY + mod((slot >> 1) - firstY, 2)) * PERIOD.y
       const open = isSourceSlot(entry.slug, slot)
       const visible = x < right && y < bottom && !open
 

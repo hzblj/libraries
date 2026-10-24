@@ -26,7 +26,7 @@ export const usePanToArea = () => {
         return
       }
 
-      const base = calculateScale(view.width)
+      const base = calculateScale(view.width, view.height)
       const proxy = {x: 0, y: 0}
       let last = {x: 0, y: 0}
 

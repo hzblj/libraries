@@ -15,7 +15,7 @@ const calculateCenterOfViewport = () => {
   const height = window?.visualViewport?.height || window?.innerHeight
   const width = window?.visualViewport?.width || window?.innerWidth
 
-  const scale = calculateScale(width)
+  const scale = calculateScale(width, height)
   const scaledWidth = width / scale
   const scaledHeight = height / scale
 

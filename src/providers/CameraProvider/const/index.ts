@@ -4,9 +4,9 @@ import {Config} from '@/config'
 // below 1 would let the visible area in grid space grow past a single tile, and
 // every card is only ever drawn in two copies per axis.
 //
-// On mobile the viewport is tiny relative to one 2448x1638 tile, so there is
-// plenty of safe zoom-out headroom (gaps only appear well below ~0.3x even on a
-// large tablet) — pinch there is allowed to shrink down to MOBILE_MIN_ZOOM.
+// On mobile pinch may shrink down to MOBILE_MIN_ZOOM, but never past fitZoom:
+// the 1530x1170 tile is small next to the portfolio's, so a phone held upright
+// fits its whole height well before that.
 export const MIN_ZOOM = 1
 export const MOBILE_MIN_ZOOM = 0.5
 export const MAX_ZOOM = 2
@@ -21,23 +21,18 @@ export const WHEEL_NOTCH_THRESHOLD = 50
 
 export const clampZoom = (scale: number, min: number = MIN_ZOOM) => Math.min(MAX_ZOOM, Math.max(min, scale))
 
-// How much of the collection always stays on screen, in grid units: one cell of
-// the template in scene/grid/layout.ts, a card and its gap. Panning is free
-// until that much is left at an edge, and stops there.
-export const KEEP_VISIBLE = {x: 306, y: 234}
-
 // Snap to the nearest ZOOM_STEP then move one step, so the buttons always land
 // on clean values (100 %, 125 %, … 200 %) regardless of where wheel zoom left off.
 export const stepZoom = (scale: number, direction: 1 | -1, min: number = MIN_ZOOM) =>
   clampZoom((Math.round(scale / ZOOM_STEP) + direction) * ZOOM_STEP, min)
 
-export const calculateScale = (width: number) => {
+const breakpointScale = (width: number) => {
   if (width <= 767) {
-    return 0.86 // Mobile: cards at the portfolio's size, panned by touch
+    return 0.86 // Mobile
   } else if (width >= 768 && width <= 1023) {
     return 1.0 // Tablet
   } else if (width >= 1024 && width < 1920) {
-    return Math.min(1, (width - 64) / Config.viewport.width) // Finite collection
+    return 1.0 // Small desktop
   } else if (width >= 1920 && width < 2560) {
     return 1.0 // Full HD
   } else if (width >= 2560 && width < 3440) {
@@ -51,4 +46,17 @@ export const calculateScale = (width: number) => {
   }
 
   return 1.0
+}
+
+// The breakpoint scale, raised wherever the screen would otherwise take in more
+// than one tile of the grid, the whole collection and some of it over again.
+export const calculateScale = (width: number, height: number) =>
+  Math.max(breakpointScale(width), width / Config.viewport.width, height / Config.viewport.height)
+
+// The least zoom that still keeps the screen within one tile. At most 1, as
+// calculateScale already fits a tile, so it only ever holds back a pinch on touch.
+export const fitZoom = (width: number, height: number) => {
+  const base = calculateScale(width, height)
+
+  return Math.max(width / (Config.viewport.width * base), height / (Config.viewport.height * base))
 }

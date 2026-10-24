@@ -21,7 +21,9 @@ const HOLE = '.'
 const COLUMN = 290
 const ROW = 218
 const GAP = 16
-const PADDING = 2
+// Half a gap on every side of the tile, so its copies sit one gap apart and
+// the profile's centre is the tile's, where the camera starts.
+const PADDING = GAP / 2
 
 type Bounds = {left: number; right: number; top: number; bottom: number}
 

@@ -19,7 +19,7 @@ export const view = {
 }
 
 export const updateView = (width: number, height: number) => {
-  const scale = calculateScale(width) * cameraInput.scale
+  const scale = calculateScale(width, height) * cameraInput.scale
   const x = cameraInput.camera.x - cameraInput.origin.x + width / (2 * scale)
   const y = cameraInput.camera.y - cameraInput.origin.y + height / (2 * scale)
 
@@ -61,8 +61,8 @@ export const screenToWorld = ({
 })
 
 export const nearestCopy = (rect: Rect) => {
-  const copyX = 0
-  const copyY = 0
+  const copyX = Math.round((view.x - rect.x - rect.width / 2) / PERIOD.x)
+  const copyY = Math.round((view.y - rect.y - rect.height / 2) / PERIOD.y)
 
   return {
     rect: {...rect, x: rect.x + copyX * PERIOD.x, y: rect.y + copyY * PERIOD.y},
