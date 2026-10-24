@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start -p 4400",
     "artwork": "node artwork/render.mjs",
+    "favicon": "node artwork/favicon.mjs",
     "tsc:check": "next typegen && tsc --noEmit",
     "biome:check": "biome check",
     "biome:fix": "biome check --write",

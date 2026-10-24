@@ -20,6 +20,8 @@ yarn artwork          # every card
 yarn artwork flags    # one card
 ```
 
+The icons (`app/favicon.ico` and the PNGs in `public`) are drawn from `artwork/favicon.svg`, an "h" in Kara's orange on a transparent ground, by `yarn favicon`.
+
 In development Next keeps its optimized copies of the images in `.next/dev/cache/images`: clear it after drawing a card again, or the old picture stays.
 
 SEO lives in `app/layout.tsx` (metadata, Open Graph, Twitter), `app/robots.ts`, `app/sitemap.ts` and `src/components/libraries-seo.tsx` (JSON-LD and a text version for crawlers that do not run the scene). Every absolute URL comes from `Config.site`. The link preview, `public/png/og-image.png`, is drawn by `artwork/cards/og-image.html` from the cards' stills.
