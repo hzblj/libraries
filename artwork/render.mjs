@@ -6,8 +6,8 @@
 // clip is composited instead, from the Kara website's iOS and Android recordings.
 // The sources live in the repositories beside this one: Kara's component shots,
 // recordings, app icons and icon SVGs in ../kara-ui, the portfolio's shots in
-// ../portfolio, and the QR encoder the airgap example draws its codes with in
-// ../crypto-airgap.
+// ../portfolio, the QR encoder the airgap example draws its codes with in
+// ../crypto-airgap, and the vault example's icon in ../crypto-vault.
 // Only drawing the artwork again needs them; what it draws is committed.
 //
 //   node artwork/render.mjs            every card
@@ -69,6 +69,8 @@ const EXPORTS = {
 // The pages and the size of the card each one paints.
 const CARDS = {
   'crypto-airgap': 'small',
+  'crypto-backup': 'small',
+  'crypto-vault': 'large',
   'expo-app-icons': 'small',
   'expo-flags-kit': 'small',
   'expo-native-icons': 'small',
@@ -97,6 +99,7 @@ const CAPTURES = ['button', 'chip', 'list', 'segmented-control', 'slider', 'step
 // lighter. App Icons shows the glass icon its example switches to.
 const EXAMPLE_ICONS = {
   'crypto-airgap': join(SIBLINGS, 'crypto-airgap/apps/example/assets/icon.png'),
+  'crypto-vault': join(SIBLINGS, 'crypto-vault/apps/example/assets/icon.png'),
   'expo-app-icons': join(SIBLINGS, 'expo-app-icons/apps/example/assets/app-icons/glass/dark.png'),
   'expo-flags-kit': join(HERE, 'examples/expo-flags-kit.svg'),
   'expo-native-icons': join(HERE, 'examples/expo-native-icons.svg'),

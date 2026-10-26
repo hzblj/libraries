@@ -2,11 +2,13 @@
 
 import {createContext, type ReactNode, useContext, useState} from 'react'
 
-import {Config} from '@/config'
+import {getAreaRect} from '@/scene/grid'
 
 import {calculateScale} from '../const'
 import {CameraAction, CameraState} from './types'
 
+// The camera starts on the profile, which sits half a column off the tile's
+// centre with the grid's nine columns.
 const calculateCenterOfViewport = () => {
   if (typeof window === 'undefined') {
     return {x: 0, y: 0}
@@ -19,8 +21,10 @@ const calculateCenterOfViewport = () => {
   const scaledWidth = width / scale
   const scaledHeight = height / scale
 
-  const x = -((Config.viewport.width - scaledWidth) / 2)
-  const y = -((Config.viewport.height - scaledHeight) / 2)
+  const profile = getAreaRect('profile')
+
+  const x = -(profile.x + profile.width / 2 - scaledWidth / 2)
+  const y = -(profile.y + profile.height / 2 - scaledHeight / 2)
 
   return {
     x,

@@ -8,7 +8,7 @@ import {getAreaRect} from '../../grid'
 // names itself.
 export const WIDTH = getAreaRect('examples').width
 export const TOP = 12
-export const ROW = 62
+export const ROW = 58
 // The highlight under a hovered row stops short of the card's edge and of the
 // rows beside it.
 export const INSET = 8

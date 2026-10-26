@@ -4,11 +4,11 @@
 
 // biome-ignore format: one row per line, so the template reads as the grid
 const TEMPLATE = [
-  'examples l1 l1 l2 l2 l3 l3 s1',
-  'examples l1 l1 l2 l2 l3 l3 s2',
-  'examples s3 s4 profile profile s5 s6 s7',
-  'examples l4 l4 l5 l5 l6 l6 s8',
-  's9 l4 l4 l5 l5 l6 l6 s10',
+  'examples l1 l1 l2 l2 l3 l3 s1 s8',
+  'examples l1 l1 l2 l2 l3 l3 s2 s11',
+  'examples s3 s4 profile profile s5 s6 s7 s10',
+  'examples l4 l4 l5 l5 l6 l6 l7 l7',
+  's9 l4 l4 l5 l5 l6 l6 l7 l7',
 ]
 
 const CARDS = {
@@ -18,6 +18,7 @@ const CARDS = {
   l4: {image: 'expo-translation', subtitle: 'Translation on the device', title: 'Translation'},
   l5: {image: 'expo-waveform', subtitle: 'Native audio waveforms', title: 'Waveform'},
   l6: {image: 'expo-paypal', subtitle: 'PayPal on the native SDK', title: 'PayPal'},
+  l7: {image: 'crypto-vault', subtitle: 'Wallets in the Secure Enclave', title: 'Vault'},
   s1: {image: 'react-native-expo-monorepo', subtitle: 'Turborepo starter for Expo', title: 'Expo Monorepo'},
   s2: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
   s3: {image: 'expo-speech', subtitle: 'Speech to text, natively', title: 'Speech'},
@@ -28,6 +29,7 @@ const CARDS = {
   s8: {image: 'skills', subtitle: 'Agent skills for building apps', title: 'Skills'},
   s9: {image: 'expo-native-icons', subtitle: 'Your SVGs as native icons', title: 'Native Icons'},
   s10: {image: 'expo-zoom-transition', subtitle: 'Expo Router transitions', title: 'Zoom Transition'},
+  s11: {image: 'crypto-backup', subtitle: 'Backups sealed by a password', title: 'Backup'},
 }
 
 // The examples card, a row per example app, as src/scene/cards/examples draws it.
@@ -42,6 +44,7 @@ const EXAMPLES = [
   ['Rich Haptics', 'expo-rich-haptics', 'Every haptic and a composer'],
   ['Speech', 'expo-speech', 'Team radio, transcribed'],
   ['Translation', 'expo-translation', '15 Wikipedias, translated'],
+  ['Vault', 'crypto-vault', 'Face ID, then a signature'],
   ['Waveform', 'expo-waveform', 'Team radio you can scrub'],
   ['Zoom Transition', 'expo-zoom-transition', 'Photos zooming into pages'],
   ['Zyplot', 'zyplot', 'Every chart, in five apps'],

@@ -76,7 +76,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/react-native-expo-monorepo.mp4', webm: '/libraries/react-native-expo-monorepo.webm'},
   },
   {
-    animation: growFrom('top left', -40, -40, 0.35),
+    animation: growFrom('left', -40, 0, 0.4),
     area: 's10',
     description:
       'Native zoom transitions for Expo Router. UIKit zoom on iOS and Material container transforms on Android, with interactive dismissal.',
@@ -192,7 +192,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-paypal.mp4', webm: '/libraries/expo-paypal.webm'},
   },
   {
-    animation: growFrom('top left', -40, -40, 0.3),
+    animation: growFrom('bottom left', -40, 40, 0.4),
     area: 's8',
     description:
       'Agent skills for React and React Native engineers: animations that feel native, components that stay reusable and clean code, as small SKILL.md files for Claude Code, Codex, Cursor and other agents.',
@@ -310,6 +310,40 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/crypto-airgap.mp4', webm: '/libraries/crypto-airgap.webm'},
   },
   {
+    animation: growFrom('top left', -40, -40, 0.35),
+    area: 'l7',
+    description:
+      'A wallet kept by the phone’s security hardware: its BIP-39 entropy sealed under a key the Secure Enclave or StrongBox holds, opened only after Face ID or the fingerprint, and handed to the nitro-crypto engine natively. JavaScript gets a wallet that signs, and never a word of what is behind it.',
+    image: '/libraries/crypto-vault.png',
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/crypto-vault', value: 'hzblj/crypto-vault'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-vault', value: '@hzblj/crypto-vault'},
+    ],
+    size: 'large',
+    slug: 'crypto-vault',
+    subtitle: 'Wallets in the Secure Enclave',
+    title: 'Vault',
+    variant: 'shot',
+    videos: {mp4: '/libraries/crypto-vault.mp4', webm: '/libraries/crypto-vault.webm'},
+  },
+  {
+    animation: growFrom('left', -40, 0, 0.35),
+    area: 's11',
+    description:
+      'Encrypted wallet backups for Expo: a wallet’s entropy sealed under a password with Argon2id and XChaCha20-Poly1305 by the nitro-crypto engine, natively, and kept in iCloud Keychain or Android Block Store to restore on a new device. Without the password a backup is useless, wherever it is kept.',
+    image: '/libraries/crypto-backup.png',
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/crypto-backup', value: 'hzblj/crypto-backup'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-backup', value: '@hzblj/crypto-backup'},
+    ],
+    size: 'small',
+    slug: 'crypto-backup',
+    subtitle: 'Backups sealed by a password',
+    title: 'Backup',
+    variant: 'shot',
+    videos: {mp4: '/libraries/crypto-backup.mp4', webm: '/libraries/crypto-backup.webm'},
+  },
+  {
     animation: growFrom('right', 40, 0, 0.35),
     area: 'examples',
     examples: [
@@ -323,6 +357,7 @@ export const entries: Entries = [
       example('Rich Haptics', 'expo-rich-haptics', 'Every haptic and a composer'),
       example('Speech', 'expo-speech', 'Team radio, transcribed'),
       example('Translation', 'expo-translation', '15 Wikipedias, translated'),
+      example('Vault', 'crypto-vault', 'Face ID, then a signature'),
       example('Waveform', 'expo-waveform', 'Team radio you can scrub'),
       example('Zoom Transition', 'expo-zoom-transition', 'Photos zooming into pages'),
       example('Zyplot', 'zyplot', 'Every chart, in five apps'),
