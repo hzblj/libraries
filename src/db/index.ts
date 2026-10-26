@@ -40,8 +40,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/kara-ui.mp4', webm: '/libraries/kara-ui.webm'},
   },
   {
-    animation: growFrom('bottom', 0, 40, 0.1),
-    area: 's2',
+    animation: growFrom('left', -40, 0, 0.3),
+    area: 's7',
     description: 'Alternate app icons for Expo on iOS and Android. Generate at prebuild, switch at runtime.',
     image: '/libraries/expo-app-icons.png',
     properties: [
@@ -56,7 +56,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-app-icons.mp4', webm: '/libraries/expo-app-icons.webm'},
   },
   {
-    animation: growFrom('bottom', 0, 40, 0.25),
+    animation: growFrom('bottom left', -40, 40, 0.35),
     area: 's1',
     description:
       'A starter for Expo apps that are meant to grow: a Turborepo monorepo with shared UI, theming, state and feature packages, all in TypeScript.',
@@ -76,8 +76,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/react-native-expo-monorepo.mp4', webm: '/libraries/react-native-expo-monorepo.webm'},
   },
   {
-    animation: growFrom('top left', -40, -40, 0.3),
-    area: 'l7',
+    animation: growFrom('top left', -40, -40, 0.35),
+    area: 's10',
     description:
       'Native zoom transitions for Expo Router. UIKit zoom on iOS and Material container transforms on Android, with interactive dismissal.',
     image: '/libraries/expo-zoom-transition.png',
@@ -89,7 +89,7 @@ export const entries: Entries = [
         value: '@hzblj/expo-zoom-transition',
       },
     ],
-    size: 'large',
+    size: 'small',
     slug: 'expo-zoom-transition',
     subtitle: 'Expo Router transitions',
     title: 'Zoom Transition',
@@ -97,8 +97,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-zoom-transition.mp4', webm: '/libraries/expo-zoom-transition.webm'},
   },
   {
-    animation: growFrom('left', -40, 0, 0.3),
-    area: 's7',
+    animation: growFrom('right', 40, 0, 0.1),
+    area: 's4',
     description:
       '255 native vector flags for iOS, Android and web. Sharp at every size, with typed country codes and localized names.',
     image: '/libraries/expo-flags-kit.png',
@@ -114,8 +114,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-flags-kit.mp4', webm: '/libraries/expo-flags-kit.webm'},
   },
   {
-    animation: growFrom('right', 40, 0, 0.25),
-    area: 's3',
+    animation: growFrom('left', -40, 0, 0.3),
+    area: 's2',
     description:
       'Platform-native feedback for Expo. Semantic events and custom patterns, powered by Core Haptics and Android haptic primitives.',
     image: '/libraries/expo-rich-haptics.png',
@@ -135,8 +135,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-rich-haptics.mp4', webm: '/libraries/expo-rich-haptics.webm'},
   },
   {
-    animation: growFrom('top', 0, -40, 0.15),
-    area: 'l6',
+    animation: growFrom('bottom left', -40, 40, 0.25),
+    area: 'l3',
     description:
       'One chart API for React and Expo, native on every platform: Swift Charts on iOS, Jetpack Compose on Android, ECharts and uPlot on the web.',
     image: '/libraries/zyplot.png',
@@ -154,8 +154,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/zyplot.mp4', webm: '/libraries/zyplot.webm'},
   },
   {
-    animation: growFrom('right', 40, 0, 0.1),
-    area: 's4',
+    animation: growFrom('top right', 40, -40, 0.35),
+    area: 's9',
     description:
       'Your own SVG icons as native assets for Expo. iOS asset catalog images and Android vector drawables at prebuild, typed names, and a native view that tints them.',
     image: '/libraries/expo-native-icons.png',
@@ -175,8 +175,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-native-icons.mp4', webm: '/libraries/expo-native-icons.webm'},
   },
   {
-    animation: growFrom('top right', 40, -40, 0.3),
-    area: 'l4',
+    animation: growFrom('top left', -40, -40, 0.25),
+    area: 'l6',
     description:
       'PayPal Checkout with App Switch, Pay Later and PayPal Credit, vaulting, and card payments with 3D Secure, behind one promise-based API. PayPal’s own buttons come along as native views.',
     image: '/libraries/expo-paypal.png',
@@ -192,8 +192,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-paypal.mp4', webm: '/libraries/expo-paypal.webm'},
   },
   {
-    animation: growFrom('bottom left', -40, 40, 0.25),
-    area: 'l3',
+    animation: growFrom('top left', -40, -40, 0.3),
+    area: 's8',
     description:
       'Agent skills for React and React Native engineers: animations that feel native, components that stay reusable and clean code, as small SKILL.md files for Claude Code, Codex, Cursor and other agents.',
     image: '/libraries/skills.png',
@@ -201,7 +201,7 @@ export const entries: Entries = [
       {name: 'GitHub', url: 'https://github.com/hzblj/skills', value: 'hzblj/skills'},
       {name: 'skills.sh', url: 'https://skills.sh/hzblj/skills', value: 'skills.sh/hzblj/skills'},
     ],
-    size: 'large',
+    size: 'small',
     slug: 'skills',
     subtitle: 'Agent skills for building apps',
     title: 'Skills',
@@ -209,8 +209,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/skills.mp4', webm: '/libraries/skills.webm'},
   },
   {
-    animation: growFrom('left', -40, 0, 0.2),
-    area: 's6',
+    animation: growFrom('right', 40, 0, 0.2),
+    area: 's3',
     description:
       'Speech to text for Expo on the platforms’ own speech APIs: SpeechAnalyzer on iOS, with SFSpeechRecognizer before it, and the on-device SpeechRecognizer on Android. Files or the microphone, with every word’s timing for titles that follow the audio.',
     image: '/libraries/expo-speech.png',
@@ -226,8 +226,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-speech.mp4', webm: '/libraries/expo-speech.webm'},
   },
   {
-    animation: growFrom('left', -40, 0, 0.1),
-    area: 's5',
+    animation: growFrom('left', -40, 0, 0.2),
+    area: 's6',
     image: '/libraries/portfolio.png',
     size: 'small',
     slug: 'portfolio',
@@ -238,8 +238,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/portfolio.mp4', webm: '/libraries/portfolio.webm'},
   },
   {
-    animation: growFrom('bottom', 0, 40, 0.15),
-    area: 'l2',
+    animation: growFrom('top right', 40, -40, 0.25),
+    area: 'l4',
     description:
       'On-device translation for Expo on the platforms’ own engines: Apple’s Translation framework on iOS, with Google’s ML Kit for the languages it lacks, and ML Kit on Android. Downloads, language identification, batches, a cache and hooks.',
     image: '/libraries/expo-translation.png',
@@ -259,7 +259,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-translation.mp4', webm: '/libraries/expo-translation.webm'},
   },
   {
-    animation: growFrom('top', 0, -40, 0.15),
+    animation: growFrom('top', 0, -40, 0.1),
     area: 'l5',
     description:
       'Native audio waveforms for Expo, analysed on the device and cached, drawn by a native view that follows playback at the display’s frame rate, seeks by drag or tap with haptics, and meters a recording live.',
@@ -276,10 +276,46 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-waveform.mp4', webm: '/libraries/expo-waveform.webm'},
   },
   {
+    animation: growFrom('bottom', 0, 40, 0.1),
+    area: 'l2',
+    description:
+      'Native cryptography for Expo: a Zig engine behind Nitro Modules hashes, signs and derives keys, and keeps every seed and private key in native memory. Ethereum, Bitcoin and Solana are adapters, each its own package, and another chain takes a few dozen lines.',
+    image: '/libraries/nitro-crypto.png',
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/nitro-crypto', value: 'hzblj/nitro-crypto'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/nitro-crypto', value: '@hzblj/nitro-crypto'},
+    ],
+    size: 'large',
+    slug: 'nitro-crypto',
+    subtitle: 'Native cryptography in Zig',
+    title: 'Crypto',
+    variant: 'shot',
+    videos: {mp4: '/libraries/nitro-crypto.mp4', webm: '/libraries/nitro-crypto.webm'},
+  },
+  {
+    animation: growFrom('left', -40, 0, 0.1),
+    area: 's5',
+    description:
+      'Air-gapped signing for Expo: a watch-only wallet and an offline signer trade requests and signatures as QR codes. BC-UR v2 with fountain-coded parts, typed and bounded decoding, and a package for each chain that checks every answer against its question, on the nitro-crypto engine.',
+    image: '/libraries/crypto-airgap.png',
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/crypto-airgap', value: 'hzblj/crypto-airgap'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-airgap', value: '@hzblj/crypto-airgap'},
+    ],
+    size: 'small',
+    slug: 'crypto-airgap',
+    subtitle: 'Offline signing over QR codes',
+    title: 'Airgap',
+    variant: 'shot',
+    videos: {mp4: '/libraries/crypto-airgap.mp4', webm: '/libraries/crypto-airgap.webm'},
+  },
+  {
     animation: growFrom('right', 40, 0, 0.35),
     area: 'examples',
     examples: [
+      example('Airgap', 'crypto-airgap', 'Sign over QR, fully offline'),
       example('App Icons', 'expo-app-icons', 'A family of icons to switch'),
+      example('Crypto', 'nitro-crypto', 'A wallet on three testnets'),
       example('Flags Kit', 'expo-flags-kit', 'Every flag, searchable'),
       example('Kara', 'kara-ui', 'Every component and story'),
       example('Native Icons', 'expo-native-icons', 'Material Symbols, natively'),

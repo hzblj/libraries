@@ -4,33 +4,37 @@
 
 // biome-ignore format: one row per line, so the template reads as the grid
 const TEMPLATE = [
-  'examples l1 l1 s1 l2 l2 l3 l3',
-  'examples l1 l1 s2 l2 l2 l3 l3',
+  'examples l1 l1 l2 l2 l3 l3 s1',
+  'examples l1 l1 l2 l2 l3 l3 s2',
   'examples s3 s4 profile profile s5 s6 s7',
-  'l4 l4 l5 l5 l6 l6 l7 l7',
-  'l4 l4 l5 l5 l6 l6 l7 l7',
+  'examples l4 l4 l5 l5 l6 l6 s8',
+  's9 l4 l4 l5 l5 l6 l6 s10',
 ]
 
 const CARDS = {
   l1: {image: 'kara-ui', subtitle: 'Design system for Expo', title: 'Kara'},
-  l2: {image: 'expo-translation', subtitle: 'Translation on the device', title: 'Translation'},
-  l3: {image: 'skills', subtitle: 'Agent skills for building apps', title: 'Skills'},
-  l4: {image: 'expo-paypal', subtitle: 'PayPal on the native SDK', title: 'PayPal'},
+  l2: {image: 'nitro-crypto', subtitle: 'Native cryptography in Zig', title: 'Crypto'},
+  l3: {image: 'zyplot', subtitle: 'Native charts everywhere', title: 'Zyplot'},
+  l4: {image: 'expo-translation', subtitle: 'Translation on the device', title: 'Translation'},
   l5: {image: 'expo-waveform', subtitle: 'Native audio waveforms', title: 'Waveform'},
-  l6: {image: 'zyplot', subtitle: 'Native charts everywhere', title: 'Zyplot'},
-  l7: {image: 'expo-zoom-transition', subtitle: 'Expo Router transitions', title: 'Zoom Transition'},
+  l6: {image: 'expo-paypal', subtitle: 'PayPal on the native SDK', title: 'PayPal'},
   s1: {image: 'react-native-expo-monorepo', subtitle: 'Turborepo starter for Expo', title: 'Expo Monorepo'},
-  s2: {image: 'expo-app-icons', subtitle: 'Switch icons at runtime', title: 'App Icons'},
-  s3: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
-  s4: {image: 'expo-native-icons', subtitle: 'Your SVGs as native icons', title: 'Native Icons'},
-  s5: {image: 'portfolio', subtitle: 'Apps, work and CV', title: 'Portfolio'},
-  s6: {image: 'expo-speech', subtitle: 'Speech to text, natively', title: 'Speech'},
-  s7: {image: 'expo-flags-kit', subtitle: '255 country flags', title: 'Flags Kit'},
+  s2: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
+  s3: {image: 'expo-speech', subtitle: 'Speech to text, natively', title: 'Speech'},
+  s4: {image: 'expo-flags-kit', subtitle: '255 country flags', title: 'Flags Kit'},
+  s5: {image: 'crypto-airgap', subtitle: 'Offline signing over QR codes', title: 'Airgap'},
+  s6: {image: 'portfolio', subtitle: 'Apps, work and CV', title: 'Portfolio'},
+  s7: {image: 'expo-app-icons', subtitle: 'Switch icons at runtime', title: 'App Icons'},
+  s8: {image: 'skills', subtitle: 'Agent skills for building apps', title: 'Skills'},
+  s9: {image: 'expo-native-icons', subtitle: 'Your SVGs as native icons', title: 'Native Icons'},
+  s10: {image: 'expo-zoom-transition', subtitle: 'Expo Router transitions', title: 'Zoom Transition'},
 }
 
 // The examples card, a row per example app, as src/scene/cards/examples draws it.
 const EXAMPLES = [
+  ['Airgap', 'crypto-airgap', 'Sign over QR, fully offline'],
   ['App Icons', 'expo-app-icons', 'A family of icons to switch'],
+  ['Crypto', 'nitro-crypto', 'A wallet on three testnets'],
   ['Flags Kit', 'expo-flags-kit', 'Every flag, searchable'],
   ['Kara', 'kara-ui', 'Every component and story'],
   ['Native Icons', 'expo-native-icons', 'Material Symbols, natively'],
@@ -64,7 +68,10 @@ const KEYCAPS = [
   {x: 9.5, y: 10.5},
   {x: 16, y: 10.5},
 ]
-  .map(({pressed, x, y}) => `<img class="keycap${pressed ? ' pressed' : ''}" src="/public/svg/key-cap.svg" style="left: ${x}px; top: ${y + 4}px" />`)
+  .map(
+    ({pressed, x, y}) =>
+      `<img class="keycap${pressed ? ' pressed' : ''}" src="/public/svg/key-cap.svg" style="left: ${x}px; top: ${y + 4}px" />`
+  )
   .join('')
 
 const HINTS = `<span class="arrows"><img src="/public/svg/arrows.svg" /></span><span>Drag</span><span class="muted">or use</span><span class="keyboard">${KEYCAPS}</span><span>WSAD keys</span><span class="muted">to explore</span>`

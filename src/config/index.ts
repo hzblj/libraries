@@ -17,7 +17,7 @@ export const Config = {
   // under the ~160 characters a search result shows before cutting it off; the
   // keywords in app/layout.tsx and the structured data name every library.
   description:
-    'Open-source Expo and React Native libraries by Jan Blazej: the Kara design system, Zyplot charts, PayPal, translation, waveforms, speech to text and more.',
+    'Open-source Expo and React Native libraries by Jan Blazej: the Kara design system, Zyplot charts, PayPal, native crypto, translation, speech to text and more.',
   fullName: 'Jan Blazej',
   // What the profile card in the middle of the grid says: the handle, the
   // tagline under it, and the places to find the libraries.

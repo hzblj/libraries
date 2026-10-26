@@ -191,22 +191,22 @@
   left: 8px;
   position: absolute;
   right: 8px;
-  top: 10px;
+  top: 12px;
 }
 
 .example {
   align-items: center;
   display: flex;
   gap: 12px;
-  height: 53px;
+  height: 62px;
   padding: 0 14px 0 10px;
 }
 
 .example img {
   border-radius: 0;
-  height: 36px;
+  height: 40px;
   position: static;
-  width: 36px;
+  width: 40px;
 }
 
 .example .text {

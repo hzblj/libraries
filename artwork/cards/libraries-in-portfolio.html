@@ -85,11 +85,12 @@
       const SCALE = 0.24
 
       const grid = document.querySelector('.grid')
-      const {width, height} = buildGrid(grid)
+      const {centre} = buildGrid(grid)
 
-      // Centred, and the drags it takes from there: they add up to nothing, so
-      // the loop closes, and none goes further than the grid is wider than the card.
-      const START = {x: (SIZE.width - width * SCALE) / 2, y: (SIZE.height - height * SCALE) / 2 - 8}
+      // Centred on the profile, and the drags it takes from there: they add up
+      // to nothing, so the loop closes, and none goes further than the grid
+      // runs on past the card.
+      const START = {x: SIZE.width / 2 - centre.x * SCALE, y: SIZE.height / 2 - centre.y * SCALE - 8}
       const DRAGS = [
         [-20, -8],
         [12, 14],

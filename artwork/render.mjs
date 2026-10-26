@@ -6,7 +6,8 @@
 // clip is composited instead, from the Kara website's iOS and Android recordings.
 // The sources live in the repositories beside this one: Kara's component shots,
 // recordings, app icons and icon SVGs in ../kara-ui, the portfolio's shots in
-// ../portfolio.
+// ../portfolio, and the QR encoder the airgap example draws its codes with in
+// ../crypto-airgap.
 // Only drawing the artwork again needs them; what it draws is committed.
 //
 //   node artwork/render.mjs            every card
@@ -67,6 +68,7 @@ const EXPORTS = {
 
 // The pages and the size of the card each one paints.
 const CARDS = {
+  'crypto-airgap': 'small',
   'expo-app-icons': 'small',
   'expo-flags-kit': 'small',
   'expo-native-icons': 'small',
@@ -78,6 +80,7 @@ const CARDS = {
   'expo-zoom-transition': 'large',
   'kara-ui': 'large',
   'libraries-in-portfolio': 'portfolio',
+  'nitro-crypto': 'large',
   'og-image': 'og',
   portfolio: 'small',
   'react-native-expo-monorepo': 'small',
@@ -93,6 +96,7 @@ const CAPTURES = ['button', 'chip', 'list', 'segmented-control', 'slider', 'step
 // same manner (artwork/examples): a white glyph on a ground of one colour, top
 // lighter. App Icons shows the glass icon its example switches to.
 const EXAMPLE_ICONS = {
+  'crypto-airgap': join(SIBLINGS, 'crypto-airgap/apps/example/assets/icon.png'),
   'expo-app-icons': join(SIBLINGS, 'expo-app-icons/apps/example/assets/app-icons/glass/dark.png'),
   'expo-flags-kit': join(HERE, 'examples/expo-flags-kit.svg'),
   'expo-native-icons': join(HERE, 'examples/expo-native-icons.svg'),
@@ -103,6 +107,7 @@ const EXAMPLE_ICONS = {
   'expo-waveform': join(SIBLINGS, 'expo-waveform/apps/example/assets/icon.png'),
   'expo-zoom-transition': join(HERE, 'examples/expo-zoom-transition.svg'),
   'kara-ui': join(KARA, 'apps/example/assets/ios-dark.png'),
+  'nitro-crypto': join(SIBLINGS, 'nitro-crypto/apps/example/assets/icon.png'),
   zyplot: join(SIBLINGS, 'zyplot/apps/example/assets/icon.png'),
 }
 
@@ -112,18 +117,21 @@ const TYPES = {
   '.css': 'text/css',
   '.html': 'text/html',
   '.js': 'text/javascript',
+  '.mjs': 'text/javascript',
   '.png': 'image/png',
   '.svg': 'image/svg+xml',
   '.webp': 'image/webp',
   '.woff2': 'font/woff2',
 }
 
-// What the pages may load: this app's public files and artwork, and kara's own
-// app icons and icon SVGs from the example.
+// What the pages may load: this app's public files and artwork, kara's own app
+// icons and icon SVGs from the example, and qrcode-generator, which the airgap
+// example draws its QR codes with.
 const ROOTS = {
   '/apps-example/': join(KARA, 'apps/example/assets/'),
   '/artwork/': join(APP, 'artwork/'),
   '/public/': join(APP, 'public/'),
+  '/qrcode/': join(SIBLINGS, 'crypto-airgap/node_modules/qrcode-generator/dist/'),
 }
 
 const serve = () =>
@@ -369,9 +377,28 @@ const ffmpeg = (...args) => execFileSync('ffmpeg', ['-v', 'error', '-y', ...args
 
 // The same picture as an H.264 mp4 and a VP9 webm (the card offers both), and
 // the mp4's first frame as the still, so hovering hands over without a jump.
+// ffmpeg turns the frames into YUV with BT.601's matrix and says nothing about
+// it, and a browser reads an untagged video as BT.709: greys survive, but a
+// saturated colour shifts the moment the clip takes over from the still. So
+// both say which matrix they were made with.
+const COLOUR = ['-colorspace', 'smpte170m', '-color_range', 'tv']
+
 const encode = (input, base) => {
-  ffmpeg(...input, '-c:v', 'libx264', '-crf', '22', '-preset', 'slow', '-movflags', '+faststart', '-an', `${base}.mp4`)
-  ffmpeg(...input, '-c:v', 'libvpx-vp9', '-crf', '36', '-b:v', '0', '-row-mt', '1', '-an', `${base}.webm`)
+  ffmpeg(
+    ...input,
+    '-c:v',
+    'libx264',
+    '-crf',
+    '22',
+    '-preset',
+    'slow',
+    '-movflags',
+    '+faststart',
+    ...COLOUR,
+    '-an',
+    `${base}.mp4`
+  )
+  ffmpeg(...input, '-c:v', 'libvpx-vp9', '-crf', '36', '-b:v', '0', '-row-mt', '1', ...COLOUR, '-an', `${base}.webm`)
   ffmpeg('-i', `${base}.mp4`, '-frames:v', '1', '-update', '1', `${base}.png`)
 }
 
