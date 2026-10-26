@@ -114,8 +114,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-flags-kit.mp4', webm: '/libraries/expo-flags-kit.webm'},
   },
   {
-    animation: growFrom('left', -40, 0, 0.3),
-    area: 's2',
+    animation: growFrom('left', -40, 0, 0.35),
+    area: 's11',
     description:
       'Platform-native feedback for Expo. Semantic events and custom patterns, powered by Core Haptics and Android haptic primitives.',
     image: '/libraries/expo-rich-haptics.png',
@@ -313,7 +313,7 @@ export const entries: Entries = [
     animation: growFrom('top left', -40, -40, 0.35),
     area: 'l7',
     description:
-      'A wallet kept by the phone’s security hardware: its BIP-39 entropy sealed under a key the Secure Enclave or StrongBox holds, opened only after Face ID or the fingerprint, and handed to the nitro-crypto engine natively. JavaScript gets a wallet that signs, and never a word of what is behind it.',
+      'Hardware-sealed wallets for Expo: a wallet’s BIP-39 entropy sealed by a key the Secure Enclave or StrongBox holds, opened only after Face ID or the fingerprint, and handed to the nitro-crypto engine natively. No word or byte of it passes through JavaScript.',
     image: '/libraries/crypto-vault.png',
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-vault', value: 'hzblj/crypto-vault'},
@@ -321,16 +321,16 @@ export const entries: Entries = [
     ],
     size: 'large',
     slug: 'crypto-vault',
-    subtitle: 'Wallets in the Secure Enclave',
+    subtitle: 'Sealed by the Secure Enclave',
     title: 'Vault',
     variant: 'shot',
     videos: {mp4: '/libraries/crypto-vault.mp4', webm: '/libraries/crypto-vault.webm'},
   },
   {
-    animation: growFrom('left', -40, 0, 0.35),
-    area: 's11',
+    animation: growFrom('left', -40, 0, 0.3),
+    area: 's2',
     description:
-      'Encrypted wallet backups for Expo: a wallet’s entropy sealed under a password with Argon2id and XChaCha20-Poly1305 by the nitro-crypto engine, natively, and kept in iCloud Keychain or Android Block Store to restore on a new device. Without the password a backup is useless, wherever it is kept.',
+      'A wallet’s sealed backup kept in iCloud Keychain or Android’s Block Store, and handed back on a new device. The store sees ciphertext, never a password or a secret: Recovery keeps only the bytes a vault sealed, and refuses anything else.',
     image: '/libraries/crypto-recovery.png',
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-recovery', value: 'hzblj/crypto-recovery'},
@@ -338,7 +338,7 @@ export const entries: Entries = [
     ],
     size: 'small',
     slug: 'crypto-recovery',
-    subtitle: 'Backups sealed by a password',
+    subtitle: 'Sealed backups across devices',
     title: 'Recovery',
     variant: 'shot',
     videos: {mp4: '/libraries/crypto-recovery.mp4', webm: '/libraries/crypto-recovery.webm'},

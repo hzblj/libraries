@@ -18,9 +18,9 @@ const CARDS = {
   l4: {image: 'expo-translation', subtitle: 'Translation on the device', title: 'Translation'},
   l5: {image: 'expo-waveform', subtitle: 'Native audio waveforms', title: 'Waveform'},
   l6: {image: 'expo-paypal', subtitle: 'PayPal on the native SDK', title: 'PayPal'},
-  l7: {image: 'crypto-vault', subtitle: 'Wallets in the Secure Enclave', title: 'Vault'},
+  l7: {image: 'crypto-vault', subtitle: 'Sealed by the Secure Enclave', title: 'Vault'},
   s1: {image: 'react-native-expo-monorepo', subtitle: 'Turborepo starter for Expo', title: 'Expo Monorepo'},
-  s2: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
+  s2: {image: 'crypto-recovery', subtitle: 'Sealed backups across devices', title: 'Recovery'},
   s3: {image: 'expo-speech', subtitle: 'Speech to text, natively', title: 'Speech'},
   s4: {image: 'expo-flags-kit', subtitle: '255 country flags', title: 'Flags Kit'},
   s5: {image: 'crypto-airgap', subtitle: 'Offline signing over QR codes', title: 'Airgap'},
@@ -29,7 +29,7 @@ const CARDS = {
   s8: {image: 'skills', subtitle: 'Agent skills for building apps', title: 'Skills'},
   s9: {image: 'expo-native-icons', subtitle: 'Your SVGs as native icons', title: 'Native Icons'},
   s10: {image: 'expo-zoom-transition', subtitle: 'Expo Router transitions', title: 'Zoom Transition'},
-  s11: {image: 'crypto-recovery', subtitle: 'Backups sealed by a password', title: 'Recovery'},
+  s11: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
 }
 
 // The examples card, a row per example app, as src/scene/cards/examples draws it.
