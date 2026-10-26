@@ -29,7 +29,7 @@ const CARDS = {
   s8: {image: 'skills', subtitle: 'Agent skills for building apps', title: 'Skills'},
   s9: {image: 'expo-native-icons', subtitle: 'Your SVGs as native icons', title: 'Native Icons'},
   s10: {image: 'expo-zoom-transition', subtitle: 'Expo Router transitions', title: 'Zoom Transition'},
-  s11: {image: 'crypto-backup', subtitle: 'Backups sealed by a password', title: 'Backup'},
+  s11: {image: 'crypto-recovery', subtitle: 'Backups sealed by a password', title: 'Recovery'},
 }
 
 // The examples card, a row per example app, as src/scene/cards/examples draws it.

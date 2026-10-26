@@ -331,17 +331,17 @@ export const entries: Entries = [
     area: 's11',
     description:
       'Encrypted wallet backups for Expo: a wallet’s entropy sealed under a password with Argon2id and XChaCha20-Poly1305 by the nitro-crypto engine, natively, and kept in iCloud Keychain or Android Block Store to restore on a new device. Without the password a backup is useless, wherever it is kept.',
-    image: '/libraries/crypto-backup.png',
+    image: '/libraries/crypto-recovery.png',
     properties: [
-      {name: 'GitHub', url: 'https://github.com/hzblj/crypto-backup', value: 'hzblj/crypto-backup'},
-      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-backup', value: '@hzblj/crypto-backup'},
+      {name: 'GitHub', url: 'https://github.com/hzblj/crypto-recovery', value: 'hzblj/crypto-recovery'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-recovery', value: '@hzblj/crypto-recovery'},
     ],
     size: 'small',
-    slug: 'crypto-backup',
+    slug: 'crypto-recovery',
     subtitle: 'Backups sealed by a password',
-    title: 'Backup',
+    title: 'Recovery',
     variant: 'shot',
-    videos: {mp4: '/libraries/crypto-backup.mp4', webm: '/libraries/crypto-backup.webm'},
+    videos: {mp4: '/libraries/crypto-recovery.mp4', webm: '/libraries/crypto-recovery.webm'},
   },
   {
     animation: growFrom('right', 40, 0, 0.35),

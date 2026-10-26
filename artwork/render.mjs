@@ -69,7 +69,7 @@ const EXPORTS = {
 // The pages and the size of the card each one paints.
 const CARDS = {
   'crypto-airgap': 'small',
-  'crypto-backup': 'small',
+  'crypto-recovery': 'small',
   'crypto-vault': 'large',
   'expo-app-icons': 'small',
   'expo-flags-kit': 'small',
