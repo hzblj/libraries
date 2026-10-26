@@ -198,15 +198,15 @@
   align-items: center;
   display: flex;
   gap: 12px;
-  height: 58px;
+  height: 55px;
   padding: 0 14px 0 10px;
 }
 
 .example img {
   border-radius: 0;
-  height: 40px;
+  height: 38px;
   position: static;
-  width: 40px;
+  width: 38px;
 }
 
 .example .text {

@@ -313,7 +313,7 @@ export const entries: Entries = [
     animation: growFrom('top left', -40, -40, 0.35),
     area: 'l7',
     description:
-      'Hardware-sealed wallets for Expo: a wallet’s BIP-39 entropy sealed by a key the Secure Enclave or StrongBox holds, opened only after Face ID or the fingerprint, and handed to the nitro-crypto engine natively. No word or byte of it passes through JavaScript.',
+      'A wallet’s BIP-39 entropy sealed by the Secure Enclave or StrongBox, opened only after the system’s biometric prompt, straight into the nitro-crypto engine: JavaScript never receives the entropy or the words. Backups are sealed under a password, 87 bytes for twelve words, for crypto-recovery to keep.',
     image: '/libraries/crypto-vault.png',
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-vault', value: 'hzblj/crypto-vault'},
@@ -354,6 +354,7 @@ export const entries: Entries = [
       example('Kara', 'kara-ui', 'Every component and story'),
       example('Native Icons', 'expo-native-icons', 'Material Symbols, natively'),
       example('PayPal', 'expo-paypal', 'Every flow on the sandbox'),
+      example('Recovery', 'crypto-recovery', 'Back up, lose the phone, restore'),
       example('Rich Haptics', 'expo-rich-haptics', 'Every haptic and a composer'),
       example('Speech', 'expo-speech', 'Team radio, transcribed'),
       example('Translation', 'expo-translation', '15 Wikipedias, translated'),

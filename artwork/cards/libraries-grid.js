@@ -41,6 +41,7 @@ const EXAMPLES = [
   ['Kara', 'kara-ui', 'Every component and story'],
   ['Native Icons', 'expo-native-icons', 'Material Symbols, natively'],
   ['PayPal', 'expo-paypal', 'Every flow on the sandbox'],
+  ['Recovery', 'crypto-recovery', 'Back up, lose the phone, restore'],
   ['Rich Haptics', 'expo-rich-haptics', 'Every haptic and a composer'],
   ['Speech', 'expo-speech', 'Team radio, transcribed'],
   ['Translation', 'expo-translation', '15 Wikipedias, translated'],
