@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* A signing request crossing the air gap: the watch-only wallet's
+         animated QR code, a part of the multipart UR five times a second, in
+         the signer's viewfinder, and beside it the fragments the decoder has
+         recovered. The camera misses a part now and then; the fountain-coded
+         parts after the first twelve each mix several fragments, so the gaps
+         fill in from those and the request completes. The codes are real
+         ones, drawn by qrcode-generator, which the example draws its own with,
+         from URs in the shape the package writes: uppercase for the smaller
+         alphanumeric code, minimal Bytewords. In the example's indigo, apart
+         from the Nitro Wallet's emerald. */
+      .glow {
+        --glow: 79 70 229;
+        --strength: 0.3;
+        height: 260px;
+        left: -40px;
+        top: -60px;
+        width: 260px;
+      }
+
+      .finder {
+        height: 116px;
+        left: 22px;
+        position: absolute;
+        top: 22px;
+        width: 116px;
+      }
+
+      .corner {
+        border-color: #a5b4fc;
+        border-style: solid;
+        border-width: 0;
+        height: 18px;
+        position: absolute;
+        width: 18px;
+      }
+
+      .corner.tl {
+        border-left-width: 2.5px;
+        border-radius: 9px 0 0 0;
+        border-top-width: 2.5px;
+        left: 0;
+        top: 0;
+      }
+
+      .corner.tr {
+        border-radius: 0 9px 0 0;
+        border-right-width: 2.5px;
+        border-top-width: 2.5px;
+        right: 0;
+        top: 0;
+      }
+
+      .corner.bl {
+        border-bottom-width: 2.5px;
+        border-left-width: 2.5px;
+        border-radius: 0 0 0 9px;
+        bottom: 0;
+        left: 0;
+      }
+
+      .corner.br {
+        border-bottom-width: 2.5px;
+        border-radius: 0 0 9px 0;
+        border-right-width: 2.5px;
+        bottom: 0;
+        right: 0;
+      }
+
+      .code {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+        height: 100px;
+        left: 8px;
+        padding: 6px;
+        position: absolute;
+        top: 8px;
+        width: 100px;
+      }
+
+      .code canvas {
+        display: block;
+        height: 88px;
+        width: 88px;
+      }
+
+      /* What the signer reads: the UR's type, how much of it is in, and a cell
+         for each of its fragments. */
+      .status {
+        font-family: Inter, system-ui, sans-serif;
+        left: 156px;
+        position: absolute;
+        right: 18px;
+        top: 26px;
+      }
+
+      .type {
+        color: rgba(255, 255, 255, 0.42);
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 9.5px;
+        letter-spacing: 0.1px;
+      }
+
+      .progress {
+        align-items: center;
+        display: flex;
+        font-size: 26px;
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        gap: 7px;
+        height: 32px;
+        letter-spacing: -0.6px;
+        margin-top: 5px;
+      }
+
+      .check {
+        align-items: center;
+        background: linear-gradient(180deg, #6366f1, #4338ca);
+        border-radius: 50%;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.55);
+        display: flex;
+        height: 20px;
+        justify-content: center;
+        width: 20px;
+      }
+
+      .parts {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 10.5px;
+        font-variant-numeric: tabular-nums;
+        margin-top: 1px;
+      }
+
+      .fragments {
+        display: grid;
+        gap: 4px;
+        grid-template-columns: repeat(6, 1fr);
+        margin-top: 12px;
+      }
+
+      .fragments i {
+        aspect-ratio: 1;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 4px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="glow"></div>
+      <div class="finder">
+        <div class="code"><canvas width="176" height="176"></canvas></div>
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      </div>
+      <div class="status">
+        <div class="type">ur:eth-sign-request</div>
+        <div class="progress"><span class="percent"></span><span class="check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1.2 4.2 3.8 6.6 8.8 1.4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg></span></div>
+        <div class="parts"></div>
+        <div class="fragments"></div>
+      </div>
+    </div>
+    <script type="module">
+      import qrcode from '/qrcode/qrcode.mjs'
+      import {mix, spring} from './anim.js'
+
+      // Bytewords (BCR-2020-012) in byte order; the minimal style keeps each
+      // word's first and last letter.
+      const WORDS =
+        'ableacidalsoapexaquaarchatomauntawayaxisbackbaldbarnbeltbetabiasbluebodybragbrewbulbbuzzcalmcashcatschefcityclaw' +
+        'codecolacookcostcruxcurlcuspcyandarkdatadaysdelidicedietdoordowndrawdropdrumdulldutyeacheasyechoedgeepicevenexam' +
+        'exiteyesfactfairfernfigsfilmfishfizzflapflewfluxfoxyfreefrogfuelfundgalagamegeargemsgiftgirlglowgoodgraygrimguru' +
+        'gushgyrohalfhanghardhawkheathelphighhillholyhopehornhutsicedideaidleinchinkyintoirisironitemjadejazzjoinjoltjowl' +
+        'judojugsjumpjunkjurykeepkenokeptkeyskickkilnkingkitekiwiknoblamblavalazyleaflegsliarlimplionlistlogoloudloveluau' +
+        'lucklungmainmanymathmazememomenumeowmildmintmissmonknailnavyneednewsnextnoonnotenumbobeyoboeomitonyxopenovalowls' +
+        'paidpartpeckplaypluspoempoolposepuffpumapurrquadquizraceramprealredorichroadrockroofrubyruinrunsrustsafesagascar' +
+        'setssilkskewslotsoapsolosongstubsurfswantacotasktaxitenttiedtimetinytoiltombtoystriptunatwinuglyundouniturgeuser' +
+        'vastveryvetovialvibeviewvisavoidvowswallwandwarmwaspwavewaxywebswhatwhenwhizwolfworkyankyawnyellyogayurtzapszero' +
+        'zestzinczonezoom'
+
+      const minimal = bytes => bytes.map(byte => WORDS[byte * 4] + WORDS[byte * 4 + 3]).join('')
+
+      const generator = seed => () => {
+        seed = (seed + 0x6d2b79f5) | 0
+        let value = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+        value = (value + Math.imul(value ^ (value >>> 7), 61 | value)) ^ value
+
+        return ((value ^ (value >>> 14)) >>> 0) / 4294967296
+      }
+
+      // A request of 12 fragments of 14 bytes, short enough for a code that
+      // still reads as one at this size. Each part is the CBOR the
+      // package writes, [sequence, count, message length, checksum, fragment],
+      // and four bytes of CRC after it, in Bytewords.
+      const COUNT = 12
+      const FRAGMENT = 14
+      const random = generator(23)
+      const bytes = length => Array.from({length}, () => Math.floor(random() * 256))
+      const checksum = bytes(4)
+
+      const part = sequence => {
+        const header = [0x85, ...(sequence < 24 ? [sequence] : [0x18, sequence]), COUNT, 0x18, 0xa8, 0x1a, ...checksum]
+
+        return `UR:ETH-SIGN-REQUEST/${sequence}-${COUNT}/${minimal([...header, 0x58, FRAGMENT, ...bytes(FRAGMENT), ...bytes(4)])}`.toUpperCase()
+      }
+
+      // The sender shows a part every RATE seconds. The camera reads most of
+      // them but misses parts 3 and 8; parts 13 and 14 each mix a missed
+      // fragment with ones already in, so they bring it back.
+      const RATE = 0.2
+      const PARTS = 16
+      const MISSED = new Set([3, 8])
+      const RECOVERS = {13: 3, 14: 8}
+
+      // Every part at the version the longest needs, so the code keeps one
+      // size from part to part rather than jumping when one runs a version over.
+      const encode = (text, version) => {
+        const qr = qrcode(version, 'L')
+        qr.addData(text, 'Alphanumeric')
+        qr.make()
+
+        return qr
+      }
+      const texts = Array.from({length: PARTS}, (_, index) => part(index + 1))
+      const version = Math.max(...texts.map(text => (encode(text, 0).getModuleCount() - 17) / 4))
+      const codes = texts.map(text => encode(text, version))
+
+      // When each fragment comes in: the part that carried it, a moment after
+      // it shows, as the camera needs a frame or two to read it.
+      const READ = 0.12
+      const arrivals = Array.from({length: COUNT}, (_, fragment) => {
+        const sequence = fragment + 1
+        const carrier = MISSED.has(sequence)
+          ? Number(Object.keys(RECOVERS).find(key => RECOVERS[key] === sequence))
+          : sequence
+
+        return (carrier - 1) * RATE + READ
+      })
+      const COMPLETE = Math.max(...arrivals)
+
+      // Complete, it holds, then everything clears and the sender starts over.
+      // The clip starts partway in, so its first frame (the card's still) shows
+      // a request half read.
+      const HOLD = 1.6
+      const RESET = 0.4
+      const PERIOD = COMPLETE + HOLD + RESET
+      const OFFSET = 1.25
+
+      const canvas = document.querySelector('canvas')
+      const context = canvas.getContext('2d')
+      const progress = document.querySelector('.progress')
+      const percent = document.querySelector('.percent')
+      const check = document.querySelector('.check')
+      const parts = document.querySelector('.parts')
+      const cells = Array.from({length: COUNT}, () => {
+        const cell = document.createElement('i')
+        document.querySelector('.fragments').append(cell)
+
+        return cell
+      })
+
+      // Whole pixels to a module, centred, so every module is the same size.
+      const draw = qr => {
+        const count = qr.getModuleCount()
+        const size = Math.floor(canvas.width / count)
+        const inset = Math.floor((canvas.width - size * count) / 2)
+        context.fillStyle = '#fff'
+        context.fillRect(0, 0, canvas.width, canvas.height)
+        context.fillStyle = '#000'
+
+        for (let row = 0; row < count; row++) {
+          for (let column = 0; column < count; column++) {
+            if (qr.isDark(row, column)) {
+              context.fillRect(inset + column * size, inset + row * size, size, size)
+            }
+          }
+        }
+      }
+
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+
+      await document.fonts.ready
+
+      window.DURATION = PERIOD
+      window.FPS = 60
+
+      window.frame = t => {
+        const at = (t + OFFSET) % PERIOD
+        // The sender keeps cycling its parts the whole time; past the last one
+        // here it goes round them again.
+        draw(codes[Math.floor(at / RATE) % PARTS])
+
+        const clear = clamp((at - COMPLETE - HOLD) / RESET)
+        const received = arrivals.filter(arrival => arrival <= at).length
+        const done = at >= COMPLETE
+
+        cells.forEach((cell, index) => {
+          const since = at - arrivals[index]
+          const lit = since >= 0 ? 1 - clear : 0
+          // A fragment pops in on a spring; one a mixed part brought back
+          // flashes white on its way to indigo.
+          const pop = since >= 0 ? spring(since, 0.45, 0.55) : 0
+          const flash = MISSED.has(index + 1) && since >= 0 ? clamp(1 - since / 0.35) : 0
+          Object.assign(cell.style, {
+            background:
+              lit > 0
+                ? `rgba(${Math.round(mix(99, 255, flash))}, ${Math.round(mix(102, 255, flash))}, ${Math.round(mix(241, 255, flash))}, ${(0.9 * lit + 0.08 * (1 - lit)).toFixed(3)})`
+                : 'rgba(255, 255, 255, 0.08)',
+            transform: `scale(${(lit > 0 ? mix(0.6, 1, pop) : 1).toFixed(3)})`,
+          })
+        })
+
+        // The count fades out with the cells and back in from nothing.
+        const status = (1 - clear) * clamp(at / 0.25)
+        percent.textContent = `${Math.round((received / COUNT) * 100)}%`
+        parts.textContent = done ? 'Ready to sign' : `${received} of ${COUNT} fragments`
+        parts.style.color = done ? '#a5b4fc' : 'rgba(255, 255, 255, 0.5)'
+        progress.style.opacity = status.toFixed(3)
+        parts.style.opacity = status.toFixed(3)
+
+        const shown = done ? spring(at - COMPLETE, 0.5, 0.6) : 0
+        Object.assign(check.style, {opacity: clamp(shown).toFixed(3), transform: `scale(${mix(0.4, 1, shown).toFixed(3)})`})
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

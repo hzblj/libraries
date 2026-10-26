@@ -7,7 +7,9 @@
       /* A wall of FlagKit flags (artwork/flags, the library's own artwork)
          turned off the axis, fading into the card, with one held up in front.
          On hover the wall drifts along its rows, slowly and without end: each
-         row repeats a short run of flags, and one loop moves it by one run. */
+         row repeats a short run of flags, and one loop moves it by one run.
+         The flags step aside for the one in front: any that come near it fade
+         out, so none shows cut off at its edge. */
       .wall {
         display: flex;
         flex-direction: column;
@@ -46,8 +48,8 @@
         border-radius: 7px;
         box-shadow:
           0 0 0 1px rgba(255, 255, 255, 0.16),
-          0 18px 36px rgba(0, 0, 0, 0.6),
-          0 4px 10px rgba(0, 0, 0, 0.4);
+          0 8px 20px rgba(0, 0, 0, 0.35),
+          0 2px 6px rgba(0, 0, 0, 0.3);
         height: 60px;
         left: 50%;
         position: absolute;
@@ -76,6 +78,8 @@
       const RUNS = 5
       const PITCH = 37
       const wall = document.querySelector('.wall')
+      const card = document.querySelector('.card')
+      const hero = document.querySelector('.hero')
 
       const rows = Array.from({length: ROWS}, (_, row) => {
         const element = document.createElement('div')
@@ -93,6 +97,12 @@
 
       window.DURATION = 20
 
+      // How close a flag may come to the one in front: gone within NEAR px of
+      // it, whole from CLEAR px out, fading between.
+      const NEAR = 0
+      const CLEAR = 6
+      const flags = [...wall.querySelectorAll('img')]
+
       window.frame = t => {
         const drift = -(t / window.DURATION) * RUN * PITCH
 
@@ -100,6 +110,20 @@
           // Every other row sits half a flag over, the way the wall was laid.
           row.style.transform = `translateX(${drift + (index % 2 ? PITCH / 2 : 0)}px)`
         })
+
+        const origin = card.getBoundingClientRect()
+        const front = hero.getBoundingClientRect()
+
+        for (const flag of flags) {
+          const {left, right, top, bottom} = flag.getBoundingClientRect()
+
+          if (right < origin.left || left > origin.right || bottom < origin.top || top > origin.bottom) {
+            continue
+          }
+
+          const gap = Math.max(front.left - right, left - front.right, front.top - bottom, top - front.bottom)
+          flag.style.opacity = String(Math.min(Math.max((gap - NEAR) / (CLEAR - NEAR), 0), 1))
+        }
       }
 
       window.frame(0)
