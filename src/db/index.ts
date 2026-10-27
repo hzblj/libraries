@@ -321,7 +321,7 @@ export const entries: Entries = [
     animation: growFrom('bottom', 0, 40, 0.1),
     area: 'l2',
     description:
-      'Native cryptography for Expo: a Zig engine behind Nitro Modules hashes, signs and derives keys, and keeps every seed and private key in native memory. Ethereum, Bitcoin and Solana are adapters, each its own package, and another chain takes a few dozen lines.',
+      'Native cryptography for Expo: a Zig engine behind Nitro Modules hashes, signs and derives keys, and keeps every seed and private key in native memory. Ethereum (EIP-712, EIP-7702 and a viem account), Bitcoin (Taproot, PSBTs and a watch-only sync) and Solana (v0 transactions and a kit signer) are adapters, each its own package, and another chain takes a few dozen lines.',
     image: '/libraries/nitro-crypto.png',
     install: 'npx expo install @hzblj/nitro-crypto react-native-nitro-modules',
     platforms: ['iOS', 'Android'],
@@ -341,7 +341,7 @@ export const entries: Entries = [
     animation: growFrom('left', -40, 0, 0.1),
     area: 's5',
     description:
-      'Air-gapped signing for Expo: a watch-only wallet and an offline signer trade requests and signatures as QR codes. BC-UR v2 with fountain-coded parts, typed and bounded decoding, and a package for each chain that checks every answer against its question, on the nitro-crypto engine.',
+      'Air-gapped signing for Expo: a watch-only wallet and an offline signer trade requests and signatures as QR codes. BC-UR v2 with fountain-coded parts, typed and bounded decoding, and a package for each chain that checks every answer against its question: EIP-712, every Ethereum transaction type, Solana v0 transactions and Taproot PSBTs, with MetaMask, Sparrow and Keystone, on the nitro-crypto engine.',
     image: '/libraries/crypto-airgap.png',
     install:
       'npx expo install @hzblj/crypto-airgap @hzblj/crypto-airgap-ethereum @hzblj/crypto-ethereum @hzblj/nitro-crypto react-native-nitro-modules',
@@ -362,7 +362,7 @@ export const entries: Entries = [
     animation: growFrom('top left', -40, -40, 0.35),
     area: 'l7',
     description:
-      'A wallet’s BIP-39 entropy sealed by the Secure Enclave or StrongBox, opened only after the system’s biometric prompt, straight into the nitro-crypto engine: JavaScript never receives the entropy or the words. Backups are sealed under a password, 87 bytes for twelve words, for crypto-recovery to keep.',
+      'A wallet’s BIP-39 entropy sealed by the Secure Enclave or StrongBox, opened only after the system’s biometric prompt, straight into the nitro-crypto engine: JavaScript never receives the entropy or the words. Backups are sealed under a password or a passkey for crypto-recovery to keep, and a wrong BIP-39 passphrase is an error, not another wallet.',
     image: '/libraries/crypto-vault.png',
     install: 'npx expo install @hzblj/crypto-vault @hzblj/nitro-crypto react-native-nitro-modules',
     platforms: ['iOS', 'Android'],
@@ -382,7 +382,7 @@ export const entries: Entries = [
     animation: growFrom('left', -40, 0, 0.3),
     area: 's2',
     description:
-      'A wallet’s sealed backup kept in iCloud Keychain or Android’s Block Store, and handed back on a new device. The store sees ciphertext, never a password or a secret: Recovery keeps only the bytes a vault sealed, and refuses anything else.',
+      'A wallet’s sealed backup kept in iCloud Keychain or Android’s Block Store, and handed back on a new device. The store sees ciphertext, never a password or a secret: Recovery keeps only the bytes a vault sealed, under a password or a passkey, and refuses anything else.',
     image: '/libraries/crypto-recovery.png',
     install: 'npx expo install @hzblj/crypto-recovery react-native-nitro-modules',
     platforms: ['iOS', 'Android'],
