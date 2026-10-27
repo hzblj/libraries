@@ -69,6 +69,8 @@ const EXPORTS = {
 // The pages and the size of the card each one paints.
 const CARDS = {
   'crypto-airgap': 'small',
+  'crypto-recovery': 'small',
+  'crypto-vault': 'large',
   'expo-app-icons': 'small',
   'expo-flags-kit': 'small',
   'expo-native-icons': 'small',
@@ -97,6 +99,8 @@ const CAPTURES = ['button', 'chip', 'list', 'segmented-control', 'slider', 'step
 // lighter. App Icons shows the glass icon its example switches to.
 const EXAMPLE_ICONS = {
   'crypto-airgap': join(SIBLINGS, 'crypto-airgap/apps/example/assets/icon.png'),
+  'crypto-recovery': join(SIBLINGS, 'crypto-recovery/apps/example/assets/icon.png'),
+  'crypto-vault': join(SIBLINGS, 'crypto-vault/apps/example/assets/icon.png'),
   'expo-app-icons': join(SIBLINGS, 'expo-app-icons/apps/example/assets/app-icons/glass/dark.png'),
   'expo-flags-kit': join(HERE, 'examples/expo-flags-kit.svg'),
   'expo-native-icons': join(HERE, 'examples/expo-native-icons.svg'),

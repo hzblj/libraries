@@ -1,0 +1,346 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* A wallet's backup crossing to a new phone: the 87 bytes the vault
+         sealed under a password go up into the platform's store, iCloud
+         Keychain and then, the second time round, Android's Block Store, and
+         come back down on another device. The store only ever holds those
+         bytes, ciphertext that starts with the format's magic, never a
+         password or a secret. In the example's sky blue, apart from Crypto's
+         emerald, Airgap's indigo and the Vault's amber. */
+      .glow {
+        --glow: 2 132 199;
+        --strength: 0.3;
+        height: 260px;
+        left: 15px;
+        top: -60px;
+        width: 260px;
+      }
+
+      .type {
+        color: rgba(255, 255, 255, 0.42);
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 9.5px;
+        left: 22px;
+        letter-spacing: 0.1px;
+        position: absolute;
+        top: 18px;
+      }
+
+      .node {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        position: absolute;
+      }
+
+      .device {
+        background: #1c1c1e;
+        border-radius: 14px;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+          0 12px 30px rgba(0, 0, 0, 0.5);
+        height: 48px;
+        top: 46px;
+        width: 48px;
+      }
+
+      .device.from {
+        left: 22px;
+      }
+
+      .device.to {
+        left: 220px;
+      }
+
+      /* The store, in the middle: the platform's own, end-to-end encrypted. */
+      .store {
+        background: linear-gradient(180deg, #38bdf8, #0369a1);
+        border-radius: 18px;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+          0 12px 30px rgba(2, 132, 199, 0.4);
+        height: 60px;
+        left: 115px;
+        top: 40px;
+        width: 60px;
+      }
+
+      /* Whoever holds the backup wears a seal. */
+      .seal {
+        align-items: center;
+        background: linear-gradient(180deg, #38bdf8, #0284c7);
+        border-radius: 50%;
+        box-shadow:
+          0 0 0 2px #161616,
+          0 4px 12px rgba(2, 132, 199, 0.55);
+        display: flex;
+        height: 16px;
+        justify-content: center;
+        position: absolute;
+        right: -5px;
+        top: -5px;
+        width: 16px;
+        z-index: 1;
+      }
+
+      .store .seal {
+        background: #fff;
+      }
+
+      .ring {
+        border-radius: inherit;
+        box-shadow: 0 0 0 1.5px #38bdf8;
+        inset: 0;
+        opacity: 0;
+        position: absolute;
+      }
+
+      .wire {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 1px;
+        height: 2px;
+        position: absolute;
+        top: 69px;
+        width: 37px;
+      }
+
+      .wire.up {
+        left: 74px;
+      }
+
+      .wire.down {
+        left: 179px;
+      }
+
+      .wire b {
+        background: #38bdf8;
+        border-radius: inherit;
+        display: block;
+        height: 100%;
+        transform-origin: left;
+      }
+
+      .packet {
+        background: #7dd3fc;
+        border-radius: 3px;
+        box-shadow: 0 0 10px rgba(56, 189, 248, 0.9);
+        height: 8px;
+        left: 0;
+        position: absolute;
+        top: 66px;
+        width: 8px;
+      }
+
+      .caption {
+        color: rgba(255, 255, 255, 0.5);
+        font-family: Inter, system-ui, sans-serif;
+        font-size: 10px;
+        font-weight: 500;
+        position: absolute;
+        text-align: center;
+        top: 104px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .caption.platform {
+        color: #7dd3fc;
+        display: grid;
+      }
+
+      .caption.platform span {
+        grid-area: 1 / 1;
+      }
+
+      /* What has happened to the backup, one state at a time, the pill taking
+         each one's width. */
+      .state {
+        background: rgba(2, 132, 199, 0.24);
+        border-radius: 999px;
+        color: #38bdf8;
+        font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+        font-size: 11.5px;
+        font-weight: 600;
+        height: 22px;
+        left: 145px;
+        letter-spacing: -0.1px;
+        overflow: hidden;
+        position: absolute;
+        top: 124px;
+      }
+
+      .state span {
+        align-items: center;
+        display: flex;
+        gap: 5px;
+        height: 22px;
+        left: 50%;
+        padding: 0 9px;
+        position: absolute;
+        top: 0;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="glow"></div>
+      <div class="type">ncbk · 87 bytes, sealed</div>
+      <div class="wire up"><b></b></div>
+      <div class="wire down"><b></b></div>
+      <div class="packet"></div>
+      <div class="node device from">
+        <svg width="16" height="26" viewBox="0 0 16 26" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6"><rect x="1" y="1" width="14" height="24" rx="3.5" /><path d="M6 4.2h4" stroke-linecap="round" /></svg>
+        <span class="seal"><svg width="7" height="8" viewBox="0 0 10 12"><path d="M2.8 5.2V3.7a2.2 2.2 0 0 1 4.4 0v1.5" fill="none" stroke="#fff" stroke-width="1.6" /><rect x="1" y="5" width="8" height="6.4" rx="1.6" fill="#fff" /></svg></span>
+        <span class="ring"></span>
+      </div>
+      <div class="node store">
+        <svg width="30" height="21" viewBox="0 0 28 20"><path d="M8 19h13a6 6 0 0 0 .6-12A8 8 0 0 0 6.5 9.5 4.8 4.8 0 0 0 8 19Z" fill="#fff" /></svg>
+        <span class="seal"><svg width="7" height="8" viewBox="0 0 10 12"><path d="M2.8 5.2V3.7a2.2 2.2 0 0 1 4.4 0v1.5" fill="none" stroke="#0284c7" stroke-width="1.6" /><rect x="1" y="5" width="8" height="6.4" rx="1.6" fill="#0284c7" /></svg></span>
+        <span class="ring"></span>
+      </div>
+      <div class="node device to">
+        <svg width="16" height="26" viewBox="0 0 16 26" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6"><rect x="1" y="1" width="14" height="24" rx="3.5" /><path d="M6 4.2h4" stroke-linecap="round" /></svg>
+        <span class="seal"><svg width="7" height="8" viewBox="0 0 10 12"><path d="M2.8 5.2V3.7a2.2 2.2 0 0 1 4.4 0v1.5" fill="none" stroke="#fff" stroke-width="1.6" /><rect x="1" y="5" width="8" height="6.4" rx="1.6" fill="#fff" /></svg></span>
+        <span class="ring"></span>
+      </div>
+      <div class="caption" style="left: 46px">This phone</div>
+      <div class="caption platform" style="left: 145px"><span>iCloud Keychain</span><span>Block Store</span></div>
+      <div class="caption" style="left: 244px">New phone</div>
+      <div class="state">
+        <span><svg width="8" height="10" viewBox="0 0 10 12"><path d="M2.8 5.2V3.7a2.2 2.2 0 0 1 4.4 0v1.5" fill="none" stroke="#38bdf8" stroke-width="1.5" /><rect x="1" y="5" width="8" height="6.4" rx="1.6" fill="#38bdf8" /></svg>Sealed by the vault</span>
+        <span><svg width="12" height="9" viewBox="0 0 28 20"><path d="M8 19h13a6 6 0 0 0 .6-12A8 8 0 0 0 6.5 9.5 4.8 4.8 0 0 0 8 19Z" fill="#38bdf8" /></svg>Stored</span>
+        <span><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1.2 4.2 3.8 6.6 8.8 1.4" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>Restored</span>
+      </div>
+    </div>
+    <script type="module">
+      import {mix, spring} from './anim.js'
+
+      const [from, store, to] = [...document.querySelectorAll('.node')]
+      const seals = [from, store, to].map(node => node.querySelector('.seal'))
+      const rings = [from, store, to].map(node => node.querySelector('.ring'))
+      const [up, down] = [...document.querySelectorAll('.wire b')]
+      const packet = document.querySelector('.packet')
+      const platforms = [...document.querySelectorAll('.platform span')]
+      const pill = document.querySelector('.state')
+      const states = [...pill.children]
+
+      // Each crossing takes HALF: the backup goes up into the store, the
+      // store rings, it comes down to the new phone, which rings, and all
+      // clears. The first crossing is iCloud Keychain's, the second Block
+      // Store's. The clip starts with the backup in the store, so its first
+      // frame (the card's still) shows one stored.
+      const HALF = 3.2
+      const PERIOD = HALF * 2
+      const OFFSET = 1.5
+
+      const UP = 0.35
+      const STORED = 0.9
+      const DOWN = 1.6
+      const RESTORED = 2.15
+      const RESET = 2.8
+      const TRAVEL = STORED - UP
+
+      // Where the packet runs: from the edge of one node to the next.
+      const PATHS = [
+        {from: 66, to: 111},
+        {from: 171, to: 216},
+      ]
+
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+      const out = value => 1 - (1 - clamp(value)) ** 3
+      const inOut = value => {
+        const v = clamp(value)
+
+        return v < 0.5 ? 4 * v ** 3 : 1 - (-2 * v + 2) ** 3 / 2
+      }
+      const span = (at, start, length) => clamp((at - start) / length)
+
+      await document.fonts.ready
+
+      const widths = states.map(state => state.offsetWidth)
+
+      window.DURATION = PERIOD
+      window.FPS = 60
+
+      window.frame = t => {
+        const at = (t + OFFSET) % PERIOD
+        const half = Math.floor(at / HALF)
+        const local = at - half * HALF
+        const clear = out(span(local, RESET, 0.3))
+
+        // The backup on its way: up, then down, out of sight inside a node.
+        const rising = inOut(span(local, UP, TRAVEL))
+        const falling = inOut(span(local, DOWN, TRAVEL))
+        const path = local < DOWN ? PATHS[0] : PATHS[1]
+        const along = local < DOWN ? rising : falling
+        const moving = (local > UP && local < STORED) || (local > DOWN && local < RESTORED)
+        Object.assign(packet.style, {
+          opacity: moving ? Math.min(1, Math.sin(Math.PI * along) * 3).toFixed(3) : '0',
+          transform: `translateX(${mix(path.from, path.to, along).toFixed(2)}px)`,
+        })
+        up.style.transform = `scaleX(${rising.toFixed(4)})`
+        down.style.transform = `scaleX(${falling.toFixed(4)})`
+        up.style.opacity = down.style.opacity = (1 - clear).toFixed(3)
+
+        // This phone holds the vault's backup throughout; the store and the
+        // new phone take a seal as it reaches them, and lose it as all clears.
+        const arrivals = [null, STORED, RESTORED]
+        seals.forEach((seal, index) => {
+          const arrival = arrivals[index]
+          const held = arrival === null ? 1 : local >= arrival ? spring(local - arrival, 0.45, 0.55) * (1 - clear) : 0
+          Object.assign(seal.style, {opacity: clamp(held).toFixed(3), transform: `scale(${mix(0.3, 1, held).toFixed(3)})`})
+
+          const ring = arrival === null ? 0 : span(local, arrival, 0.6)
+          Object.assign(rings[index].style, {
+            opacity: (ring > 0 && ring < 1 ? (1 - ring) * 0.85 : 0).toFixed(3),
+            transform: `scale(${mix(1, index === 1 ? 1.28 : 1.45, out(ring)).toFixed(3)})`,
+          })
+        })
+
+        // The new phone lights once the backup is on it.
+        const lit = local >= RESTORED ? out(span(local, RESTORED, 0.25)) * (1 - clear) : 0
+        to.style.boxShadow = `inset 0 0 0 1px rgba(56, 189, 248, ${mix(0, 0.6, lit).toFixed(3)}), inset 0 0 0 1px rgba(255, 255, 255, ${mix(0.08, 0, lit).toFixed(3)}), 0 12px 30px rgba(0, 0, 0, 0.5)`
+
+        // The store's name: iCloud Keychain, then Block Store, one going
+        // before the other comes as each crossing clears.
+        const going = out(span(local, RESET, 0.15))
+        const coming = out(span(local, RESET + 0.15, 0.2))
+        platforms.forEach((platform, index) => {
+          const shown = index === half ? 1 - going : index === (half + 1) % 2 ? coming : 0
+          Object.assign(platform.style, {
+            opacity: shown.toFixed(3),
+            transform: `translateY(${(index === half ? mix(0, -4, going) : mix(4, 0, coming)).toFixed(2)}px)`,
+          })
+        })
+
+        // The pill: sealed by the vault, stored, restored, and sealed again.
+        const changes = [
+          {at: STORED, from: 0, to: 1},
+          {at: RESTORED, from: 1, to: 2},
+          {at: RESET, from: 2, to: 0},
+        ]
+        const change = changes.findLast(({at: start}) => local >= start) ?? changes[changes.length - 1]
+        const since = local >= change.at ? local - change.at : local + HALF - change.at
+        const moved = spring(since, 0.45, 0.8)
+        const width = mix(widths[change.from], widths[change.to], clamp(moved))
+        Object.assign(pill.style, {transform: `translateX(${(-width / 2).toFixed(2)}px)`, width: `${width.toFixed(2)}px`})
+
+        states.forEach((state, index) => {
+          const entering = index === change.to ? out(span(since, 0.05, 0.25)) : 0
+          const leaving = index === change.from ? 1 - out(span(since, 0, 0.18)) : 0
+          Object.assign(state.style, {
+            opacity: Math.max(entering, leaving).toFixed(3),
+            transform: `translate(-50%, ${(index === change.to ? mix(8, 0, entering) : mix(-8, 0, leaving)).toFixed(2)}px)`,
+          })
+        })
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

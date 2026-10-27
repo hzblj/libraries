@@ -76,7 +76,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/react-native-expo-monorepo.mp4', webm: '/libraries/react-native-expo-monorepo.webm'},
   },
   {
-    animation: growFrom('top left', -40, -40, 0.35),
+    animation: growFrom('left', -40, 0, 0.4),
     area: 's10',
     description:
       'Native zoom transitions for Expo Router. UIKit zoom on iOS and Material container transforms on Android, with interactive dismissal.',
@@ -114,8 +114,8 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-flags-kit.mp4', webm: '/libraries/expo-flags-kit.webm'},
   },
   {
-    animation: growFrom('left', -40, 0, 0.3),
-    area: 's2',
+    animation: growFrom('left', -40, 0, 0.35),
+    area: 's11',
     description:
       'Platform-native feedback for Expo. Semantic events and custom patterns, powered by Core Haptics and Android haptic primitives.',
     image: '/libraries/expo-rich-haptics.png',
@@ -192,7 +192,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-paypal.mp4', webm: '/libraries/expo-paypal.webm'},
   },
   {
-    animation: growFrom('top left', -40, -40, 0.3),
+    animation: growFrom('bottom left', -40, 40, 0.4),
     area: 's8',
     description:
       'Agent skills for React and React Native engineers: animations that feel native, components that stay reusable and clean code, as small SKILL.md files for Claude Code, Codex, Cursor and other agents.',
@@ -310,6 +310,40 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/crypto-airgap.mp4', webm: '/libraries/crypto-airgap.webm'},
   },
   {
+    animation: growFrom('top left', -40, -40, 0.35),
+    area: 'l7',
+    description:
+      'A wallet’s BIP-39 entropy sealed by the Secure Enclave or StrongBox, opened only after the system’s biometric prompt, straight into the nitro-crypto engine: JavaScript never receives the entropy or the words. Backups are sealed under a password, 87 bytes for twelve words, for crypto-recovery to keep.',
+    image: '/libraries/crypto-vault.png',
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/crypto-vault', value: 'hzblj/crypto-vault'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-vault', value: '@hzblj/crypto-vault'},
+    ],
+    size: 'large',
+    slug: 'crypto-vault',
+    subtitle: 'Sealed by the Secure Enclave',
+    title: 'Vault',
+    variant: 'shot',
+    videos: {mp4: '/libraries/crypto-vault.mp4', webm: '/libraries/crypto-vault.webm'},
+  },
+  {
+    animation: growFrom('left', -40, 0, 0.3),
+    area: 's2',
+    description:
+      'A wallet’s sealed backup kept in iCloud Keychain or Android’s Block Store, and handed back on a new device. The store sees ciphertext, never a password or a secret: Recovery keeps only the bytes a vault sealed, and refuses anything else.',
+    image: '/libraries/crypto-recovery.png',
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/crypto-recovery', value: 'hzblj/crypto-recovery'},
+      {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-recovery', value: '@hzblj/crypto-recovery'},
+    ],
+    size: 'small',
+    slug: 'crypto-recovery',
+    subtitle: 'Sealed backups across devices',
+    title: 'Recovery',
+    variant: 'shot',
+    videos: {mp4: '/libraries/crypto-recovery.mp4', webm: '/libraries/crypto-recovery.webm'},
+  },
+  {
     animation: growFrom('right', 40, 0, 0.35),
     area: 'examples',
     examples: [
@@ -320,9 +354,11 @@ export const entries: Entries = [
       example('Kara', 'kara-ui', 'Every component and story'),
       example('Native Icons', 'expo-native-icons', 'Material Symbols, natively'),
       example('PayPal', 'expo-paypal', 'Every flow on the sandbox'),
+      example('Recovery', 'crypto-recovery', 'Back up, lose the phone, restore'),
       example('Rich Haptics', 'expo-rich-haptics', 'Every haptic and a composer'),
       example('Speech', 'expo-speech', 'Team radio, transcribed'),
       example('Translation', 'expo-translation', '15 Wikipedias, translated'),
+      example('Vault', 'crypto-vault', 'Face ID, then a signature'),
       example('Waveform', 'expo-waveform', 'Team radio you can scrub'),
       example('Zoom Transition', 'expo-zoom-transition', 'Photos zooming into pages'),
       example('Zyplot', 'zyplot', 'Every chart, in five apps'),

@@ -1,0 +1,335 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* A wallet the Secure Enclave keeps: its recovery phrase, every word of
+         it sealed, and Face ID over it. The system's prompt reads a face and
+         ticks, the seal opens natively (a light runs through the words, and
+         none of them shows), the words stay warm while the engine holds the
+         wallet and signs the example's message, and go cold again once it is
+         disposed. JavaScript gets a wallet that signs, never what is behind
+         it. Drawn in the example's manner: kara's grouped card and its amber,
+         apart from the Nitro Wallet's emerald and Airgap's indigo. */
+      .glow {
+        --glow: 217 119 6;
+        --strength: 0.32;
+        height: 560px;
+        left: 18px;
+        top: -41px;
+        width: 560px;
+      }
+
+      .phrase {
+        background: #1c1c1e;
+        border-radius: 24px;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+          0 30px 80px rgba(0, 0, 0, 0.55);
+        font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+        left: 54px;
+        padding: 18px;
+        position: absolute;
+        top: 82px;
+        width: 488px;
+      }
+
+      .head {
+        align-items: center;
+        display: flex;
+        gap: 9px;
+        height: 24px;
+      }
+
+      .badge {
+        align-items: center;
+        background: linear-gradient(180deg, #f59e0b, #b45309);
+        border-radius: 50%;
+        box-shadow: 0 4px 14px rgba(217, 119, 6, 0.45);
+        display: flex;
+        height: 24px;
+        justify-content: center;
+        width: 24px;
+      }
+
+      .label {
+        color: rgba(235, 235, 245, 0.62);
+        font-size: 13.5px;
+        font-weight: 600;
+        letter-spacing: -0.1px;
+      }
+
+      .meta {
+        display: flex;
+        gap: 6px;
+        margin-left: auto;
+      }
+
+      .pill {
+        background: rgba(120, 120, 128, 0.24);
+        border-radius: 999px;
+        color: rgba(235, 235, 245, 0.62);
+        font-size: 12px;
+        font-weight: 600;
+        height: 22px;
+        letter-spacing: -0.1px;
+        line-height: 22px;
+        padding: 0 9px;
+      }
+
+      /* What the wallet is doing, one state at a time, the pill taking each
+         one's width. */
+      .state {
+        background: rgba(217, 119, 6, 0.24);
+        color: #fbbf24;
+        overflow: hidden;
+        padding: 0;
+        position: relative;
+      }
+
+      .state span {
+        align-items: center;
+        display: flex;
+        gap: 5px;
+        height: 22px;
+        padding: 0 9px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        white-space: nowrap;
+      }
+
+      /* The example's phrase grid, three to a row here, each word sealed: a
+         bar as long as the word, never the word. */
+      .words {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        margin-top: 16px;
+      }
+
+      .word {
+        align-items: center;
+        border-radius: 12px;
+        display: flex;
+        gap: 6px;
+        height: 42px;
+        padding: 0 14px;
+      }
+
+      .number {
+        color: rgba(235, 235, 245, 0.3);
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+        width: 18px;
+      }
+
+      .bar {
+        border-radius: 5px;
+        height: 10px;
+      }
+
+      /* The system's Face ID prompt, in the middle of the words. */
+      .hud,
+      .burst {
+        border-radius: 34px;
+        height: 148px;
+        left: 224px;
+        position: absolute;
+        top: 165px;
+        width: 148px;
+      }
+
+      .hud {
+        align-items: center;
+        backdrop-filter: blur(18px) saturate(1.5);
+        background: rgba(58, 58, 62, 0.62);
+        box-shadow:
+          inset 0 0 0 0.5px rgba(255, 255, 255, 0.16),
+          0 24px 60px rgba(0, 0, 0, 0.55);
+        display: flex;
+        flex-direction: column;
+        font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+        justify-content: center;
+      }
+
+      .hud svg {
+        display: block;
+        overflow: visible;
+      }
+
+      .hud span {
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 13.5px;
+        font-weight: 600;
+        letter-spacing: -0.1px;
+        margin-top: 12px;
+      }
+
+      /* A ring that leaves the prompt as the face is recognised. */
+      .burst {
+        box-shadow: 0 0 0 1.5px #fbbf24;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card large">
+      <div class="glow"></div>
+      <div class="phrase">
+        <div class="head">
+          <span class="badge">
+            <svg width="11" height="13" viewBox="0 0 10 12"><path d="M2.8 5.2V3.7a2.2 2.2 0 0 1 4.4 0v1.5" fill="none" stroke="#fff" stroke-width="1.4" /><rect x="1" y="5" width="8" height="6.4" rx="1.6" fill="#fff" /></svg>
+          </span>
+          <span class="label">Recovery phrase</span>
+          <div class="meta">
+            <span class="pill">12 words</span>
+            <span class="pill state">
+              <span><svg width="9" height="11" viewBox="0 0 10 12"><path d="M2.8 5.2V3.7a2.2 2.2 0 0 1 4.4 0v1.5" fill="none" stroke="#fbbf24" stroke-width="1.5" /><rect x="1" y="5" width="8" height="6.4" rx="1.6" fill="#fbbf24" /></svg>Sealed</span>
+              <span><svg width="9" height="11" viewBox="0 0 10 12"><path d="M5.9.3 1 6.6c-.2.3 0 .7.4.7h2.9L3.8 11.4c-.1.4.4.6.6.3L9 5.4c.2-.3 0-.7-.4-.7H5.7L6.5.6C6.6.2 6.1 0 5.9.3Z" fill="#fbbf24" /></svg>In the engine</span>
+              <span><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1.2 4.2 3.8 6.6 8.8 1.4" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>Signed</span>
+            </span>
+          </div>
+        </div>
+        <div class="words"></div>
+      </div>
+      <div class="burst"></div>
+      <div class="hud">
+        <svg width="66" height="66" viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+          <g class="corners">
+            <path id="corner" d="M2 20V12A10 10 0 0 1 12 2H20" />
+            <use href="#corner" transform="matrix(-1 0 0 1 64 0)" />
+            <use href="#corner" transform="matrix(1 0 0 -1 0 64)" />
+            <use href="#corner" transform="matrix(-1 0 0 -1 64 64)" />
+          </g>
+          <g class="face">
+            <path d="M21 22v6M43 22v6M32 22v13h-3M22 44c5.5 5 14.5 5 20 0" />
+          </g>
+          <path class="check" d="M17 33l10 10L47 21" pathLength="1" stroke-dasharray="1" />
+        </svg>
+        <span>Face ID</span>
+      </div>
+    </div>
+    <script type="module">
+      import {mix, spring} from './anim.js'
+
+      // The example's phrase from its end-to-end run, as long as its words
+      // are: "seat quantum chuckle clutch upon master copper tragic enemy
+      // auction shaft local". Only the lengths are drawn.
+      const LENGTHS = [4, 7, 7, 6, 4, 6, 6, 6, 5, 7, 5, 5]
+
+      const words = LENGTHS.map((length, index) => {
+        const word = document.createElement('div')
+        word.className = 'word'
+        word.innerHTML = `<span class="number">${index + 1}</span><span class="bar" style="width: ${length * 8 + 10}px"></span>`
+        document.querySelector('.words').append(word)
+
+        return {bar: word.querySelector('.bar'), word}
+      })
+
+      const glow = document.querySelector('.glow')
+      const hud = document.querySelector('.hud')
+      const burst = document.querySelector('.burst')
+      const corners = document.querySelector('.corners')
+      const face = document.querySelector('.face')
+      const check = document.querySelector('.check')
+      const pill = document.querySelector('.state')
+      const states = [...pill.children]
+
+      // One unlock: the prompt comes up and reads a face, ticks, the seal
+      // opens through the words, the engine holds the wallet and signs, and
+      // the wallet is disposed. The clip starts with the prompt up and
+      // reading, so its first frame (the card's still) shows Face ID over the
+      // sealed phrase.
+      const PERIOD = 6
+      const OFFSET = 1.15
+
+      const PROMPT = 0.3
+      const SUCCESS = 1.45
+      const SWEEP = 1.55
+      const DISMISS = 2
+      const OPEN = 2.4
+      const SIGNED = 3
+      const DISPOSE = 4.2
+
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+      const out = value => 1 - (1 - clamp(value)) ** 3
+      const span = (at, from, length) => clamp((at - from) / length)
+
+      await document.fonts.ready
+
+      const widths = states.map(state => state.offsetWidth)
+
+      window.DURATION = PERIOD
+      window.FPS = 60
+
+      window.frame = t => {
+        const at = (t + OFFSET) % PERIOD
+
+        // The prompt springs in, reads (the face turning a little side to
+        // side), ticks, and goes.
+        const shown = spring(at - PROMPT, 0.5, 0.75)
+        const gone = out(span(at, DISMISS, 0.3))
+        Object.assign(hud.style, {
+          opacity: (clamp((at - PROMPT) / 0.15) * (1 - gone)).toFixed(3),
+          transform: `scale(${(mix(0.88, 1, shown) * mix(1, 0.94, gone)).toFixed(4)})`,
+        })
+
+        const reading = Math.sin(((at - PROMPT) / 0.9) * Math.PI * 2)
+        const success = out(span(at, SUCCESS, 0.25))
+        face.style.transform = `translate(${(reading * 2.4).toFixed(2)}px, ${(Math.abs(reading) * -0.8).toFixed(2)}px)`
+        face.style.opacity = (1 - out(span(at, SUCCESS, 0.15))).toFixed(3)
+        corners.style.opacity = (1 - success).toFixed(3)
+        corners.style.transform = `scale(${mix(1 + 0.025 * Math.abs(reading), 0.84, success).toFixed(4)})`
+        corners.style.transformOrigin = '32px 32px'
+        check.style.strokeDashoffset = (1 - out(span(at, SUCCESS + 0.05, 0.3))).toFixed(3)
+
+        const ring = span(at, SUCCESS, 0.7)
+        Object.assign(burst.style, {
+          opacity: (ring > 0 && ring < 1 ? (1 - ring) * 0.8 : 0).toFixed(3),
+          transform: `scale(${mix(1, 1.4, out(ring)).toFixed(3)})`,
+        })
+
+        // The seal opens natively: a light runs through the words, none of
+        // them showing, and they stay warm while the engine holds the wallet.
+        const warm = span(at, OPEN - 0.3, 0.3) * (1 - out(span(at, DISPOSE, 0.5)))
+
+        words.forEach(({bar, word}, index) => {
+          const light = Math.sin(Math.PI * span(at, SWEEP + index * 0.04, 0.45))
+          const hue = Math.max(light, warm)
+          bar.style.background = `rgba(${Math.round(mix(235, 251, hue))}, ${Math.round(mix(235, 191, hue))}, ${Math.round(mix(245, 36, hue))}, ${Math.max(mix(0.16, 0.9, light), mix(0.16, 0.6, warm)).toFixed(3)})`
+          word.style.background = `rgba(${Math.round(mix(120, 217, light))}, ${Math.round(mix(120, 119, light))}, ${Math.round(mix(128, 6, light))}, ${mix(0.16, 0.2, light).toFixed(3)})`
+        })
+
+        // The light behind the phrase blooms as it opens.
+        const bloom = Math.sin(Math.PI * span(at, SUCCESS, 1.1))
+        glow.style.setProperty('--strength', (0.32 + 0.2 * bloom + 0.06 * warm).toFixed(3))
+
+        // The pill says what the wallet is doing: sealed, in the engine,
+        // signed, sealed again once it is disposed.
+        const changes = [
+          {at: OPEN, from: 0, to: 1},
+          {at: SIGNED, from: 1, to: 2},
+          {at: DISPOSE, from: 2, to: 0},
+        ]
+        const change = changes.findLast(({at: from}) => at >= from) ?? changes[changes.length - 1]
+        const since = at >= change.at ? at - change.at : at + PERIOD - change.at
+        const moved = spring(since, 0.45, 0.8)
+        pill.style.width = `${mix(widths[change.from], widths[change.to], clamp(moved)).toFixed(2)}px`
+
+        states.forEach((state, index) => {
+          const entering = index === change.to ? out(span(since, 0.05, 0.25)) : 0
+          const leaving = index === change.from ? 1 - out(span(since, 0, 0.18)) : 0
+          const visible = Math.max(entering, leaving)
+          Object.assign(state.style, {
+            opacity: visible.toFixed(3),
+            transform: `translateY(${(index === change.to ? mix(8, 0, entering) : mix(-8, 0, leaving)).toFixed(2)}px)`,
+          })
+        })
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>
