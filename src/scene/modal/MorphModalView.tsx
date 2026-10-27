@@ -30,10 +30,14 @@ export const MorphModalView: FC<MorphModalViewProps> = ({card}) => {
     return null
   }
 
+  // `dvh`, not `vh`: on a phone 100vh is the viewport with the browser's bars
+  // tucked away, and as html/body never scroll they never tuck. A scroller that
+  // tall runs on under the toolbar, and the last rows of a long card end there,
+  // behind the dock, out of reach.
   return createPortal(
     <div
       ref={scrollerRef}
-      className="fixed inset-0 z-40 w-screen h-screen overflow-auto block"
+      className="fixed inset-0 z-40 w-screen h-dvh overflow-auto block"
       style={active ? undefined : HIDDEN}
       inert={!active}
     >
