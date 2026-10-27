@@ -46,11 +46,17 @@ export type EntryShotVideos = {
 
 export type EntryShotSize = 'large' | 'small'
 
+export type EntryShotPlatform = 'iOS' | 'Android' | 'Web'
+
 export type EntryShot = {
   title: string
   /** The line under the title on the card: what the library is, in a few words. */
   subtitle?: string
   description: string
+  /** The command the library's README installs it with, shown in the open card with a copy button. */
+  install?: string
+  /** Where the library runs, as its native modules and web files say: the first row of the open card's list. */
+  platforms?: EntryShotPlatform[]
   image: string
   videos?: EntryShotVideos
   area: ShotArea

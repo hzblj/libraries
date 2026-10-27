@@ -8,13 +8,15 @@ type ShotModalBodyProps = {
 }
 
 export const ShotModalBody: FC<ShotModalBodyProps> = ({entry}) => {
-  const {title, description, image, videos, size, properties} = entry
+  const {title, description, install, platforms, image, videos, size, properties} = entry
 
   return (
     <div className="px-[20px] md:px-8 pt-[20px] md:pt-8 pb-2">
       <ShotDetail
         title={title}
         description={description}
+        install={install}
+        platforms={platforms}
         image={image}
         videos={videos}
         size={size}
