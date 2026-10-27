@@ -9,7 +9,7 @@ yarn build
 yarn lint         # Biome and TypeScript
 ```
 
-The grid pans freely, by drag, scroll or touch, as the portfolio does, and stops when only one card's worth of it is left on screen at an edge (`KEEP_VISIBLE` in `src/providers/CameraProvider/const`). Pinch and ctrl+wheel zoom. Cards open keyboard-accessible native dialogs with installation commands and project links. Native UI and haptics are represented by decorative web previews. Reduced-motion preferences disable animations.
+The grid pans freely, by drag, scroll or touch, as the portfolio does, and stops when only one card's worth of it is left on screen at an edge (`KEEP_VISIBLE` in `src/providers/CameraProvider/const`). Pinch and ctrl+wheel zoom. Cards open keyboard-accessible native dialogs with installation commands and project links. The install command is the one each library's README gives, peers and all, with a copy button, and a library listed on React Native Directory links to its page there (`directory` in `src/db/index.ts`). The platforms, the first row of a library's list, are the ones its native modules and web files cover: iOS and Android for each, the web too for Flags Kit and Zyplot. Native UI and haptics are represented by decorative web previews. Reduced-motion preferences disable animations.
 
 The grid puts the profile in the middle, two columns by one row as on the portfolio, and the collection round it (`src/scene/grid/layout.ts`). Its tile is nine columns wide, so the profile sits half a column off the tile's centre and the camera starts on the profile, not the tile: every library is one cell or two by two, so each keeps the 4:3 of the modal's media. A `link` entry (the Portfolio card) looks like the others but opens its URL instead of a dialog. The examples card runs down the left edge, four rows tall, with a row for every library's example app, each a link to its `apps/example` on GitHub.
 
@@ -28,4 +28,4 @@ SEO lives in `app/layout.tsx` (metadata, Open Graph, Twitter), `app/robots.ts`, 
 
 Google Analytics (GA4, `G-VKC9021KN1`, in `src/lib/analytics.ts`) loads on production deployments only: not in `next dev` and not on Vercel's previews. `NEXT_PUBLIC_GA_MEASUREMENT_ID` overrides the ID.
 
-Flag artwork is copied from expo-flags-kit (FlagKit); see artwork/flags/LICENSE. The PayPal logos are the vector drawables from PayPal's Android SDK (`payment-buttons`, Apache 2.0, see artwork/paypal/LICENSE), converted to SVG; they are PayPal's trademarks. Inter is shared with the existing Kara website.
+Flag artwork is copied from expo-flags-kit (FlagKit); see artwork/flags/LICENSE. The Apple and Android marks on the platform pills are Simple Icons' (CC0); they are their owners' trademarks. The PayPal logos are the vector drawables from PayPal's Android SDK (`payment-buttons`, Apache 2.0, see artwork/paypal/LICENSE), converted to SVG; they are PayPal's trademarks. Inter is shared with the existing Kara website.

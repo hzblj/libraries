@@ -1,5 +1,5 @@
 import profile from './entries/profile'
-import type {AnimationConfig, Entries, EntryExample} from './types'
+import type {AnimationConfig, Entries, EntryExample, EntryShotProperty} from './types'
 
 // Every card grows out of the corner that faces the profile, so the collection
 // opens outwards from the middle.
@@ -18,6 +18,13 @@ const example = (title: string, repository: string, description: string): EntryE
   url: `https://github.com/hzblj/${repository}/tree/main/apps/example`,
 })
 
+// Every library listed on React Native Directory links to its page there, by its npm name.
+const directory = (pkg: string): EntryShotProperty => ({
+  name: 'React Native Directory',
+  url: `https://reactnative.directory/package/${pkg}`,
+  value: 'reactnative.directory',
+})
+
 export const entries: Entries = [
   profile,
   {
@@ -26,11 +33,15 @@ export const entries: Entries = [
     description:
       'A native-first design system for Expo. Real SwiftUI and Jetpack Compose components, with one token-typed styling surface.',
     image: '/libraries/kara-ui.png',
+    install:
+      'npx expo install @hzblj/kara-ui @expo/ui @lodev09/react-native-true-sheet expo-image react-native-reanimated react-native-worklets',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'Website', url: 'https://www.kara.janblazej.dev', value: 'kara.janblazej.dev'},
       {name: 'Documentation', url: 'https://www.kara.janblazej.dev/docs', value: 'Kara docs'},
       {name: 'GitHub', url: 'https://github.com/hzblj/kara-ui', value: 'hzblj/kara-ui'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/kara-ui', value: '@hzblj/kara-ui'},
+      directory('@hzblj/kara-ui'),
     ],
     size: 'large',
     slug: 'kara-ui',
@@ -44,9 +55,12 @@ export const entries: Entries = [
     area: 's7',
     description: 'Alternate app icons for Expo on iOS and Android. Generate at prebuild, switch at runtime.',
     image: '/libraries/expo-app-icons.png',
+    install: 'npx expo install @hzblj/expo-app-icons',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-app-icons', value: 'hzblj/expo-app-icons'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-app-icons', value: '@hzblj/expo-app-icons'},
+      directory('@hzblj/expo-app-icons'),
     ],
     size: 'small',
     slug: 'expo-app-icons',
@@ -81,6 +95,8 @@ export const entries: Entries = [
     description:
       'Native zoom transitions for Expo Router. UIKit zoom on iOS and Material container transforms on Android, with interactive dismissal.',
     image: '/libraries/expo-zoom-transition.png',
+    install: 'npx expo install @hzblj/expo-zoom-transition',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-zoom-transition', value: 'hzblj/expo-zoom-transition'},
       {
@@ -88,6 +104,7 @@ export const entries: Entries = [
         url: 'https://www.npmjs.com/package/@hzblj/expo-zoom-transition',
         value: '@hzblj/expo-zoom-transition',
       },
+      directory('@hzblj/expo-zoom-transition'),
     ],
     size: 'small',
     slug: 'expo-zoom-transition',
@@ -102,9 +119,12 @@ export const entries: Entries = [
     description:
       '255 native vector flags for iOS, Android and web. Sharp at every size, with typed country codes and localized names.',
     image: '/libraries/expo-flags-kit.png',
+    install: 'npx expo install @hzblj/expo-flags-kit',
+    platforms: ['iOS', 'Android', 'Web'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-flags-kit', value: 'hzblj/expo-flags-kit'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-flags-kit', value: '@hzblj/expo-flags-kit'},
+      directory('@hzblj/expo-flags-kit'),
     ],
     size: 'small',
     slug: 'expo-flags-kit',
@@ -119,6 +139,8 @@ export const entries: Entries = [
     description:
       'Platform-native feedback for Expo. Semantic events and custom patterns, powered by Core Haptics and Android haptic primitives.',
     image: '/libraries/expo-rich-haptics.png',
+    install: 'npx expo install @hzblj/expo-rich-haptics',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-rich-haptics', value: 'hzblj/expo-rich-haptics'},
       {
@@ -126,6 +148,7 @@ export const entries: Entries = [
         url: 'https://www.npmjs.com/package/@hzblj/expo-rich-haptics',
         value: '@hzblj/expo-rich-haptics',
       },
+      directory('@hzblj/expo-rich-haptics'),
     ],
     size: 'small',
     slug: 'expo-rich-haptics',
@@ -140,11 +163,14 @@ export const entries: Entries = [
     description:
       'One chart API for React and Expo, native on every platform: Swift Charts on iOS, Jetpack Compose on Android, ECharts and uPlot on the web.',
     image: '/libraries/zyplot.png',
+    install: 'npm install @hzblj/zyplot',
+    platforms: ['iOS', 'Android', 'Web'],
     properties: [
       {name: 'Website', url: 'https://www.zyplot.janblazej.dev', value: 'zyplot.janblazej.dev'},
       {name: 'Documentation', url: 'https://www.zyplot.janblazej.dev/docs', value: 'Zyplot docs'},
       {name: 'GitHub', url: 'https://github.com/hzblj/zyplot', value: 'hzblj/zyplot'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/zyplot', value: '@hzblj/zyplot'},
+      directory('@hzblj/zyplot'),
     ],
     size: 'large',
     slug: 'zyplot',
@@ -159,6 +185,8 @@ export const entries: Entries = [
     description:
       'Your own SVG icons as native assets for Expo. iOS asset catalog images and Android vector drawables at prebuild, typed names, and a native view that tints them.',
     image: '/libraries/expo-native-icons.png',
+    install: 'npx expo install @hzblj/expo-native-icons',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-native-icons', value: 'hzblj/expo-native-icons'},
       {
@@ -166,6 +194,7 @@ export const entries: Entries = [
         url: 'https://www.npmjs.com/package/@hzblj/expo-native-icons',
         value: '@hzblj/expo-native-icons',
       },
+      directory('@hzblj/expo-native-icons'),
     ],
     size: 'small',
     slug: 'expo-native-icons',
@@ -180,9 +209,12 @@ export const entries: Entries = [
     description:
       'PayPal Checkout with App Switch, Pay Later and PayPal Credit, vaulting, and card payments with 3D Secure, behind one promise-based API. PayPal’s own buttons come along as native views.',
     image: '/libraries/expo-paypal.png',
+    install: 'npx expo install @hzblj/expo-paypal',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-paypal', value: 'hzblj/expo-paypal'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-paypal', value: '@hzblj/expo-paypal'},
+      directory('@hzblj/expo-paypal'),
     ],
     size: 'large',
     slug: 'expo-paypal',
@@ -197,6 +229,7 @@ export const entries: Entries = [
     description:
       'Agent skills for React and React Native engineers: animations that feel native, components that stay reusable and clean code, as small SKILL.md files for Claude Code, Codex, Cursor and other agents.',
     image: '/libraries/skills.png',
+    install: 'npx skills@latest add hzblj/skills',
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/skills', value: 'hzblj/skills'},
       {name: 'skills.sh', url: 'https://skills.sh/hzblj/skills', value: 'skills.sh/hzblj/skills'},
@@ -214,9 +247,12 @@ export const entries: Entries = [
     description:
       'Speech to text for Expo on the platforms’ own speech APIs: SpeechAnalyzer on iOS, with SFSpeechRecognizer before it, and the on-device SpeechRecognizer on Android. Files or the microphone, with every word’s timing for titles that follow the audio.',
     image: '/libraries/expo-speech.png',
+    install: 'npx expo install @hzblj/expo-speech',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-speech', value: 'hzblj/expo-speech'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-speech', value: '@hzblj/expo-speech'},
+      directory('@hzblj/expo-speech'),
     ],
     size: 'small',
     slug: 'expo-speech',
@@ -243,6 +279,8 @@ export const entries: Entries = [
     description:
       'On-device translation for Expo on the platforms’ own engines: Apple’s Translation framework on iOS, with Google’s ML Kit for the languages it lacks, and ML Kit on Android. Downloads, language identification, batches, a cache and hooks.',
     image: '/libraries/expo-translation.png',
+    install: 'npx expo install @hzblj/expo-translation',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-translation', value: 'hzblj/expo-translation'},
       {
@@ -250,6 +288,7 @@ export const entries: Entries = [
         url: 'https://www.npmjs.com/package/@hzblj/expo-translation',
         value: '@hzblj/expo-translation',
       },
+      directory('@hzblj/expo-translation'),
     ],
     size: 'large',
     slug: 'expo-translation',
@@ -264,9 +303,12 @@ export const entries: Entries = [
     description:
       'Native audio waveforms for Expo, analysed on the device and cached, drawn by a native view that follows playback at the display’s frame rate, seeks by drag or tap with haptics, and meters a recording live.',
     image: '/libraries/expo-waveform.png',
+    install: 'npx expo install @hzblj/expo-waveform',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/expo-waveform', value: 'hzblj/expo-waveform'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/expo-waveform', value: '@hzblj/expo-waveform'},
+      directory('@hzblj/expo-waveform'),
     ],
     size: 'large',
     slug: 'expo-waveform',
@@ -281,6 +323,8 @@ export const entries: Entries = [
     description:
       'Native cryptography for Expo: a Zig engine behind Nitro Modules hashes, signs and derives keys, and keeps every seed and private key in native memory. Ethereum, Bitcoin and Solana are adapters, each its own package, and another chain takes a few dozen lines.',
     image: '/libraries/nitro-crypto.png',
+    install: 'npx expo install @hzblj/nitro-crypto react-native-nitro-modules',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/nitro-crypto', value: 'hzblj/nitro-crypto'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/nitro-crypto', value: '@hzblj/nitro-crypto'},
@@ -298,6 +342,9 @@ export const entries: Entries = [
     description:
       'Air-gapped signing for Expo: a watch-only wallet and an offline signer trade requests and signatures as QR codes. BC-UR v2 with fountain-coded parts, typed and bounded decoding, and a package for each chain that checks every answer against its question, on the nitro-crypto engine.',
     image: '/libraries/crypto-airgap.png',
+    install:
+      'npx expo install @hzblj/crypto-airgap @hzblj/crypto-airgap-ethereum @hzblj/crypto-ethereum @hzblj/nitro-crypto react-native-nitro-modules',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-airgap', value: 'hzblj/crypto-airgap'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-airgap', value: '@hzblj/crypto-airgap'},
@@ -315,6 +362,8 @@ export const entries: Entries = [
     description:
       'A wallet’s BIP-39 entropy sealed by the Secure Enclave or StrongBox, opened only after the system’s biometric prompt, straight into the nitro-crypto engine: JavaScript never receives the entropy or the words. Backups are sealed under a password, 87 bytes for twelve words, for crypto-recovery to keep.',
     image: '/libraries/crypto-vault.png',
+    install: 'npx expo install @hzblj/crypto-vault @hzblj/nitro-crypto react-native-nitro-modules',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-vault', value: 'hzblj/crypto-vault'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-vault', value: '@hzblj/crypto-vault'},
@@ -332,6 +381,8 @@ export const entries: Entries = [
     description:
       'A wallet’s sealed backup kept in iCloud Keychain or Android’s Block Store, and handed back on a new device. The store sees ciphertext, never a password or a secret: Recovery keeps only the bytes a vault sealed, and refuses anything else.',
     image: '/libraries/crypto-recovery.png',
+    install: 'npx expo install @hzblj/crypto-recovery react-native-nitro-modules',
+    platforms: ['iOS', 'Android'],
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-recovery', value: 'hzblj/crypto-recovery'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-recovery', value: '@hzblj/crypto-recovery'},
