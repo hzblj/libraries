@@ -10,7 +10,7 @@
          its 64 bytes settling out of noise as the engine hands them over, with
          the curve and what a signature takes through Nitro (the example's
          Performance screen, iOS). Drawn in the example's manner: kara's grouped
-         cards, its ticker badges and its emerald. */
+         cards and its emerald, each chain under the coin a wallet shows. */
       .glow {
         --glow: 18 163 127;
         --strength: 0.34;
@@ -68,19 +68,43 @@
         top: 0;
       }
 
+      /* The chain's coin: its mark on its colour, as wallets list them. */
       .badge {
         align-items: center;
-        background: rgba(120, 120, 128, 0.24);
         border-radius: 50%;
-        color: #fff;
         display: flex;
         flex: none;
-        font-size: 11.5px;
-        font-weight: 600;
         height: 36px;
         justify-content: center;
-        letter-spacing: -0.1px;
         width: 36px;
+      }
+
+      .badge svg {
+        display: block;
+      }
+
+      .badge.btc svg {
+        height: 36px;
+        width: 36px;
+      }
+
+      .badge.eth {
+        background: #627eea;
+      }
+
+      .badge.eth svg {
+        height: 21px;
+        width: 21px;
+      }
+
+      .badge.sol {
+        background: #000;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+      }
+
+      .badge.sol svg {
+        height: 17px;
+        width: 17px;
       }
 
       .name {
@@ -221,17 +245,24 @@
         {address: 'HAgk14…Kpqk', curve: 'Ed25519', name: 'Solana', network: 'devnet', path: "m/44'/501'/0'/0'", seed: 41, ticker: 'SOL', time: '51.3 µs'},
       ]
 
+      // The coins' marks are Simple Icons' (CC0). Bitcoin's coin is its own
+      // circle, the ₿ cut through it to white; Ethereum's diamond sits on the
+      // blue wallets show it on, and Solana's bars run its purple to green.
+      const MARKS = {
+        BTC: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#fff"/><path fill="#f7931a" d="M23.638 14.904c-1.602 6.43-8.113 10.34-14.542 8.736C2.67 22.05-1.244 15.525.362 9.105 1.962 2.67 8.475-1.243 14.9.358c6.43 1.605 10.342 8.115 8.738 14.548v-.002zm-6.35-4.613c.24-1.59-.974-2.45-2.64-3.03l.54-2.153-1.315-.33-.525 2.107c-.345-.087-.705-.167-1.064-.25l.526-2.127-1.32-.33-.54 2.165c-.285-.067-.565-.132-.84-.2l-1.815-.45-.35 1.407s.975.225.955.236c.535.136.63.486.615.766l-1.477 5.92c-.075.166-.24.406-.614.314.015.02-.96-.24-.96-.24l-.66 1.51 1.71.426.93.242-.54 2.19 1.32.327.54-2.17c.36.1.705.19 1.05.273l-.51 2.154 1.32.33.545-2.19c2.24.427 3.93.257 4.64-1.774.57-1.637-.03-2.58-1.217-3.196.854-.193 1.5-.76 1.68-1.93h.01zm-3.01 4.22c-.404 1.64-3.157.75-4.05.53l.72-2.9c.896.23 3.757.67 3.33 2.37zm.41-4.24c-.37 1.49-2.662.735-3.405.55l.654-2.64c.744.18 3.137.524 2.75 2.084v.006z"/></svg>',
+        ETH: '<svg viewBox="0 0 24 24"><path fill="#fff" fill-opacity="0.6" d="M12.056 0 4.69 12.223l7.365 4.354V0z"/><path fill="#fff" d="M12.056 0v16.577l7.365-4.35L12.056 0z"/><path fill="#fff" fill-opacity="0.6" d="M11.944 17.97 4.58 13.62 11.943 24V17.97z"/><path fill="#fff" d="M11.944 17.97V24l7.37-10.38-7.37 4.35z"/></svg>',
+        SOL: '<svg viewBox="0 0 24 24"><defs><linearGradient id="sol" x1="2" y1="23" x2="22" y2="1" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9945ff"/><stop offset="1" stop-color="#14f195"/></linearGradient></defs><path fill="url(#sol)" d="m23.8764 18.0313-3.962 4.1393a.9201.9201 0 0 1-.306.2106.9407.9407 0 0 1-.367.0742H.4599a.4689.4689 0 0 1-.2522-.0733.4513.4513 0 0 1-.1696-.1962.4375.4375 0 0 1-.0314-.2545.4438.4438 0 0 1 .117-.2298l3.9649-4.1393a.92.92 0 0 1 .3052-.2102.9407.9407 0 0 1 .3658-.0746H23.54a.4692.4692 0 0 1 .2523.0734.4531.4531 0 0 1 .1697.196.438.438 0 0 1 .0313.2547.4442.4442 0 0 1-.1169.2297zm-3.962-8.3355a.9202.9202 0 0 0-.306-.2106.941.941 0 0 0-.367-.0742H.4599a.4687.4687 0 0 0-.2522.0734.4513.4513 0 0 0-.1696.1961.4376.4376 0 0 0-.0314.2546.444.444 0 0 0 .117.2297l3.9649 4.1394a.9204.9204 0 0 0 .3052.2102c.1154.049.24.0744.3658.0746H23.54a.469.469 0 0 0 .2523-.0734.453.453 0 0 0 .1697-.1961.4382.4382 0 0 0 .0313-.2546.4444.4444 0 0 0-.1169-.2297zM.46 6.7225h18.7815a.9411.9411 0 0 0 .367-.0742.9202.9202 0 0 0 .306-.2106l3.962-4.1394a.4442.4442 0 0 0 .117-.2297.4378.4378 0 0 0-.0314-.2546.453.453 0 0 0-.1697-.196.469.469 0 0 0-.2523-.0734H4.7596a.941.941 0 0 0-.3658.0745.9203.9203 0 0 0-.3052.2102L.1246 5.9687a.4438.4438 0 0 0-.1169.2295.4375.4375 0 0 0 .0312.2544.4512.4512 0 0 0 .1692.196.4689.4689 0 0 0 .2518.0739z"/></svg>',
+      }
+
       const accounts = document.querySelector('.accounts')
       const select = document.querySelector('.select')
-      const rows = CHAINS.map(({address, name, network, path, ticker}) => {
+
+      for (const {address, name, network, path, ticker} of CHAINS) {
         const row = document.createElement('div')
         row.className = 'row'
-        row.innerHTML = `<span class="badge">${ticker}</span><div><div class="name">${name}</div><div class="address">${address} · ${network}</div></div><span class="path">${path}</span>`
+        row.innerHTML = `<span class="badge ${ticker.toLowerCase()}">${MARKS[ticker]}</span><div><div class="name">${name}</div><div class="address">${address} · ${network}</div></div><span class="path">${path}</span>`
         accounts.append(row)
-
-        return row
-      })
-      const badges = rows.map(row => row.querySelector('.badge'))
+      }
 
       // A signature is 64 bytes: four lines of eight groups. Each chain's is
       // its own, from a seeded generator, so the loop draws the same bytes.
@@ -313,12 +344,6 @@
         // Solana back up to Ethereum the same way.
         const moved = spring(local, 0.55, 0.8)
         select.style.transform = `translateY(${mix(previous * ROW, index * ROW, moved).toFixed(2)}px)`
-
-        badges.forEach((badge, position) => {
-          const lit = position === index ? clamp(moved) : position === previous ? 1 - clamp(moved) : 0
-          badge.style.background = `rgba(${Math.round(mix(120, 18, lit))}, ${Math.round(mix(120, 163, lit))}, ${Math.round(mix(128, 127, lit))}, ${mix(0.24, 0.3, lit).toFixed(3)})`
-          badge.style.color = lit > 0.5 ? '#4fd1a8' : '#fff'
-        })
 
         // The last signature blurs away, then the new one settles.
         const gone = out(span(local, 0, GONE))

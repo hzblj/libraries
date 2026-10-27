@@ -240,7 +240,7 @@ export const Gallery: FC<GalleryProps> = ({isOpen, onClose}) => {
   }
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 z-40 w-screen h-screen overflow-auto block">
+    <div className="fixed inset-0 z-40 w-screen h-dvh overflow-auto block">
       <div ref={backdropRef} className="fixed inset-0 bg-black/50 will-change-[opacity]" />
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: a click outside the card closes it; keyboards close it with Escape */}
       <div className="flex w-full min-h-full mx-auto py-10 relative justify-center" onClick={startClose}>
