@@ -328,6 +328,7 @@ export const entries: Entries = [
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/nitro-crypto', value: 'hzblj/nitro-crypto'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/nitro-crypto', value: '@hzblj/nitro-crypto'},
+      directory('@hzblj/nitro-crypto'),
     ],
     size: 'large',
     slug: 'nitro-crypto',
@@ -348,6 +349,7 @@ export const entries: Entries = [
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-airgap', value: 'hzblj/crypto-airgap'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-airgap', value: '@hzblj/crypto-airgap'},
+      directory('@hzblj/crypto-airgap'),
     ],
     size: 'small',
     slug: 'crypto-airgap',
@@ -367,6 +369,7 @@ export const entries: Entries = [
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-vault', value: 'hzblj/crypto-vault'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-vault', value: '@hzblj/crypto-vault'},
+      directory('@hzblj/crypto-vault'),
     ],
     size: 'large',
     slug: 'crypto-vault',
@@ -386,6 +389,7 @@ export const entries: Entries = [
     properties: [
       {name: 'GitHub', url: 'https://github.com/hzblj/crypto-recovery', value: 'hzblj/crypto-recovery'},
       {name: 'npm', url: 'https://www.npmjs.com/package/@hzblj/crypto-recovery', value: '@hzblj/crypto-recovery'},
+      directory('@hzblj/crypto-recovery'),
     ],
     size: 'small',
     slug: 'crypto-recovery',
