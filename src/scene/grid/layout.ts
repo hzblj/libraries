@@ -3,19 +3,19 @@ import {Config} from '@/config'
 import {mod, type Rect} from './geometry'
 
 // The profile in the middle, two columns by one row as on the portfolio, and
-// the collection round it: three big cards above it and four below, small
-// ones on either side and down the right edge over the big ones, and the
-// examples down the left over one more. `.` is a hole. Every library is one
-// cell or two by two, so all of them keep the 4:3 of the modal's media and
-// open into it without a crop; the profile and the examples list open
-// nothing, so they take whatever shape suits them.
+// the collection round it: four big cards above it and four below, small ones
+// on either side and down the right edge, and the examples all the way down
+// the left. `.` is a hole. Every library is one cell or two by two, so all of
+// them keep the 4:3 of the modal's media and open into it without a crop; the
+// profile and the examples list open nothing, so they take whatever shape
+// suits them.
 // biome-ignore format: one row per line, so the template reads as the grid
 const TEMPLATE = [
-  'examples l1 l1 l2 l2 l3 l3 s1 s8',
-  'examples l1 l1 l2 l2 l3 l3 s2 s11',
-  'examples s3 s4 profile profile s5 s6 s7 s10',
-  'examples l4 l4 l5 l5 l6 l6 l7 l7',
-  's9 l4 l4 l5 l5 l6 l6 l7 l7',
+  'examples l1 l1 l2 l2 l3 l3 s1 l8 l8',
+  'examples l1 l1 l2 l2 l3 l3 s2 l8 l8',
+  'examples s3 s4 profile profile s5 s6 s7 s10 s8',
+  'examples l4 l4 l5 l5 l6 l6 l7 l7 s11',
+  'examples l4 l4 l5 l5 l6 l6 l7 l7 s9',
 ]
 
 const HOLE = '.'
@@ -23,9 +23,9 @@ const HOLE = '.'
 const COLUMN = 290
 const ROW = 218
 const GAP = 16
-// Half a gap on every side of the tile, so its copies sit one gap apart. Nine
-// columns put the profile half a column right of the tile's centre, so the
-// camera starts on the profile rather than on the tile (CameraProvider).
+// Half a gap on every side of the tile, so its copies sit one gap apart. Ten
+// columns put the profile a column left of the tile's centre, so the camera
+// starts on the profile rather than on the tile (CameraProvider).
 const PADDING = GAP / 2
 
 type Bounds = {left: number; right: number; top: number; bottom: number}

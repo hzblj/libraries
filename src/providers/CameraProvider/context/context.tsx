@@ -7,8 +7,8 @@ import {getAreaRect} from '@/scene/grid'
 import {calculateScale} from '../const'
 import {CameraAction, CameraState} from './types'
 
-// The camera starts on the profile, which sits half a column off the tile's
-// centre with the grid's nine columns.
+// The camera starts on the profile, which sits a column off the tile's centre
+// with the grid's ten columns.
 const calculateCenterOfViewport = () => {
   if (typeof window === 'undefined') {
     return {x: 0, y: 0}

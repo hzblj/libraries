@@ -134,7 +134,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-flags-kit.mp4', webm: '/libraries/expo-flags-kit.webm'},
   },
   {
-    animation: growFrom('left', -40, 0, 0.35),
+    animation: growFrom('top left', -40, -40, 0.45),
     area: 's11',
     description:
       'Platform-native feedback for Expo. Semantic events and custom patterns, powered by Core Haptics and Android haptic primitives.',
@@ -180,7 +180,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/zyplot.mp4', webm: '/libraries/zyplot.webm'},
   },
   {
-    animation: growFrom('top right', 40, -40, 0.35),
+    animation: growFrom('top left', -40, -40, 0.5),
     area: 's9',
     description:
       'Your own SVG icons as native assets for Expo. iOS asset catalog images and Android vector drawables at prebuild, typed names, and a native view that tints them.',
@@ -224,7 +224,7 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-paypal.mp4', webm: '/libraries/expo-paypal.webm'},
   },
   {
-    animation: growFrom('bottom left', -40, 40, 0.4),
+    animation: growFrom('left', -40, 0, 0.45),
     area: 's8',
     description:
       'Agent skills for React and React Native engineers: animations that feel native, components that stay reusable and clean code, as small SKILL.md files for Claude Code, Codex, Cursor and other agents.',
@@ -399,11 +399,36 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/crypto-recovery.mp4', webm: '/libraries/crypto-recovery.webm'},
   },
   {
+    animation: growFrom('bottom left', -40, 40, 0.4),
+    area: 'l8',
+    description:
+      'Clear signing for Expo: before a wallet signs, it says what the signature does. Ethereum transactions and typed data, Solana transactions and Bitcoin PSBTs are read into one display model, an intent, its fields and warnings with stable codes that add up to a risk level, for any UI to render. Headless and offline, on the nitro-crypto engine.',
+    image: '/libraries/crypto-clear-sign.png',
+    install:
+      'npx expo install @hzblj/crypto-clear-sign @hzblj/crypto-clear-sign-ethereum @hzblj/crypto-ethereum @hzblj/nitro-crypto react-native-nitro-modules',
+    platforms: ['iOS', 'Android'],
+    properties: [
+      {name: 'GitHub', url: 'https://github.com/hzblj/crypto-clear-sign', value: 'hzblj/crypto-clear-sign'},
+      {
+        name: 'npm',
+        url: 'https://www.npmjs.com/package/@hzblj/crypto-clear-sign',
+        value: '@hzblj/crypto-clear-sign',
+      },
+    ],
+    size: 'large',
+    slug: 'crypto-clear-sign',
+    subtitle: 'What you sign, in words',
+    title: 'Clear Sign',
+    variant: 'shot',
+    videos: {mp4: '/libraries/crypto-clear-sign.mp4', webm: '/libraries/crypto-clear-sign.webm'},
+  },
+  {
     animation: growFrom('right', 40, 0, 0.35),
     area: 'examples',
     examples: [
       example('Airgap', 'crypto-airgap', 'Sign over QR, fully offline'),
       example('App Icons', 'expo-app-icons', 'A family of icons to switch'),
+      example('Clear Sign', 'crypto-clear-sign', 'Real requests on three chains'),
       example('Crypto', 'nitro-crypto', 'A wallet on three testnets'),
       example('Flags Kit', 'expo-flags-kit', 'Every flag, searchable'),
       example('Kara', 'kara-ui', 'Every component and story'),

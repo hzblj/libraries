@@ -4,11 +4,11 @@
 
 // biome-ignore format: one row per line, so the template reads as the grid
 const TEMPLATE = [
-  'examples l1 l1 l2 l2 l3 l3 s1 s8',
-  'examples l1 l1 l2 l2 l3 l3 s2 s11',
-  'examples s3 s4 profile profile s5 s6 s7 s10',
-  'examples l4 l4 l5 l5 l6 l6 l7 l7',
-  's9 l4 l4 l5 l5 l6 l6 l7 l7',
+  'examples l1 l1 l2 l2 l3 l3 s1 l8 l8',
+  'examples l1 l1 l2 l2 l3 l3 s2 l8 l8',
+  'examples s3 s4 profile profile s5 s6 s7 s10 s8',
+  'examples l4 l4 l5 l5 l6 l6 l7 l7 s11',
+  'examples l4 l4 l5 l5 l6 l6 l7 l7 s9',
 ]
 
 const CARDS = {
@@ -19,6 +19,7 @@ const CARDS = {
   l5: {image: 'expo-waveform', subtitle: 'Native audio waveforms', title: 'Waveform'},
   l6: {image: 'expo-paypal', subtitle: 'PayPal on the native SDK', title: 'PayPal'},
   l7: {image: 'crypto-vault', subtitle: 'Sealed by the Secure Enclave', title: 'Vault'},
+  l8: {image: 'crypto-clear-sign', subtitle: 'What you sign, in words', title: 'Clear Sign'},
   s1: {image: 'react-native-expo-monorepo', subtitle: 'Turborepo starter for Expo', title: 'Expo Monorepo'},
   s2: {image: 'crypto-recovery', subtitle: 'Sealed backups across devices', title: 'Recovery'},
   s3: {image: 'expo-speech', subtitle: 'Speech to text, natively', title: 'Speech'},
@@ -36,6 +37,7 @@ const CARDS = {
 const EXAMPLES = [
   ['Airgap', 'crypto-airgap', 'Sign over QR, fully offline'],
   ['App Icons', 'expo-app-icons', 'A family of icons to switch'],
+  ['Clear Sign', 'crypto-clear-sign', 'Real requests on three chains'],
   ['Crypto', 'nitro-crypto', 'A wallet on three testnets'],
   ['Flags Kit', 'expo-flags-kit', 'Every flag, searchable'],
   ['Kara', 'kara-ui', 'Every component and story'],
