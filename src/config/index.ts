@@ -41,10 +41,10 @@ export const Config = {
   // and a link to where it comes from.
   tagline: {href: 'https://expo.dev', prefix: 'Libraries for', subject: 'Expo'},
   title: 'hzblj · Libraries for Expo and React Native',
-  // One tile of the endless grid: the nine columns and five rows of the
+  // One tile of the endless grid: the ten columns and five rows of the
   // template in scene/grid/layout.ts, each a card and its gap.
   viewport: {
     height: 1170,
-    width: 2754,
+    width: 3060,
   },
 } as const

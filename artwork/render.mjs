@@ -69,6 +69,7 @@ const EXPORTS = {
 // The pages and the size of the card each one paints.
 const CARDS = {
   'crypto-airgap': 'small',
+  'crypto-clear-sign': 'large',
   'crypto-recovery': 'small',
   'crypto-vault': 'large',
   'expo-app-icons': 'small',
@@ -99,6 +100,7 @@ const CAPTURES = ['button', 'chip', 'list', 'segmented-control', 'slider', 'step
 // lighter. App Icons shows the glass icon its example switches to.
 const EXAMPLE_ICONS = {
   'crypto-airgap': join(SIBLINGS, 'crypto-airgap/apps/example/assets/icon.png'),
+  'crypto-clear-sign': join(SIBLINGS, 'crypto-clear-sign/apps/example/assets/icon.png'),
   'crypto-recovery': join(SIBLINGS, 'crypto-recovery/apps/example/assets/icon.png'),
   'crypto-vault': join(SIBLINGS, 'crypto-vault/apps/example/assets/icon.png'),
   'expo-app-icons': join(SIBLINGS, 'expo-app-icons/apps/example/assets/app-icons/glass/dark.png'),
@@ -387,22 +389,17 @@ const ffmpeg = (...args) => execFileSync('ffmpeg', ['-v', 'error', '-y', ...args
 // both say which matrix they were made with.
 const COLOUR = ['-colorspace', 'smpte170m', '-color_range', 'tv']
 
-const encode = (input, base) => {
-  ffmpeg(
-    ...input,
-    '-c:v',
-    'libx264',
-    '-crf',
-    '22',
-    '-preset',
-    'slow',
-    '-movflags',
-    '+faststart',
-    ...COLOUR,
-    '-an',
-    `${base}.mp4`
-  )
-  ffmpeg(...input, '-c:v', 'libvpx-vp9', '-crf', '36', '-b:v', '0', '-row-mt', '1', ...COLOUR, '-an', `${base}.webm`)
+// A page whose frames change all over at once (`window.COMPACT`) would weigh
+// several times any other card's clip at the usual quality, so it is encoded
+// harder and tuned for flat colour and type, which looks the same on a card.
+const QUALITY = {
+  compact: {mp4: ['-crf', '28', '-preset', 'veryslow', '-tune', 'animation'], webm: ['-crf', '44']},
+  usual: {mp4: ['-crf', '22', '-preset', 'slow'], webm: ['-crf', '36']},
+}
+
+const encode = (input, base, quality = QUALITY.usual) => {
+  ffmpeg(...input, '-c:v', 'libx264', ...quality.mp4, '-movflags', '+faststart', ...COLOUR, '-an', `${base}.mp4`)
+  ffmpeg(...input, '-c:v', 'libvpx-vp9', ...quality.webm, '-b:v', '0', '-row-mt', '1', ...COLOUR, '-an', `${base}.webm`)
   ffmpeg('-i', `${base}.mp4`, '-frames:v', '1', '-update', '1', `${base}.png`)
 }
 
@@ -410,6 +407,7 @@ const encode = (input, base) => {
 const animate = async (browser, name, duration) => {
   const frames = join(BUILD, 'frames', name)
   const fps = (await browser.evaluate('window.FPS')) ?? FPS
+  const quality = (await browser.evaluate('window.COMPACT')) ? QUALITY.compact : QUALITY.usual
   rmSync(frames, {force: true, recursive: true})
   mkdirSync(frames, {recursive: true})
 
@@ -420,7 +418,7 @@ const animate = async (browser, name, duration) => {
 
   const exported = EXPORTS[name]
   const base = join(exported ? BUILD : OUT, name)
-  encode(['-framerate', String(fps), '-i', join(frames, '%04d.png'), '-pix_fmt', 'yuv420p'], base)
+  encode(['-framerate', String(fps), '-i', join(frames, '%04d.png'), '-pix_fmt', 'yuv420p'], base, quality)
 
   if (exported) {
     copyFileSync(`${base}.mp4`, exported.mp4)
