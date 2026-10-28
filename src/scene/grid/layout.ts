@@ -4,8 +4,8 @@ import {mod, type Rect} from './geometry'
 
 // The profile in the middle, two columns by one row as on the portfolio, and
 // the collection round it: four big cards above it and four below, small ones
-// on either side and down the right edge, and the examples all the way down
-// the left. `.` is a hole. Every library is one cell or two by two, so all of
+// on either side and down the right edge, and the examples down the left over
+// one more. `.` is a hole. Every library is one cell or two by two, so all of
 // them keep the 4:3 of the modal's media and open into it without a crop; the
 // profile and the examples list open nothing, so they take whatever shape
 // suits them.
@@ -15,7 +15,7 @@ const TEMPLATE = [
   'examples l1 l1 l2 l2 l3 l3 s2 l8 l8',
   'examples s3 s4 profile profile s5 s6 s7 s10 s8',
   'examples l4 l4 l5 l5 l6 l6 l7 l7 s11',
-  'examples l4 l4 l5 l5 l6 l6 l7 l7 s9',
+  's12 l4 l4 l5 l5 l6 l6 l7 l7 s9',
 ]
 
 const HOLE = '.'

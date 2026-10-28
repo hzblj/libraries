@@ -1,14 +1,14 @@
 import {INK_STRONG, type TextStyle} from '../../graphics'
 import {getAreaRect} from '../../grid'
 
-// One column wide and the grid's five rows tall, with the border of the
-// portfolio's CV card (lit in the top-left and bottom-right corners): a row for
+// One column wide and four rows tall, the portfolio's CV card's shape, whose
+// border it borrows (lit in the top-left and bottom-right corners): a row for
 // every example down from the top, each its app icon, its name and what it
 // shows, and the card's own name in the bottom-left corner the way every shot
 // names itself.
 export const WIDTH = getAreaRect('examples').width
 export const TOP = 12
-export const ROW = 66
+export const ROW = 49
 // The highlight under a hovered row stops short of the card's edge and of the
 // rows beside it.
 export const INSET = 8
