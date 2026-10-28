@@ -8,7 +8,7 @@ const TEMPLATE = [
   'examples l1 l1 l2 l2 l3 l3 s2 l8 l8',
   'examples s3 s4 profile profile s5 s6 s7 s10 s8',
   'examples l4 l4 l5 l5 l6 l6 l7 l7 s11',
-  'examples l4 l4 l5 l5 l6 l6 l7 l7 s9',
+  's12 l4 l4 l5 l5 l6 l6 l7 l7 s9',
 ]
 
 const CARDS = {
@@ -31,6 +31,7 @@ const CARDS = {
   s9: {image: 'expo-native-icons', subtitle: 'Your SVGs as native icons', title: 'Native Icons'},
   s10: {image: 'expo-zoom-transition', subtitle: 'Expo Router transitions', title: 'Zoom Transition'},
   s11: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
+  s12: {image: 'expo-install-attribution', subtitle: 'Where an install came from', title: 'Install Attribution'},
 }
 
 // The examples card, a row per example app, as src/scene/cards/examples draws it.
@@ -40,6 +41,7 @@ const EXAMPLES = [
   ['Clear Sign', 'crypto-clear-sign', 'Real requests on three chains'],
   ['Crypto', 'nitro-crypto', 'A wallet on three testnets'],
   ['Flags Kit', 'expo-flags-kit', 'Every flag, searchable'],
+  ['Install Attribution', 'expo-install-attribution', 'Both stores, on samples'],
   ['Kara', 'kara-ui', 'Every component and story'],
   ['Native Icons', 'expo-native-icons', 'Material Symbols, natively'],
   ['PayPal', 'expo-paypal', 'Every flow on the sandbox'],

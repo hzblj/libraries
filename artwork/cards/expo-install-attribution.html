@@ -1,0 +1,412 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* Where an install came from, as a graph: the places a click can come
+         from on the left, each with a line to the app, and only the one that
+         sent this install lights up. A light runs along its line into the
+         app, the install ring closes, the store marks the app, and under it
+         comes what the library answers: the referrer of the Play Store link
+         from the newsletter, then the Apple Ads campaign. The referrer and
+         the campaign are the example's samples. Play's green, then Apple's
+         blue. */
+      .glow {
+        --glow: 52 168 83;
+        --strength: 0.34;
+        height: 240px;
+        left: 94px;
+        top: -56px;
+        width: 240px;
+      }
+
+      .lines {
+        inset: 0;
+        overflow: visible;
+        position: absolute;
+      }
+
+      /* A place a click can come from. */
+      .source {
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 999px;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.55);
+        display: flex;
+        font-size: 10.5px;
+        font-weight: 500;
+        gap: 6px;
+        height: 24px;
+        left: 18px;
+        letter-spacing: -0.05px;
+        padding: 0 10px 0 7px;
+        position: absolute;
+        white-space: nowrap;
+      }
+
+      .source .mark {
+        align-items: center;
+        border-radius: 50%;
+        display: flex;
+        height: 14px;
+        justify-content: center;
+        width: 14px;
+      }
+
+      .source svg {
+        display: block;
+      }
+
+      /* The app, a shop: a round node with a bag, inside the install ring. */
+      .app {
+        align-items: center;
+        background: radial-gradient(circle at 50% 30%, #3a3a41, #1a1a1e 72%);
+        border-radius: 50%;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+          0 14px 30px rgba(0, 0, 0, 0.55);
+        display: flex;
+        height: 54px;
+        justify-content: center;
+        left: 188px;
+        position: absolute;
+        top: 35px;
+        width: 54px;
+      }
+
+      .app > svg {
+        display: block;
+        margin-top: -1px;
+      }
+
+      /* The store's badge, a bead on the ring at its top right. */
+      .badge {
+        align-items: center;
+        border-radius: 50%;
+        box-shadow: 0 0 0 2.5px #171717;
+        display: flex;
+        height: 20px;
+        justify-content: center;
+        left: 228.3px;
+        position: absolute;
+        top: 28.7px;
+        width: 20px;
+      }
+
+      .badge svg {
+        display: block;
+        height: 10px;
+        width: 10px;
+      }
+
+      .badge.play {
+        background: linear-gradient(180deg, #4ade80, #16a34a);
+      }
+
+      .badge.play svg {
+        margin-left: 1px;
+      }
+
+      .badge.apple {
+        background: linear-gradient(180deg, #5eb0ff, #0a6cff);
+      }
+
+      .badge.apple svg {
+        margin-top: -1px;
+      }
+
+      /* What the library answers, under the app. */
+      .answer {
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 9px;
+        font-weight: 500;
+        left: 215px;
+        letter-spacing: 0.1px;
+        line-height: 14px;
+        position: absolute;
+        text-align: center;
+        top: 106px;
+        transform: translateX(-50%);
+        white-space: pre;
+      }
+
+      .answer .key {
+        color: rgba(255, 255, 255, 0.42);
+      }
+
+      .answer .value {
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="glow"></div>
+      <svg class="lines" width="290" height="218"></svg>
+      <div class="app">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M8.6 8.4V7a3.4 3.4 0 0 1 6.8 0v1.4" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.9" /><path d="M5.6 7.8h12.8a1.2 1.2 0 0 1 1.2 1.1l.95 11.3a1.7 1.7 0 0 1-1.7 1.85H5.15a1.7 1.7 0 0 1-1.7-1.85l.95-11.3a1.2 1.2 0 0 1 1.2-1.1Z" fill="#fff" /><circle cx="8.6" cy="11.2" r="1.05" fill="#1d1d21" /><circle cx="15.4" cy="11.2" r="1.05" fill="#1d1d21" /></svg>
+      </div>
+      <div class="badges">
+        <span class="badge play"><svg viewBox="0 0 24 24"><path fill="#fff" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg></span>
+        <span class="badge apple"><svg viewBox="0 0 24 24"><path fill="#fff" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></span>
+      </div>
+      <div class="answer"></div>
+      <div class="answer"></div>
+    </div>
+    <script type="module">
+      import {mix, spring} from './anim.js'
+
+      // The places a click can come from. Simple Icons' Apple mark (CC0), as
+      // on the platform pills; the rest are plain glyphs.
+      const SOURCES = [
+        {
+          glyph:
+            '<svg width="9" height="7" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="1.2" y="1.2" width="15.6" height="11.6" rx="2" /><path d="m2 2.4 7 5.4 7-5.4" /></svg>',
+          name: 'Newsletter',
+        },
+        {
+          glyph:
+            '<svg width="8" height="9" viewBox="0 0 24 24"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>',
+          name: 'Apple Ads',
+        },
+        {
+          glyph:
+            '<svg width="9" height="9" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="7.6" /><path d="M1.6 9h14.8M9 1.4c2.2 2.2 3.2 4.7 3.2 7.6S11.2 14.4 9 16.6C6.8 14.4 5.8 11.9 5.8 9S6.8 3.6 9 1.4Z" /></svg>',
+          name: 'Website',
+        },
+        {
+          glyph:
+            '<svg width="9" height="9" viewBox="0 0 18 18" fill="currentColor"><path d="M1 1h6.5v6.5H1V1Zm2 2v2.5h2.5V3H3Zm7.5-2H17v6.5h-6.5V1Zm2 2v2.5H15V3h-2.5ZM1 10.5h6.5V17H1v-6.5Zm2 2V15h2.5v-2.5H3Zm7.5-2h2.5V13h-2.5v-2.5ZM13 13h2v2h-2v-2Zm2-2.5h2V13h-2v-2.5ZM13 15h-2.5v2H17v-2h-4Z" /></svg>',
+          name: 'QR code',
+        },
+      ]
+
+      // Who sent each install, and what the library answers for it: the
+      // referrer getInstallReferrer() reads off the newsletter's Play Store
+      // link, and the campaign getAppleAdsAttribution() resolves.
+      const SCENES = [
+        {
+          accent: [74, 222, 128],
+          answer: [
+            ['utm_source=', 'newsletter'],
+            ['utm_campaign=', 'autumn'],
+          ],
+          badge: 'play',
+          glow: [52, 168, 83],
+          source: 0,
+        },
+        {
+          accent: [94, 176, 255],
+          answer: [
+            ['campaignId ', '1548320116'],
+            ['countryOrRegion ', 'CZ'],
+          ],
+          badge: 'apple',
+          glow: [10, 132, 255],
+          source: 1,
+        },
+      ]
+
+      const SVG = 'http://www.w3.org/2000/svg'
+      const card = document.querySelector('.card')
+      const glow = document.querySelector('.glow')
+      const lines = document.querySelector('.lines')
+      const app = document.querySelector('.app')
+      const badges = {apple: document.querySelector('.badge.apple'), play: document.querySelector('.badge.play')}
+      const answers = [...document.querySelectorAll('.answer')]
+
+      const APP = {r: 27, x: 215, y: 62}
+      const RING = 33
+      const TOP = 18
+      const STEP = 30
+
+      await document.fonts.ready
+
+      const svg = (name, attributes, parent = lines) => {
+        const node = document.createElementNS(SVG, name)
+
+        for (const [key, value] of Object.entries(attributes)) {
+          node.setAttribute(key, value)
+        }
+
+        parent.append(node)
+
+        return node
+      }
+
+      const defs = svg('defs', {})
+      const blur = svg('filter', {height: '300%', id: 'soft', width: '300%', x: '-100%', y: '-100%'}, defs)
+      svg('feGaussianBlur', {stdDeviation: 2.4}, blur)
+
+      // Each source and the line from it into the app's left edge: a quiet
+      // dashed line for every one, and over it a lit one that only the
+      // sender's ever shows.
+      const sources = SOURCES.map((source, index) => {
+        const node = document.createElement('div')
+        node.className = 'source'
+        node.innerHTML = `<span class="mark">${source.glyph}</span>${source.name}`
+        node.style.top = `${TOP + index * STEP}px`
+        card.append(node)
+
+        const from = {x: 18 + node.offsetWidth + 4, y: TOP + index * STEP + 12}
+        // Into the ring's left edge, a little apart from each other.
+        const rise = (index - 1.5) * 7
+        const to = {x: APP.x - Math.sqrt((RING + 3) ** 2 - rise ** 2), y: APP.y + rise}
+        const d = `M${from.x} ${from.y}C${from.x + 34} ${from.y} ${to.x - 34} ${to.y} ${to.x} ${to.y}`
+
+        const quiet = svg('path', {
+          d,
+          fill: 'none',
+          stroke: 'rgba(255, 255, 255, 0.13)',
+          'stroke-dasharray': '2 4',
+          'stroke-linecap': 'round',
+          'stroke-width': 1.2,
+        })
+        const haze = svg('path', {d, fill: 'none', filter: 'url(#soft)', 'stroke-linecap': 'round', 'stroke-width': 4})
+        const lit = svg('path', {d, fill: 'none', 'stroke-linecap': 'round', 'stroke-width': 1.8})
+        const length = lit.getTotalLength()
+
+        for (const path of [haze, lit]) {
+          path.setAttribute('stroke-dasharray', `${length} ${length}`)
+        }
+
+        const mark = node.querySelector('.mark')
+
+        return {haze, length, lit, mark, node, quiet}
+      })
+
+      // The comet, the ring and its haze.
+      const comet = svg('circle', {filter: 'url(#soft)', r: 4})
+      const head = svg('circle', {fill: '#fff', r: 1.8})
+      const circumference = 2 * Math.PI * RING
+      const ringAttributes = {
+        cx: APP.x,
+        cy: APP.y,
+        fill: 'none',
+        r: RING,
+        'stroke-dasharray': `${circumference} ${circumference}`,
+        'stroke-linecap': 'round',
+        transform: `rotate(-90 ${APP.x} ${APP.y})`,
+      }
+      svg('circle', {cx: APP.x, cy: APP.y, fill: 'none', r: RING, stroke: 'rgba(255, 255, 255, 0.07)', 'stroke-width': 2})
+      const ringHaze = svg('circle', {...ringAttributes, filter: 'url(#soft)', 'stroke-width': 4})
+      const ring = svg('circle', {...ringAttributes, 'stroke-width': 2})
+
+      // Each scene holds the card for PHASE seconds: the sender lights up,
+      // the light runs its line into the app, the ring closes as it
+      // installs, the store's badge lands on the app and the answer comes in
+      // under it; then all of it goes for the next one. The clip starts with
+      // the newsletter's install read, so its first frame (the card's still)
+      // shows it.
+      const PICK = 0.15
+      const RUN = 0.55
+      const ARRIVE = RUN + 0.8
+      const INSTALLED = ARRIVE + 0.75
+      const CLEAR = 3.3
+      const PHASE = 3.8
+      const PERIOD = PHASE * SCENES.length
+      const OFFSET = 3
+
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+      const out = value => 1 - (1 - clamp(value)) ** 3
+      const inOut = value => {
+        const v = clamp(value)
+
+        return v < 0.5 ? 4 * v ** 3 : 1 - (-2 * v + 2) ** 3 / 2
+      }
+      const span = (time, from, length) => clamp((time - from) / length)
+      const rgb = ([r, g, b], alpha = 1) => `rgba(${r}, ${g}, ${b}, ${alpha})`
+
+      window.DURATION = PERIOD
+      window.FPS = 60
+
+      window.frame = t => {
+        const time = (t + OFFSET) % PERIOD
+        const index = Math.floor(time / PHASE)
+        const local = time - index * PHASE
+        const scene = SCENES[index]
+        const gone = out(span(local, CLEAR, PHASE - CLEAR))
+        const picked = out(span(local, PICK, 0.3)) * (1 - gone)
+        const ran = inOut(span(local, RUN, ARRIVE - RUN))
+        const installing = inOut(span(local, ARRIVE, INSTALLED - ARRIVE))
+
+        // The quiet lines drift towards the app, all the time.
+        sources.forEach((source, number) => {
+          const sender = number === scene.source
+          source.quiet.setAttribute('stroke-dashoffset', (-t * 12).toFixed(2))
+          source.quiet.style.opacity = (1 - (sender ? ran : 0.45 * picked)).toFixed(3)
+
+          const lit = sender ? picked : 0
+          const edge = sender ? rgb(scene.accent, mix(0.08, 0.7, lit)) : 'rgba(255, 255, 255, 0.08)'
+          Object.assign(source.node.style, {
+            background: `rgba(255, 255, 255, ${mix(0.05, 0.1, lit).toFixed(3)})`,
+            boxShadow: `inset 0 0 0 1px ${edge}, 0 0 18px ${rgb(scene.glow, 0.35 * lit)}`,
+            color: `rgba(255, 255, 255, ${mix(0.55, 1, lit).toFixed(3)})`,
+            opacity: (1 - 0.45 * (sender ? 0 : picked)).toFixed(3),
+          })
+          source.mark.style.color = sender && lit > 0 ? rgb(scene.accent, mix(0.55, 1, lit)) : 'rgba(255, 255, 255, 0.55)'
+
+          // The sender's line lights from the source as the light runs it.
+          for (const path of [source.lit, source.haze]) {
+            path.setAttribute('stroke', rgb(scene.accent, path === source.haze ? 0.55 : 1))
+            path.setAttribute('stroke-dashoffset', (source.length * (1 - (sender ? ran : 0))).toFixed(2))
+            path.style.opacity = sender ? (1 - gone).toFixed(3) : '0'
+          }
+        })
+
+        // The light itself, on its way.
+        const sender = sources[scene.source]
+        const point = sender.lit.getPointAtLength(sender.length * ran)
+        const travelling = Math.min(1, Math.sin(Math.PI * ran) * 4 + 0.2)
+        for (const node of [comet, head]) {
+          node.setAttribute('cx', point.x.toFixed(2))
+          node.setAttribute('cy', point.y.toFixed(2))
+          node.style.opacity = (local < RUN ? 0 : local < ARRIVE ? travelling : 1 - out(span(local, ARRIVE, 0.15))).toFixed(3)
+        }
+        comet.setAttribute('fill', rgb(scene.accent))
+
+        // The ring closes as the app installs.
+        for (const node of [ring, ringHaze]) {
+          node.setAttribute('stroke', rgb(scene.accent, node === ringHaze ? 0.5 : 1))
+          node.setAttribute('stroke-dashoffset', (circumference * (1 - installing)).toFixed(2))
+          node.style.opacity = (1 - gone).toFixed(3)
+        }
+
+        // The app takes the light in, and the store's badge once installed.
+        const hit = local > ARRIVE ? Math.exp(-(local - ARRIVE) * 5) : 0
+        const pop = local > INSTALLED ? spring(local - INSTALLED, 0.5, 0.55) : 0
+        app.style.transform = `scale(${(1 + 0.06 * hit).toFixed(4)})`
+        app.style.boxShadow = `inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 14px 30px rgba(0, 0, 0, 0.55), 0 0 ${(26 * installing).toFixed(1)}px ${rgb(scene.glow, 0.45 * installing * (1 - gone))}`
+        for (const [name, badge] of Object.entries(badges)) {
+          const shown = name === scene.badge ? clamp(pop) * (1 - gone) : 0
+          Object.assign(badge.style, {opacity: shown.toFixed(3), transform: `scale(${mix(0.3, 1, pop).toFixed(3)})`})
+        }
+
+        // The answer, line by line.
+        answers.forEach((answer, line) => {
+          const [key, value] = scene.answer[line]
+          answer.innerHTML = `<span class="key">${key}</span><span class="value">${value}</span>`
+          const shown = out(span(local, INSTALLED + 0.15 + line * 0.12, 0.4)) * (1 - gone)
+          Object.assign(answer.style, {
+            opacity: shown.toFixed(3),
+            top: `${106 + line * 14}px`,
+            transform: `translate(-50%, ${mix(6, 0, shown).toFixed(2)}px)`,
+          })
+        })
+
+        // The light behind the app turns to the next store's colour as one
+        // install goes and the next comes.
+        const next = SCENES[(index + 1) % SCENES.length].glow
+        const turning = out(span(local, CLEAR, PHASE - CLEAR + 0.2))
+        glow.style.setProperty(
+          '--glow',
+          scene.glow.map((channel, c) => Math.round(mix(channel, next[c], turning))).join(' ')
+        )
+      }
+
+      window.frame(0)
+    </script>
+  </body>
+</html>

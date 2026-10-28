@@ -423,6 +423,33 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/crypto-clear-sign.mp4', webm: '/libraries/crypto-clear-sign.webm'},
   },
   {
+    animation: growFrom('top right', 40, -40, 0.4),
+    area: 's12',
+    description:
+      'Where an install came from, for Expo: the Play Install Referrer on Android and Apple Ads attribution through AdServices on iOS. Promises with a timeout, one shared request, and a stable code on every failure, with guards that tell a retry from an error that never recovers.',
+    image: '/libraries/expo-install-attribution.png',
+    install: 'npx expo install @hzblj/expo-install-attribution',
+    platforms: ['iOS', 'Android'],
+    properties: [
+      {
+        name: 'GitHub',
+        url: 'https://github.com/hzblj/expo-install-attribution',
+        value: 'hzblj/expo-install-attribution',
+      },
+      {
+        name: 'npm',
+        url: 'https://www.npmjs.com/package/@hzblj/expo-install-attribution',
+        value: '@hzblj/expo-install-attribution',
+      },
+    ],
+    size: 'small',
+    slug: 'expo-install-attribution',
+    subtitle: 'Where an install came from',
+    title: 'Install Attribution',
+    variant: 'shot',
+    videos: {mp4: '/libraries/expo-install-attribution.mp4', webm: '/libraries/expo-install-attribution.webm'},
+  },
+  {
     animation: growFrom('right', 40, 0, 0.35),
     area: 'examples',
     examples: [
@@ -431,6 +458,7 @@ export const entries: Entries = [
       example('Clear Sign', 'crypto-clear-sign', 'Real requests on three chains'),
       example('Crypto', 'nitro-crypto', 'A wallet on three testnets'),
       example('Flags Kit', 'expo-flags-kit', 'Every flag, searchable'),
+      example('Install Attribution', 'expo-install-attribution', 'Both stores, on samples'),
       example('Kara', 'kara-ui', 'Every component and story'),
       example('Native Icons', 'expo-native-icons', 'Material Symbols, natively'),
       example('PayPal', 'expo-paypal', 'Every flow on the sandbox'),
