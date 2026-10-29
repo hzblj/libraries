@@ -7,7 +7,7 @@ const TEMPLATE = [
   'examples l1 l1 l2 l2 l3 l3 s1 l8 l8',
   'examples l1 l1 l2 l2 l3 l3 s2 l8 l8',
   'examples s3 s4 profile profile s5 s6 s7 s10 s8',
-  'examples l4 l4 l5 l5 l6 l6 l7 l7 s11',
+  's13 l4 l4 l5 l5 l6 l6 l7 l7 s11',
   's12 l4 l4 l5 l5 l6 l6 l7 l7 s9',
 ]
 
@@ -32,6 +32,7 @@ const CARDS = {
   s10: {image: 'expo-zoom-transition', subtitle: 'Expo Router transitions', title: 'Zoom Transition'},
   s11: {image: 'expo-rich-haptics', subtitle: 'Haptic patterns for Expo', title: 'Rich Haptics'},
   s12: {image: 'expo-install-attribution', subtitle: 'Where an install came from', title: 'Install Attribution'},
+  s13: {image: 'buy-me-a-coffee', subtitle: 'Support the libraries', title: 'Buy Me a Coffee'},
 }
 
 // The examples card, a row per example app, as src/scene/cards/examples draws it.

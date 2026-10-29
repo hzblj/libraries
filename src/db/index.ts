@@ -450,6 +450,18 @@ export const entries: Entries = [
     videos: {mp4: '/libraries/expo-install-attribution.mp4', webm: '/libraries/expo-install-attribution.webm'},
   },
   {
+    animation: growFrom('top right', 40, -40, 0.35),
+    area: 's13',
+    image: '/libraries/buy-me-a-coffee.png',
+    size: 'small',
+    slug: 'buy-me-a-coffee',
+    subtitle: 'Support the libraries',
+    title: 'Buy Me a Coffee',
+    url: 'https://www.buymeacoffee.com/hzblj',
+    variant: 'link',
+    videos: {mp4: '/libraries/buy-me-a-coffee.mp4', webm: '/libraries/buy-me-a-coffee.webm'},
+  },
+  {
     animation: growFrom('right', 40, 0, 0.35),
     area: 'examples',
     examples: [
