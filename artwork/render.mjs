@@ -68,6 +68,7 @@ const EXPORTS = {
 
 // The pages and the size of the card each one paints.
 const CARDS = {
+  'buy-me-a-coffee': 'small',
   'crypto-airgap': 'small',
   'crypto-clear-sign': 'large',
   'crypto-recovery': 'small',

@@ -1,0 +1,280 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="card.css" />
+    <style>
+      /* A link to the page held up in the middle, as the Portfolio card holds
+         up its own, with Buy Me a Coffee's favicon, and behind it a cup of
+         coffee in its yellow, on a dark saucer, with a heart in the crema. The
+         steam curls up out of the cup, behind the link and on above it, all
+         the time; twice a loop a little yellow heart rises with it and goes,
+         the coffee turning into thanks, and as it comes out above the link the
+         link's arrow flies off and a new one springs back in. The light behind
+         the cup breathes with the steam. The cup stands right of the middle,
+         so the bottom-left corner stays clear for the card's name. */
+      .glow {
+        --glow: 255 196 0;
+        --strength: 0.3;
+        height: 210px;
+        left: 106px;
+        top: 34px;
+        width: 210px;
+      }
+
+      .link {
+        align-items: center;
+        backdrop-filter: blur(12px) saturate(1.6);
+        background: rgba(24, 24, 24, 0.66);
+        border-radius: 22px;
+        box-shadow:
+          inset 0 0 0 0.5px rgba(255, 255, 255, 0.22),
+          0 14px 30px rgba(0, 0, 0, 0.55),
+          0 3px 8px rgba(0, 0, 0, 0.35);
+        display: flex;
+        gap: 9px;
+        height: 44px;
+        left: 50%;
+        padding: 0 16px 0 7px;
+        position: absolute;
+        top: 70px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .link img {
+        border-radius: 50%;
+        box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.2);
+        display: block;
+        height: 30px;
+        width: 30px;
+      }
+
+      .link span {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: -0.1px;
+      }
+
+      /* The arrow's box clips it as it leaves and comes back. */
+      .link .arrow {
+        height: 10px;
+        margin-left: 1px;
+        opacity: 0.6;
+        overflow: hidden;
+        width: 10px;
+      }
+
+      .link svg {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card small">
+      <div class="glow"></div>
+      <svg class="layer" width="290" height="218" viewBox="0 0 290 218">
+        <defs>
+          <!-- The cup's wall, lit from the left: a cylinder's bands. -->
+          <linearGradient id="wall" x1="160" x2="240" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#e2a900" />
+            <stop offset="0.16" stop-color="#ffe55c" />
+            <stop offset="0.34" stop-color="#ffdd00" />
+            <stop offset="0.72" stop-color="#f2c200" />
+            <stop offset="1" stop-color="#b98600" />
+          </linearGradient>
+          <linearGradient id="handle" x1="0" x2="0" y1="112" y2="146" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#f6cc00" />
+            <stop offset="1" stop-color="#c38f00" />
+          </linearGradient>
+          <linearGradient id="rim" x1="160" x2="240" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#ffe98a" />
+            <stop offset="0.5" stop-color="#fff3b8" />
+            <stop offset="1" stop-color="#e9b800" />
+          </linearGradient>
+          <radialGradient id="coffee" cx="0.42" cy="0.4" r="0.7">
+            <stop offset="0" stop-color="#6b3f1d" />
+            <stop offset="0.6" stop-color="#4a2a12" />
+            <stop offset="1" stop-color="#2e1809" />
+          </radialGradient>
+          <radialGradient id="saucer" cx="0.45" cy="0.35" r="0.75">
+            <stop offset="0" stop-color="#34343a" />
+            <stop offset="1" stop-color="#17171a" />
+          </radialGradient>
+          <linearGradient id="shine" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity="0" />
+            <stop offset="0.5" stop-color="#fff" stop-opacity="0.75" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0" />
+          </linearGradient>
+          <!-- The steam fades in just above the coffee and out near the top. -->
+          <linearGradient id="rise" x1="0" x2="0" y1="98" y2="-70" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff" stop-opacity="0" />
+            <stop offset="0.16" stop-color="#fff" stop-opacity="1" />
+            <stop offset="0.55" stop-color="#fff" stop-opacity="0.7" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0" />
+          </linearGradient>
+          <mask id="fade" maskUnits="userSpaceOnUse" x="100" y="-120" width="200" height="320">
+            <rect x="100" y="-120" width="200" height="320" fill="url(#rise)" />
+          </mask>
+          <filter id="haze" x="-50%" y="-20%" width="200%" height="140%">
+            <feGaussianBlur stdDeviation="3.2" />
+          </filter>
+          <filter id="soft" x="-50%" y="-20%" width="200%" height="140%">
+            <feGaussianBlur stdDeviation="0.9" />
+          </filter>
+          <filter id="shadow" x="-30%" y="-100%" width="160%" height="300%">
+            <feGaussianBlur stdDeviation="5" />
+          </filter>
+          <filter id="bloom" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="4" />
+          </filter>
+        </defs>
+
+        <!-- The cup is drawn about (200, 175), the saucer's bottom, and set down smaller under the link. -->
+        <g transform="translate(212 190) scale(0.74) translate(-200 -175)">
+        <!-- The saucer and the cup's shadow on it. -->
+        <ellipse cx="200" cy="162" rx="66" ry="13" fill="url(#saucer)" />
+        <ellipse cx="200" cy="161" rx="66" ry="13" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1" />
+        <ellipse cx="200" cy="160" rx="42" ry="8" fill="#101012" opacity="0.8" />
+        <ellipse cx="204" cy="160" rx="36" ry="6" fill="#000" opacity="0.7" filter="url(#shadow)" />
+
+        <!-- The handle, behind the wall where it meets it. -->
+        <path d="M234 116C262 108 266 146 228 144" fill="none" stroke="url(#handle)" stroke-width="8" stroke-linecap="round" />
+        <path d="M236 116.5C257 112 260 140 231 141" fill="none" stroke="rgba(255, 255, 255, 0.35)" stroke-width="1.4" stroke-linecap="round" />
+
+        <!-- The wall, its front lip closing along the rim's near side. -->
+        <path
+          d="M160 104C161 131 167 150 177 157Q200 165 223 157C233 150 239 131 240 104A40 10 0 0 1 160 104Z"
+          fill="url(#wall)"
+        />
+        <path d="M168 112C169 132 173 146 180 153" fill="none" stroke="url(#shine)" stroke-width="5" stroke-linecap="round" opacity="0.55" filter="url(#soft)" />
+
+        <!-- The rim, the cup's inside, and the coffee with its crema. -->
+        <ellipse cx="200" cy="104" rx="40" ry="10" fill="url(#rim)" />
+        <ellipse cx="200" cy="104.4" rx="36.5" ry="8.4" fill="#8a6200" />
+        <ellipse class="coffee" cx="200" cy="105.4" rx="35" ry="7.6" fill="url(#coffee)" />
+        <ellipse cx="200" cy="105.4" rx="33.5" ry="7" fill="none" stroke="#c48a4c" stroke-opacity="0.45" stroke-width="1.6" />
+        <path class="latte" fill="#ecd3ab" opacity="0.92" d="M0 10C-14 0-16-10-8-13-3-15 0-11 0-8 0-11 3-15 8-13 16-10 14 0 0 10Z" />
+
+        <!-- The steam: a haze and a thread for each curl. -->
+        <g class="steam" mask="url(#fade)"></g>
+
+        <!-- The heart that rises with the steam. -->
+        <g class="heart">
+          <path fill="#ffdd00" filter="url(#bloom)" opacity="0.7" d="M0 10C-14 0-16-10-8-13-3-15 0-11 0-8 0-11 3-15 8-13 16-10 14 0 0 10Z" />
+          <path fill="#ffdd00" d="M0 10C-14 0-16-10-8-13-3-15 0-11 0-8 0-11 3-15 8-13 16-10 14 0 0 10Z" />
+        </g>
+        </g>
+      </svg>
+      <div class="link">
+        <img src="../buymeacoffee/favicon.png" />
+        <span>buymeacoffee.com</span>
+        <div class="arrow">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 8 8 2M3.2 2H8v4.8" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      import {arrowOut, mix} from './anim.js'
+
+      const SVG = 'http://www.w3.org/2000/svg'
+      const steam = document.querySelector('.steam')
+      const latte = document.querySelector('.latte')
+      const heart = document.querySelector('.heart')
+      const glow = document.querySelector('.glow')
+      const arrow = document.querySelector('.link .arrow svg')
+
+      // Three curls off the coffee, each its own width, sway and pace.
+      const CURLS = [
+        {amplitude: 7, phase: 0.4, width: 1, x: 188},
+        {amplitude: 9, phase: 2.1, width: 1.2, x: 201},
+        {amplitude: 6, phase: 4.2, width: 0.9, x: 213},
+      ]
+      // From the coffee to near the card's top, past the link (in the cup's own units).
+      const BOTTOM = 98
+      const TOP = -70
+      const DURATION = 4.8
+      // Waves run up a curl twice a loop, so the loop closes on itself.
+      const SPEED = (2 * Math.PI * 2) / DURATION
+      const WAVE = 0.075
+
+      const curls = CURLS.map(curl => {
+        const haze = document.createElementNS(SVG, 'path')
+        const thread = document.createElementNS(SVG, 'path')
+        haze.setAttribute('fill', 'none')
+        haze.setAttribute('stroke', 'rgba(255, 255, 255, 0.2)')
+        haze.setAttribute('stroke-width', (8 * curl.width).toFixed(1))
+        haze.setAttribute('stroke-linecap', 'round')
+        haze.setAttribute('filter', 'url(#haze)')
+        thread.setAttribute('fill', 'none')
+        thread.setAttribute('stroke', 'rgba(255, 255, 255, 0.42)')
+        thread.setAttribute('stroke-width', (2.2 * curl.width).toFixed(1))
+        thread.setAttribute('stroke-linecap', 'round')
+        thread.setAttribute('filter', 'url(#soft)')
+        steam.append(haze, thread)
+        return {...curl, haze, thread}
+      })
+
+      const clamp = value => Math.min(Math.max(value, 0), 1)
+      const inOut = value => {
+        const v = clamp(value)
+        return v < 0.5 ? 2 * v * v : 1 - (-2 * v + 2) ** 2 / 2
+      }
+
+      // A curl as a line up from the coffee, swaying more the higher it gets
+      // and leaning a little with the air as the loop goes.
+      const curlPath = (curl, t) => {
+        const lean = Math.sin((2 * Math.PI * t) / DURATION + curl.phase) * 3
+        const points = []
+        for (let y = BOTTOM; y >= TOP; y -= 3) {
+          const height = (BOTTOM - y) / (BOTTOM - TOP)
+          const sway = curl.amplitude * (0.25 + height) * Math.sin(WAVE * (BOTTOM - y) - SPEED * t + curl.phase)
+          points.push(`${(curl.x + sway + lean * height).toFixed(2)} ${y}`)
+        }
+        return `M${points.join('L')}`
+      }
+
+      // A heart every half loop: 2.2 seconds to rise from the coffee, behind
+      // the link and out above it, and fade at the top, then the cup rests.
+      // It comes out above the link 1.27 seconds in, and that is when the
+      // link's arrow goes out and comes back: the clip starts just before, so
+      // the arrow moves as soon as the pointer is on the card.
+      const PERIOD = DURATION / 2
+      const RISE = 2.2
+      const EMERGE = 1.27
+      const ARROW = 0.1
+      const OFFSET = EMERGE - ARROW
+      const ARROWS = [ARROW, ARROW + PERIOD]
+
+      window.DURATION = DURATION
+      window.frame = t => {
+        for (const curl of curls) {
+          const d = curlPath(curl, t)
+          curl.haze.setAttribute('d', d)
+          curl.thread.setAttribute('d', d)
+        }
+
+        // The crema's heart turns a little back and forth.
+        const turn = Math.sin((2 * Math.PI * t) / DURATION) * 4
+        latte.setAttribute('transform', `translate(200 105.4) scale(1 0.26) rotate(${turn.toFixed(2)})`)
+
+        const time = (t + OFFSET) % PERIOD
+        const rising = clamp(time / RISE)
+        const y = mix(100, -44, inOut(rising))
+        const x = 200 + Math.sin(rising * Math.PI * 1.6) * 6
+        const shown = clamp(rising * 6) * (1 - clamp((rising - 0.7) / 0.3))
+        const scale = mix(0.25, 0.62, clamp(rising * 3))
+        heart.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${scale.toFixed(3)})`)
+        heart.style.opacity = shown.toFixed(3)
+
+        glow.style.setProperty('--strength', (0.28 + 0.05 * Math.sin((2 * Math.PI * t) / DURATION)).toFixed(3))
+
+        const out = ARROWS.reduce((sum, start) => sum + arrowOut(t - start), 0)
+        arrow.style.transform = `translate(${(out * 12).toFixed(2)}px, ${(-out * 12).toFixed(2)}px)`
+      }
+      window.frame(0)
+    </script>
+  </body>
+</html>
