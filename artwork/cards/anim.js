@@ -33,6 +33,23 @@ export const along = (values, index) => {
   return values[low] + (values[high] - values[low]) * (clamped - low)
 }
 
+// A link's ↗ going out and coming back, `t` seconds after it starts: it flies
+// off up and to the right, and a new one springs in from the bottom left to
+// where it rests. Its offset, as a fraction of its box; 0 before and after.
+export const arrowOut = t => {
+  const LEAVE = 0.14
+
+  if (t <= 0) {
+    return 0
+  }
+
+  if (t < LEAVE) {
+    return (t / LEAVE) ** 2
+  }
+
+  return spring(t - LEAVE, 0.38, 0.72) - 1
+}
+
 export const wrap = (value, size) => ((((value + size / 2) % size) + size) % size) - size / 2
 
 export const mix = (from, to, amount) => from + (to - from) * amount
