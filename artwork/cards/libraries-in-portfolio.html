@@ -9,7 +9,9 @@
          card: this site's grid in miniature, its own stills and labels, with a
          link to it held up in front. On hover the grid is dragged about the way
          it is here, each drag settling on a spring, and comes back to where it
-         started. Laid out at 320×240, the portfolio's 4:3. */
+         started; as each drag starts, the link's arrow flies off and a new one
+         springs back in, as on the Portfolio card. Laid out at 320×240, the
+         portfolio's 4:3. */
       .card.portfolio {
         height: 240px;
         width: 320px;
@@ -58,10 +60,17 @@
         letter-spacing: -0.1px;
       }
 
-      .link svg {
-        display: block;
+      /* The arrow's box clips it as it leaves and comes back. */
+      .link .arrow {
+        height: 10px;
         margin-left: 1px;
         opacity: 0.6;
+        overflow: hidden;
+        width: 10px;
+      }
+
+      .link svg {
+        display: block;
       }
     </style>
   </head>
@@ -72,13 +81,15 @@
       <div class="link">
         <img src="/artwork/favicon.svg" />
         <span>libraries.janblazej.dev</span>
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 8 8 2M3.2 2H8v4.8" />
-        </svg>
+        <div class="arrow">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 8 8 2M3.2 2H8v4.8" />
+          </svg>
+        </div>
       </div>
     </div>
     <script type="module">
-      import {mix, spring} from './anim.js'
+      import {arrowOut, mix, spring} from './anim.js'
       import {buildGrid} from './libraries-grid.js'
 
       const SIZE = {height: 240, width: 320}
@@ -98,6 +109,10 @@
         [-16, 3],
       ]
       const STEP = 2
+      // The link's arrow goes out and comes back as each drag starts, the
+      // first as soon as the pointer is on the card.
+      const ARROWS = DRAGS.map((_, index) => index * STEP + 0.3)
+      const arrow = document.querySelector('.link .arrow svg')
 
       window.DURATION = STEP * DRAGS.length
       window.FPS = 60
@@ -113,6 +128,9 @@
         })
 
         grid.style.transform = `translate(${x}px, ${y}px) scale(${SCALE})`
+
+        const out = ARROWS.reduce((sum, start) => sum + arrowOut(t - start), 0)
+        arrow.style.transform = `translate(${(out * 12).toFixed(2)}px, ${(-out * 12).toFixed(2)}px)`
       }
 
       window.frame(0)
